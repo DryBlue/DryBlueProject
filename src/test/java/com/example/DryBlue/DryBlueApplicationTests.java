@@ -1,0 +1,13 @@
+package com.example.DryBlue;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class DryBlueApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
