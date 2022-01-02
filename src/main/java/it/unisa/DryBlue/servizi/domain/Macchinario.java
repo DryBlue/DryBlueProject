@@ -3,9 +3,7 @@ package it.unisa.DryBlue.servizi.domain;
 import it.unisa.DryBlue.ordini.domain.Sede;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Data
@@ -15,6 +13,7 @@ import java.io.Serializable;
 public class Macchinario implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
 
     @Id
     private String matricola;
