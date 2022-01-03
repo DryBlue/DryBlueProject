@@ -1,5 +1,6 @@
 package it.unisa.DryBlue.autenticazione.domain;
 
+import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -40,4 +41,6 @@ public class Operatore implements Serializable {
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
     }
+
+
 }

@@ -1,5 +1,6 @@
 package it.unisa.DryBlue.autenticazione.domain;
 
+import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import lombok.*;
 
 import javax.persistence.*;
@@ -34,6 +35,11 @@ public class Utente implements Serializable {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Ruolo> ruoli= new HashSet<>();
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Cliente cliente;
 
     public void addRole(final Ruolo r) {
         ruoli.add(r);
