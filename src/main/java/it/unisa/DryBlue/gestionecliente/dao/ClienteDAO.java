@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface ClienteDAO extends CrudRepository<Cliente, String> {
-    Cliente findByNumTel(String numTel);
+    Cliente findByNumeroTelefono(String numTel);
     Cliente findByNome(String nome);
     Cliente findByCognome(String cognome);
 }

@@ -1,15 +1,11 @@
 package it.unisa.DryBlue.autenticazione.domain;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Data
@@ -33,4 +29,13 @@ public class Utente implements Serializable {
     private String cognome;
     private String indirizzo;
     private String cellulare;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<Ruolo> ruoli= new HashSet<>();
+
+    public void addRole(final Ruolo r) {
+        ruoli.add(r);
+    }
 }

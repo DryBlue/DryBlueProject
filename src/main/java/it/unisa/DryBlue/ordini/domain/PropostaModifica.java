@@ -26,8 +26,6 @@ public class PropostaModifica implements Serializable {
     @NonNull
     private String stato;
 
-    @NonNull
-    private String indirizzoSede;
 
     @OneToOne
     @ToString.Exclude
