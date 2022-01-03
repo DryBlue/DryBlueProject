@@ -1,23 +1,21 @@
 package it.unisa.DryBlue.ordini.services;
 
-import it.unisa.DryBlue.ordini.domain.Etichetta;
-import it.unisa.DryBlue.ordini.domain.Ordine;
-import it.unisa.DryBlue.servizi.domain.Servizio;
+import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
+import it.unisa.DryBlue.ordini.domain.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 public interface OrdiniService {
-    Ordine creazioneOrdine(Servizio servizio, Integer quantita, String tipologiaRitiro, LocalDate dataConsegnaDesiderata,
-                           Integer sedeDesiderata, String note);
+    Ordine creazioneOrdine(Set<RigaOrdine> rigaOrdine, Integer quantita, Cliente cliente, String tipologiaRitiro,
+                           Sede sede, LocalDate dataConsegnaDesiderata, Integer sedeDesiderata, String note);
 
-    void propostaModifica(LocalDate data, String indirizzoSede, Integer idOrdine);
+    void propostaModifica(LocalDate data, Sede sede, Ordine ordine);
 
-    Boolean valutazionePropostaModifica(Integer idProposta);
+    Boolean modificaOrdine(LocalDate data, Sede sede, String stato, Integer idOrdine);
 
-    Boolean modificaOrdine(LocalDate data, String indirizzoSede, String stato, Integer idOrdine);
+    List<Ordine> visualizzaOrdini(Object obj, Cliente cliente);
 
-    List<Ordine> visualizzaOrdini(String filtro);
-
-    Etichetta stampaEtichetta(Integer idOrdine);
+    Etichetta stampaEtichetta(Ordine ordine);
 }

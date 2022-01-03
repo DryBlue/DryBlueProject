@@ -1,13 +1,11 @@
-package it.unisa.DryBlue.gestionecliente.domain;
+package it.unisa.DryBlue.gestioneCliente.domain;
 
 import it.unisa.DryBlue.ordini.domain.Ordine;
 import it.unisa.DryBlue.ordini.domain.PropostaModifica;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.nio.charset.Charset;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -38,6 +36,7 @@ public class Cliente implements Serializable {
 
     @NonNull
     private String cognome;
+
     private String email;
 
     @OneToMany

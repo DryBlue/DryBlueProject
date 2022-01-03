@@ -2,8 +2,8 @@ package it.unisa.DryBlue;
 
 import it.unisa.DryBlue.autenticazione.dao.OperatoreDAO;
 import it.unisa.DryBlue.autenticazione.domain.Operatore;
-import it.unisa.DryBlue.gestionecliente.dao.ClienteDAO;
-import it.unisa.DryBlue.gestionecliente.domain.Cliente;
+import it.unisa.DryBlue.gestioneCliente.dao.ClienteDAO;
+import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import it.unisa.DryBlue.ordini.dao.*;
 import it.unisa.DryBlue.ordini.domain.*;
 import it.unisa.DryBlue.servizi.dao.MacchinarioDAO;

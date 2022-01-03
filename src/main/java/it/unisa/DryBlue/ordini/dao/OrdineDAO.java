@@ -1,6 +1,6 @@
 package it.unisa.DryBlue.ordini.dao;
 
-import it.unisa.DryBlue.gestionecliente.domain.Cliente;
+import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import it.unisa.DryBlue.ordini.domain.Ordine;
 import org.springframework.data.repository.CrudRepository;
 

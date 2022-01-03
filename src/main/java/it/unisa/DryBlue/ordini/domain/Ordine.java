@@ -1,6 +1,6 @@
 package it.unisa.DryBlue.ordini.domain;
 
-import it.unisa.DryBlue.gestionecliente.domain.Cliente;
+import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import lombok.*;
 
 import javax.persistence.*;
