@@ -1,6 +1,7 @@
 package it.unisa.DryBlue.autenticazione.configuration;
 
 import it.unisa.DryBlue.autenticazione.domain.Utente;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class OperatoreDetailImpl implements UserDetails {
+public class UtenteDetailImpl implements UserDetails {
 
     @NonNull
     private Utente user;

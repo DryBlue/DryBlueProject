@@ -10,14 +10,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
-@Service("userDetailServices")
-public class OperatoreDetailServiceImpl implements UserDetailsService {
+@Service("userDetailService")
+public class UtenteDetailServiceImpl implements UserDetailsService {
 
-    @NonNull
-    private UtenteDAO userDao;
+
+    private final UtenteDAO userDao;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Utente selectedUser = userDao.findByUsername(username);
-        return new OperatoreDetailImpl(selectedUser);
+        return new UtenteDetailImpl(selectedUser);
     }
 }

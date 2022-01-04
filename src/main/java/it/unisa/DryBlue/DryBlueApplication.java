@@ -113,6 +113,8 @@ public class DryBlueApplication {
 			etichettaDAO.save(etichetta);
 			propostaModificaDAO.save(propostaModifica);
 
+			System.out.println(clienteDAO.findAll());
+
 
 
 		};
