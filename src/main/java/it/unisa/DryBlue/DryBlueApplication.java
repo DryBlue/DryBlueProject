@@ -39,10 +39,10 @@ public class DryBlueApplication {
 	{
 		return args -> {
 
-			Sede sede1=new Sede("Via Roma 3");
-			Sede sede2=new Sede("Via Delle Industrie 18");
+			Sede sede1 = new Sede("Via Roma 3");
+			Sede sede2 = new Sede("Via Delle Industrie 18");
 
-			Cliente cliente1=new Cliente();
+			Cliente cliente1 = new Cliente();
 			cliente1.setNumeroTelefono("3456327821");
 			cliente1.setUsername(cliente1.generateString());
 			cliente1.setPassword(cliente1.generateString());
@@ -50,7 +50,7 @@ public class DryBlueApplication {
 			cliente1.setCognome("Rossi");
 			cliente1.setIndirizzo("Via Polpette al sugo 14");
 
-			Cliente cliente2=new Cliente();
+			Cliente cliente2 = new Cliente();
 			cliente2.setNumeroTelefono("34563275671");
 			cliente2.setUsername(cliente2.generateString());
 			cliente2.setPassword(cliente2.generateString());
@@ -58,12 +58,12 @@ public class DryBlueApplication {
 			cliente2.setCognome("Brosio");
 			cliente2.setIndirizzo("Via Mazzini 4");
 
-			LocalDate tmpdate=LocalDate.of(2022,2,3);
-			Ordine ordine1=new Ordine(tmpdate,"ritiro","macchiato");
+			LocalDate tmpdate = LocalDate.of(2022, 2, 3);
+			Ordine ordine1 = new Ordine(tmpdate, "ritiro", "macchiato");
 			ordine1.setCliente(cliente1);
 			ordine1.setSede(sede1);
 
-			Macchinario macchinario=new Macchinario();
+			Macchinario macchinario = new Macchinario();
 			macchinario.setMatricola("AB1234");
 			macchinario.setDenominazione("MacchinaX");
 			macchinario.setCaratteristiche("Bella");
@@ -74,28 +74,28 @@ public class DryBlueApplication {
 			macchinario.setSede(sede1);
 
 
-			Servizio servizio=new Servizio();
+			Servizio servizio = new Servizio();
 			servizio.setNome("MagliaLavaggio");
 			servizio.setTipologia("Lavaggio");
 			servizio.setCaratteristiche("Maglia blu");
 			servizio.setPrezzo(10.20);
 
-			Operatore operatore=new Operatore();
+			Operatore operatore = new Operatore();
 			operatore.setNome("Luigi");
 			operatore.setCognome("Di maio");
 			operatore.setUsername(operatore.generateString());
 			operatore.setPassword(operatore.generateString());
 
-			RigaOrdine rigaOrdine=new RigaOrdine();
+			RigaOrdine rigaOrdine = new RigaOrdine();
 			rigaOrdine.setOrdine(ordine1);
 			rigaOrdine.setQuantita(1);
 			rigaOrdine.setServizio(servizio);
 
-			Etichetta etichetta=new Etichetta();
+			Etichetta etichetta = new Etichetta();
 			etichetta.setOrdine(ordine1);
 			etichetta.setSede(sede1);
 
-			PropostaModifica propostaModifica=new PropostaModifica();
+			PropostaModifica propostaModifica = new PropostaModifica();
 			propostaModifica.setDataProposta(tmpdate);
 			propostaModifica.setCliente(cliente1);
 			propostaModifica.setOrdine(ordine1);
@@ -103,8 +103,8 @@ public class DryBlueApplication {
 			propostaModifica.setSede(sede1);
 
 
-			sedeDAO.saveAll(Arrays.asList(sede1,sede2));
-			clienteDAO.saveAll(Arrays.asList(cliente1,cliente2));
+			sedeDAO.saveAll(Arrays.asList(sede1, sede2));
+			clienteDAO.saveAll(Arrays.asList(cliente1, cliente2));
 			ordineDAO.save(ordine1);
 			macchinarioDAO.save(macchinario);
 			servizioDAO.save(servizio);
@@ -114,9 +114,6 @@ public class DryBlueApplication {
 			propostaModificaDAO.save(propostaModifica);
 
 			System.out.println(clienteDAO.findAll());
-
-
-
 		};
 	 }
 	}

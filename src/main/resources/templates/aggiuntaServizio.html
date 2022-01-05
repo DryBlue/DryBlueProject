@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Aggiunta Servizio</title>
+</head>
+<body>
+
+<h1>Aggiunta di un servizio al listino prezzi</h1>
+
+<form method="post" th:action="@{/servizio/aggiuntaServizio}">
+    <input type="text" placeholder="Nome" id="name" name="name">
+    <input type="text" placeholder="tipologia" id="tipologia" name="tipologia" >
+    <input type="text" placeholder="caratteristiche" id="caratteristiche" name="caratteristiche">
+    <input type="text" placeholder="prezzo" id="prezzo" name="prezzo" >
+    <button type="submit">Aggiungi</button>
+    <button type="reset">Annulla</button>
+
+</form>
+
+</body>
+</html>
