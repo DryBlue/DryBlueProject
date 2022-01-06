@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- <head th:include="fragments :: head"> -->
+    <title id="pageTitle">DryBlue | Dettagli cliente</title>
+</head>
+<body>
+<!-- div del header -->
+<h1 align="center">Dettagli Cliente</h1>
+<!-- div del corpo -->
+<table>
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>Nome</th>
+        <th>Cognome</th>
+        <th>Indirizzo</th>
+        <th>Numero telefono</th>
+        <th>Email</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr th:if="${telefono==clientela.numeroTelefono}">
+            <td th:text="${clientela.username}"></td>
+            <td th:text="${clientela.nome}"></td>
+            <td th:text="${clientela.cognome}"></td>
+            <td th:text="${clientela.indirizzo}"></td>
+            <td th:text="${clientela.numeroTelefono}"></td>
+            <td th:text="${clientela.email}"></td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- chiusura div -->
+</body>
+</html>

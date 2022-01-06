@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://w3.org/1999/xhtml">
+<head>
+    <!-- <head th:include="fragments.html :: head"> -->
+    <title id="pageTitle">DryBlue | Lista clienti</title>
+    <!-- </head> -->
+</head>
+<body>
+<!-- div della barra navigazionale -->
+
+<h1 align="center">Lista clienti</h1>
+<!-- <div> -->
+<table>
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>Nome</th>
+        <th>Cognome</th>
+        <th>Indirizzo</th>
+        <th>Numero telefono</th>
+        <th>Email</th>
+        <th>Dettagli</th>
+        <th>Operazioni</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="cliente : ${clienti}">
+         <tr>
+            <td th:text="${cliente.username}"></td>
+            <td th:text="${cliente.nome}"></td>
+            <td th:text="${cliente.cognome}"></td>
+            <td th:text="${cliente.indirizzo}"></td>
+            <td th:text="${cliente.numeroTelefono}"></td>
+            <td th:text="${cliente.email}"></td>
+            <td>
+                <form method="post" th:action="@{/clienti/dettagliCliente}">
+                    <input type="hidden" id="telefono" name="telefono" th:value="${cliente.numeroTelefono}">
+                    <button type="submit">Dettagli Cliente</button>
+                </form>
+            </td>
+            <td>
+                <a th:href="@{'/clienti/modifica'}">
+                    Modifica
+                </a>
+
+                <a th:href="@{'/clienti/rimuovi'}">
+                    Rimuovi
+                </a> </td>
+            </td>
+         </tr>
+    </th:block>
+    </tbody>
+</table>
+
+<!-- </div> -->
+</body>
+</html>

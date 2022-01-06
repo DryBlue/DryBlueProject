@@ -5,6 +5,8 @@ import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class GestioneClienteServiceImpl implements GestioneClienteService{
@@ -33,6 +35,14 @@ public class GestioneClienteServiceImpl implements GestioneClienteService{
     @Override
     public void rimuoviCliente(Cliente cliente) {
         clienteDAO.delete(cliente);
+    }
+
+    @Override
+    public List<Cliente> findTuttiIClienti() { return (List<Cliente>) clienteDAO.findAll(); }
+
+    @Override
+    public Cliente findByTelefono(String telefono) {
+        return clienteDAO.findByNumeroTelefono(telefono);
     }
 
 }
