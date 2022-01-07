@@ -1,0 +1,26 @@
+package it.unisa.DryBlue.autenticazione.controller;
+
+import it.unisa.DryBlue.ordini.services.OrdiniService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequiredArgsConstructor
+public class PageController {
+
+    private final OrdiniService ordiniService;
+
+    @GetMapping("/")
+    public String getHomepage(){
+        return "Homepage";
+    }
+
+    @GetMapping("/about")
+    public String getSedi(final Model model){
+        model.addAttribute("sedi", ordiniService.visualizzaSedi());
+        return "About";
+    }
+}

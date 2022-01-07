@@ -39,8 +39,8 @@ public class DryBlueApplication {
 	{
 		return args -> {
 
-			Sede sede1 = new Sede("Via Roma 3");
-			Sede sede2 = new Sede("Via Delle Industrie 18");
+			Sede sede1 = new Sede("Ariano Irpino, via Cardito, 52");
+			Sede sede2 = new Sede("Ariano Irpino, corso Vittorio Emanuele, 250");
 
 			Cliente cliente1 = new Cliente();
 			cliente1.setNumeroTelefono("3456327821");

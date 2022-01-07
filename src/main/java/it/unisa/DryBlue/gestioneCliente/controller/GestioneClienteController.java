@@ -15,6 +15,7 @@ public class GestioneClienteController {
 
     private final GestioneClienteService gestioneClienteService;
 
+
     @GetMapping("/pagine")
     public String getPagina(final Model model){
         return "/gestioneCliente/ListaClienti";

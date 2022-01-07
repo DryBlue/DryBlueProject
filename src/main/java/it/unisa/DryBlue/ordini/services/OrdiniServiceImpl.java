@@ -4,6 +4,7 @@ import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import it.unisa.DryBlue.ordini.dao.EtichettaDAO;
 import it.unisa.DryBlue.ordini.dao.OrdineDAO;
 import it.unisa.DryBlue.ordini.dao.PropostaModificaDAO;
+import it.unisa.DryBlue.ordini.dao.SedeDAO;
 import it.unisa.DryBlue.ordini.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class OrdiniServiceImpl implements OrdiniService{
     private final OrdineDAO ordineDAO;
     private final PropostaModificaDAO propostaModificaDAO;
     private final EtichettaDAO etichettaDAO;
+    private final SedeDAO sedeDAO;
 
     @Override
     public Ordine creazioneOrdine(Set<RigaOrdine> rigaOrdine, Integer quantita, Cliente cliente, String tipologiaRitiro,
@@ -109,5 +111,10 @@ public class OrdiniServiceImpl implements OrdiniService{
         etichetta.setSede(ordine.getSede());
         etichettaDAO.save(etichetta);
         return etichetta;
+    }
+
+    @Override
+    public List<Sede> visualizzaSedi() {
+        return (List<Sede>)sedeDAO.findAll();
     }
 }

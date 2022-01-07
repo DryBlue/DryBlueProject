@@ -31,7 +31,7 @@ public class ServiziController {
         return "/servizi/ListaServizi";
     }
 
-    @GetMapping("/servizi")
+    @GetMapping("/listaServizi")
     public String trovaServizi(final Model model){
         model.addAttribute("servizi", servizioService.findServizi());
         return "/servizi/ListaServizi";

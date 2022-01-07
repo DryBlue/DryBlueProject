@@ -18,4 +18,6 @@ public interface OrdiniService {
     List<Ordine> visualizzaOrdini(Object obj, Cliente cliente);
 
     Etichetta stampaEtichetta(Ordine ordine);
+
+    List<Sede> visualizzaSedi();
 }
