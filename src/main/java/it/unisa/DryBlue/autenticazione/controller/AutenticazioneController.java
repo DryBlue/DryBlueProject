@@ -1,6 +1,7 @@
 package it.unisa.DryBlue.autenticazione.controller;
 
 import it.unisa.DryBlue.autenticazione.dao.UtenteDAO;
+import it.unisa.DryBlue.autenticazione.domain.Operatore;
 import it.unisa.DryBlue.autenticazione.domain.Utente;
 import it.unisa.DryBlue.autenticazione.services.AutenticazioneService;
 import lombok.RequiredArgsConstructor;
@@ -71,5 +72,59 @@ public class AutenticazioneController {
 
     }
 
+    /**
+     * Implementa la funzionalità che permette
+     * di visualizzare la view della registrazione.
+     * @param model Model
+     * @return la pagina registrazione.html
+     *
+     * Autori: Miriam Ferrara e Sabrina Ceccarelli
+     */
+    @GetMapping("/registrazione")
+    public String Registrazione(Model model) {
+        model.addAttribute("regUtente", new Utente());
+        return "/autenticazione/registrazione";
+    }
+
+
+    /**
+     * Implementa la funzionalità della registrazione del nuovo utente.
+     * @param u utente
+     * @param m la sessione in cui salvare l'utente
+     * @param nome del nuovo utente
+     * @param cognome del nuovo utente
+     * @param indirizzo del nuovo utente
+     * @param cellulare del nuovo utente
+     * @return la pagina registrazioneSuccesso.html
+     *
+     * Autori: Miriam Ferrara e Sabrina Ceccarelli
+     */
+    @PostMapping("/registrazione/registrazioneSuccesso")
+    public String RegistrazioneProcesso(Utente u, Model m,
+                                        @RequestParam("nome") String nome,
+                                        @RequestParam("cognome") String cognome,
+                                        @RequestParam("indirizzo") String indirizzo,
+                                        @RequestParam("cellulare") String cellulare) {
+
+        Utente utent =new Utente();
+        utent.setNome(nome);
+        utent.setCognome(cognome);
+        utent.setIndirizzo(indirizzo);
+        utent.setCellulare(cellulare);
+
+        Operatore op = new Operatore();
+        String username= op.generateString();
+        String password = op.generateString();
+
+        u.setUsername(username);
+        u.setPassword(password);
+
+        utent.setUsername(username);
+        utent.setPassword(password);
+
+        personaDAO.save(u);
+        m.addAttribute("visualizza",  utent);
+        return "/autenticazione/registrazioneSuccesso";
+    }
 
 }

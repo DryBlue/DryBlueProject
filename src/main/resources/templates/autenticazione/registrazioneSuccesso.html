@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>RegistrazioneSuccess</title>
+</head>
+<body>
+
+<h1 style="text-align:center">Registrazione effettuata con successo</h1>
+<h3>I dati del nuovo utente inseriti sono:</h3>
+
+
+<p>Nome:  <span th:text="*{visualizza.nome}"></span><br>
+Cognome:  <span th:text="*{visualizza.cognome}"></span><br>
+Indirizzo: <span th:text="*{visualizza.indirizzo}"></span> <br>
+Cellulare:  <span th:text="*{visualizza.cellulare}"></span><br>
+    Autorizzo il trattamento dei miei dati personali
+    (ai sensi dell'art.7 del GDPR 2016/679 e della normativa nazionale vigente)
+</p><br>
+
+<h3 >Le credenziali provvisorie del nuovo cliente sono: </h3>
+<h3>Username: <span th:text="*{visualizza.username}"></span><br>
+Password:  <span th:text="*{visualizza.password}"></span></h3>
+
+</body>
+</html>

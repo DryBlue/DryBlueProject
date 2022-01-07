@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrazione</title>
+</head>
+<body>
+
+<h1 style= "text-align:center">Registrazione Cliente</h1>
+<p style= "text-align:center"> inserisci i dati del cliente da registrare</p>
+<div style="text-align: center">
+
+<form  th:action="@{/autenticazione/registrazione/registrazioneSuccesso}" method="post" th:object="${regUtente}"  >
+    <label>Nome*: </label> <input type="text" placeholder="Nome" id="nome" name="nome" th:field="*{nome}" required ><br><br>
+    <label>Cognome*: </label> <input type=" text"placeholder="Cognome" id="cognome" name="cognome" th:field="*{cognome}" required ><br><br>
+    <label>Indirizzo*: </label> <input type="text" placeholder="Indirizzo" id="indirizzo" name="indirizzo" th:field="*{indirizzo}" required><br><br>
+    <label>Cellulare*:  </label> <input type="text" placeholder="cellulare" id="cellulare" name="cellulare" th:field="*{cellulare}" required ><br><br>
+    <label>*Campo Obbligatorio<br>
+        <input type="checkbox"> Autorizzo il trattamento dei miei dati personali
+                                (ai sensi dell'art.7 del GDPR 2016/679 e della normativa nazionale vigente)</label><br><br>
+    <button type="submit">Registra l'utente </button>
+     </form>
+
+</div>
+</body>
+</html>
