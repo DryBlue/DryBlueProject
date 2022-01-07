@@ -1,10 +1,7 @@
 package it.unisa.DryBlue.servizi.controller;
 
-import it.unisa.DryBlue.servizi.dao.ServizioDAO;
-import it.unisa.DryBlue.servizi.domain.Servizio;
 import it.unisa.DryBlue.servizi.services.ServizioService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +19,7 @@ public class ServiziController {
 
     @GetMapping("/pagina")
     private String pagina(){
-        return "aggiuntaServizio";
+        return "/servizi/aggiuntaServizio";
     }
 
     @PostMapping("/aggiuntaServizio")
@@ -31,7 +28,13 @@ public class ServiziController {
                                     @RequestParam("caratteristiche") String caratteristiche,
                                     @RequestParam("prezzo") double prezzo){
         servizioService.aggiungiServizio(nome,tipologia,caratteristiche,prezzo);
-        return "ListaServizi";  //inserire path pagina di visualizzazione servizi al posto di HelloWorld
+        return "/servizi/ListaServizi";
+    }
+
+    @GetMapping("/servizi")
+    public String trovaServizi(final Model model){
+        model.addAttribute("servizi", servizioService.findServizi());
+        return "/servizi/ListaServizi";
     }
 
 

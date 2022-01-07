@@ -3,22 +3,20 @@ package it.unisa.DryBlue.autenticazione.controller;
 import it.unisa.DryBlue.autenticazione.dao.UtenteDAO;
 import it.unisa.DryBlue.autenticazione.domain.Utente;
 import it.unisa.DryBlue.autenticazione.services.AutenticazioneService;
-import it.unisa.DryBlue.gestioneCliente.dao.ClienteDAO;
-import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 
 
 @Controller
+@RequiredArgsConstructor
+@RequestMapping("/autenticazione")
 public class AutenticazioneController {
 
     @Autowired
@@ -26,7 +24,7 @@ public class AutenticazioneController {
 
     private Utente persona;
 
-    @GetMapping("/HelloWorld")
+    @PostMapping ("/HelloWorld")
     @Transactional
     public String getDashboard() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -45,10 +43,10 @@ public class AutenticazioneController {
      * @param model il Model
      * @return la pagina dove è visualizzato
      */
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String visualizzaLogin(final Model model) {
         model.addAttribute("loggedUser", null);
-        return "autenticazione/login";
+        return "/autenticazione/Login";
     }
 
     /**
@@ -65,11 +63,11 @@ public class AutenticazioneController {
         Utente utente = autenticazioneService.login(username, password);
         if (utente == null) {
             model.addAttribute("error", true);
-            return "autenticazione/login";
+            return "autenticazione/Login";
         } else {
             model.addAttribute("loggedUser", utente);
         }
-        return "index";
+        return "HelloWorld";
 
     }
 

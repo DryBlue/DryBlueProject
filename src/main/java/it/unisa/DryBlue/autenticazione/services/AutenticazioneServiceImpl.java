@@ -5,6 +5,8 @@ import it.unisa.DryBlue.autenticazione.domain.Utente;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 /**
  *Implementa la classe che esplicita i metodi
@@ -45,5 +47,11 @@ public class AutenticazioneServiceImpl implements AutenticazioneService {
         }
         return null;
     }
+
+    @Override
+    public Utente findByUsername(String username) {
+        return utenteDAO.findByUsername(username);
+    }
+
 
 }

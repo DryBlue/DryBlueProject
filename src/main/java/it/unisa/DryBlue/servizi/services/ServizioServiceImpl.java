@@ -8,6 +8,7 @@ import it.unisa.DryBlue.servizi.domain.Servizio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -98,5 +99,10 @@ public class ServizioServiceImpl implements ServizioService{
             servizio.setPrezzo(prezzo);
         }
         servizioDAO.save(servizio);
+    }
+
+    @Override
+    public List<Servizio> findServizi() {
+        return (List<Servizio>) servizioDAO.findAll();
     }
 }

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -18,24 +17,24 @@ public class GestioneClienteController {
 
     @GetMapping("/pagine")
     public String getPagina(final Model model){
-        return "ListaClienti";
+        return "/gestioneCliente/ListaClienti";
     }
 
 
     @GetMapping("/clienti")
     public String trovaTuttiIClienti(final Model model){
         model.addAttribute("clienti", gestioneClienteService.findTuttiIClienti());
-        return "ListaClienti";
+        return "/gestioneCliente/ListaClienti";
     }
 
     @GetMapping("/clienti/modifica")
     public String Modifica() {
-        return "HelloWorld";
+        return "HelloWorld";//TODO modificare path di ritorno
     }
 
     @GetMapping("/clienti/rimuovi")
     public String Rimuovi() {
-        return "HelloWorld";
+        return "HelloWorld";//TODO modificare path di ritorno
     }
 
     @PostMapping("/clienti/dettagliCliente")
@@ -43,7 +42,7 @@ public class GestioneClienteController {
         System.out.println(numTel);
         model.addAttribute("telefono", numTel);
         model.addAttribute("clientela", gestioneClienteService.findByTelefono(numTel));
-        return "DettagliCliente";
+        return "/gestioneCliente/DettagliCliente";
     }
 
 }

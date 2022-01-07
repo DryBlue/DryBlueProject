@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>DryBlue | Lista Servizi</title>
@@ -24,7 +24,7 @@
             </thead>
             
 	<tbody>
-                <th:block th:each="servizio : ${servizio}">
+                <th:block th:each="servizio : ${servizi}">
                     <tr>
                         <td th:text="${servizio.id}"></td>
             		<td th:text="${servizio.nome}"></td>
@@ -35,7 +35,8 @@
                 </th:block>
             </tbody>
         </table>
-
+        <!-- Aggiungere divisione ruoli (modifca e rimuovi) -->
+        </div>
         </div>
     </body>
 </html>

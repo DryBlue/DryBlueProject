@@ -12,34 +12,16 @@
         <div class="col-md-4 offset-md-4 form">
      <!-- Qui inizia il form per il login -->
             
-<form action="login" method="POST" autocomplete="off">
+<form th:action="@{/autenticazione/HelloWorld}" method="post" autocomplete="off">
                 <h2 class="text-center">Login</h2>
-                <?php
-                    if(isset($_SESSION['info'])){
-                        ?>
                 <div class="alert alert-success text-center">
-                    <?php echo $_SESSION['info']; ?>
                 </div>
-                <?php
-                    }
-                    ?>
-                <?php
-                    if(count($errors)&gt;0){
-                ?>
                 <!-- mostra errori -->
                 <div class="alert alert-danger text-center">
-                    <?php
-                            foreach($errors as $showerror){
-                                echo $showerror;
-                            }
-                            ?>
                 </div>
-                <?php
-                    }
-                    ?>
                 <div class="form-group">
                     <label>
-                        <input class="form-control" type="text" name="username" placeholder=Username: " required>
+                        <input class="form-control" type="text" name="username" placeholder="Username: " required>
                     </label>
                 </div>
                 <div class="form-group">
