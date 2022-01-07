@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DryBlue | Lista Servizi</title>
+    <!-- Dobbiamo inserire gli stili qua con i programmi tipo bootstrap -->
+
+</head>
+    <body>
+        <div class="container">
+    <div class="row">
+
+            <h1 class="text-center">Lista Servizi</h1>
+
+        <table class="tabelle">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Tipologia</th>
+                    <th>Caratteristiche</th>
+                    <th>Prezzo</th>
+                </tr>
+            </thead>
+            
+	<tbody>
+                <th:block th:each="servizio : ${servizio}">
+                    <tr>
+                        <td th:text="${servizio.id}"></td>
+            		<td th:text="${servizio.nome}"></td>
+            		<td th:text="${servizio.tipologia}"></td>
+            		<td th:text="${servizio.caratteristiche}"></td>
+            		<td th:text="${servizio.prezzo}"></td>
+            	      </tr>
+                </th:block>
+            </tbody>
+        </table>
+
+        </div>
+    </body>
+</html>

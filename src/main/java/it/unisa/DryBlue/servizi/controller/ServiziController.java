@@ -31,7 +31,7 @@ public class ServiziController {
                                     @RequestParam("caratteristiche") String caratteristiche,
                                     @RequestParam("prezzo") double prezzo){
         servizioService.aggiungiServizio(nome,tipologia,caratteristiche,prezzo);
-        return "HelloWorld";  //inserire path pagina di visualizzazione servizi al posto di HelloWorld
+        return "ListaServizi";  //inserire path pagina di visualizzazione servizi al posto di HelloWorld
     }
 
 
