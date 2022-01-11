@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 
@@ -136,4 +138,16 @@ public class AutenticazioneController {
         return new Utente();
     }
 
+
+    @Controller
+    public class LogoutController {
+
+        @RequestMapping(value="/logout",method = RequestMethod.GET)
+        public String logout(HttpServletRequest request){
+            HttpSession httpSession = request.getSession();
+            httpSession.invalidate();
+            return "/templates/Homepage";
+        }
+
+    }
 }
