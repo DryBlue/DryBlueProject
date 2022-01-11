@@ -83,10 +83,22 @@ public class DryBlueApplication {
 
 
 			Servizio servizio = new Servizio();
-			servizio.setNome("MagliaLavaggio");
+			servizio.setNome("Lavaggio maglia blu");
 			servizio.setTipologia("Lavaggio");
 			servizio.setCaratteristiche("Maglia blu");
 			servizio.setPrezzo(10.20);
+
+			Servizio servizio2 = new Servizio();
+			servizio2.setNome("Stiratura maglia blu");
+			servizio2.setTipologia("Stiratura");
+			servizio2.setCaratteristiche("Maglia blu");
+			servizio2.setPrezzo(5.20);
+
+			Servizio servizio3 = new Servizio();
+			servizio3.setNome("Lavaggio jeans");
+			servizio3.setTipologia("Lavaggio");
+			servizio3.setCaratteristiche("Jeans");
+			servizio3.setPrezzo(10.20);
 
 			Operatore operatore = new Operatore();
 			operatore.setNome("Luigi");
@@ -121,7 +133,7 @@ public class DryBlueApplication {
 			clienteDAO.saveAll(Arrays.asList(cliente1, cliente2, cliente3));
 			ordineDAO.save(ordine1);
 			macchinarioDAO.save(macchinario);
-			servizioDAO.save(servizio);
+			servizioDAO.saveAll(Arrays.asList(servizio, servizio2, servizio3));
 			operatoreDAO.saveAll(Arrays.asList(operatore, operatore2));
 			rigaOrdineDAO.save(rigaOrdine);
 			etichettaDAO.save(etichetta);

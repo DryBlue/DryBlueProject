@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Nuovo Ordine Cliente</title>
@@ -10,12 +10,13 @@
 
 <!-- l'action del form è un placeholder, da cambiare appensa possibile -->
 <form name="aggiuntaOrdineC" id="aggiuntaOrdineC" th:action="@{/ordini/aggiuntaOrdineCliente.html}" method="POST">
+
         <select name="ordine">
-            <!-- Dobbiamo collegarlo alla lista dei servizi -->
-            <option> </option>
-            <option> </option>
-            <option> </option>
-        </select><br>
+            <div th:each="servizio : ${servizi}">
+                <option th:text="${servizio.nome}"></option>
+            </div>
+        </select>
+    <br>
 
     <select name="ritiro">
         <option value="opzione1">Ritiro</option>
@@ -29,10 +30,18 @@
         <input type="date"><br>
 
     <select name="sede">
-        <!-- In caso di trasloco cambiare l'indirizzo qui -->
-        <option value="indirizzo1">Via Cardito, 52</option>
-        <option value="indirizzo2">Corso Vittorio Emanuele, 250</option>
+        <div th:each="sede : ${sedi}">
+            <option th:text="${sede.indirizzo}"></option>
+        </div>
     </select><br>
+
+    <div th:if="${utente.getRuolo().getName().equals('OPERATORE')}">
+        <select name="cliente">
+            <div th:each="cliente : ${clienti}">
+                <option th:text="${cliente.username}"></option>
+            </div>
+        </select>
+    </div>
 
     <h2>Note:</h2>
     <textarea name="note" form="aggiuntaOrdineC"></textarea> <br>

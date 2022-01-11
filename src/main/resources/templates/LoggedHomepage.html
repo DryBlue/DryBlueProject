@@ -9,7 +9,7 @@
 <hr>
 
 <div th:if="${utente.getRuolo().getName().equals('OPERATORE')}">
-    <a th:href="@{/autenticazione/HelloWorld}">Nuovo Ordine</a>  <!-- AGGIUNGERE PATH CREAZIONE ORDINE-->
+    <a th:href="@{/ordini/form}">Nuovo Ordine</a>  <!-- AGGIUNGERE PATH CREAZIONE ORDINE-->
     <a th:href="@{/autenticazione/HelloWorld}">Lista Ordini</a>  <!-- AGGIUNGERE PATH LISTA ORDINI -->
     <a th:href="@{/autenticazione/HelloWorld}">Lista Macchinari</a> <!-- AGGIUNGERE PATH LISTA MACCHINARI -->
     <a th:href="@{/gestioneCliente/clienti}">Lista Clienti</a>
@@ -21,7 +21,7 @@
 </div>
 
 <div th:if="${utente.getRuolo().getName().equals('CLIENTE')}">
-    <a th:href="@{/autenticazione/HelloWorld}">Nuovo Ordine</a>  <!-- AGGIUNGERE PATH CREAZIONE ORDINE-->
+    <a th:href="@{/ordini/form}">Nuovo Ordine</a>  <!-- AGGIUNGERE PATH CREAZIONE ORDINE-->
     <a th:href="@{/autenticazione/HelloWorld}">Lista Ordini</a>  <!-- AGGIUNGERE PATH LISTA ORDINI -->
 
     <form method="post" th:action="@{/gestioneCliente/clienti/dettagliCliente}">

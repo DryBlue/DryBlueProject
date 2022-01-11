@@ -27,7 +27,7 @@ public class ServiziController {
         return "/servizi/ListaServizi";
     }
 
-    @GetMapping("/listaServizi")
+    @PostMapping("/listaServizi")
     public String trovaServizi(final Model model){
         model.addAttribute("servizi", servizioService.findServizi());
         model.getAttribute("utente");
