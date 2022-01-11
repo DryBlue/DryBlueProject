@@ -58,6 +58,14 @@ public class DryBlueApplication {
 			cliente2.setCognome("Brosio");
 			cliente2.setIndirizzo("Via Mazzini 4");
 
+			Cliente cliente3 = new Cliente();
+			cliente3.setNumeroTelefono("34733275671");
+			cliente3.setUsername("user");
+			cliente3.setPassword("user");
+			cliente3.setNome("Alfonso");
+			cliente3.setCognome("Cannavale");
+			cliente3.setIndirizzo("Via Roma 32");
+
 			LocalDate tmpdate = LocalDate.of(2022, 2, 3);
 			Ordine ordine1 = new Ordine(tmpdate, "ritiro", "macchiato");
 			ordine1.setCliente(cliente1);
@@ -86,6 +94,12 @@ public class DryBlueApplication {
 			operatore.setUsername(operatore.generateString());
 			operatore.setPassword(operatore.generateString());
 
+			Operatore operatore2 = new Operatore();
+			operatore2.setNome("Matteo");
+			operatore2.setCognome("Renzi");
+			operatore2.setUsername("admin");
+			operatore2.setPassword("admin");
+
 			RigaOrdine rigaOrdine = new RigaOrdine();
 			rigaOrdine.setOrdine(ordine1);
 			rigaOrdine.setQuantita(1);
@@ -104,16 +118,17 @@ public class DryBlueApplication {
 
 
 			sedeDAO.saveAll(Arrays.asList(sede1, sede2));
-			clienteDAO.saveAll(Arrays.asList(cliente1, cliente2));
+			clienteDAO.saveAll(Arrays.asList(cliente1, cliente2, cliente3));
 			ordineDAO.save(ordine1);
 			macchinarioDAO.save(macchinario);
 			servizioDAO.save(servizio);
-			operatoreDAO.save(operatore);
+			operatoreDAO.saveAll(Arrays.asList(operatore, operatore2));
 			rigaOrdineDAO.save(rigaOrdine);
 			etichettaDAO.save(etichetta);
 			propostaModificaDAO.save(propostaModifica);
 
 			System.out.println(clienteDAO.findAll());
+			System.out.println(operatoreDAO.findAll());
 		};
 	 }
 	}

@@ -1,9 +1,10 @@
 package it.unisa.DryBlue.autenticazione.controller;
 
 import it.unisa.DryBlue.autenticazione.dao.UtenteDAO;
-import it.unisa.DryBlue.autenticazione.domain.Operatore;
+import it.unisa.DryBlue.gestioneCliente.dao.ClienteDAO;
 import it.unisa.DryBlue.autenticazione.domain.Utente;
 import it.unisa.DryBlue.autenticazione.services.AutenticazioneService;
+import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -17,11 +18,14 @@ import javax.transaction.Transactional;
 
 @Controller
 @RequiredArgsConstructor
+@SessionAttributes("utente")
 @RequestMapping("/autenticazione")
 public class AutenticazioneController {
 
     @Autowired
     private UtenteDAO personaDAO;
+    @Autowired
+    private ClienteDAO clienteDAO;
 
     private Utente persona;
 
@@ -46,7 +50,7 @@ public class AutenticazioneController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String visualizzaLogin(final Model model) {
-        model.addAttribute("loggedUser", null);
+        model.addAttribute("utente", null);
         return "/autenticazione/Login";
     }
 
@@ -62,13 +66,20 @@ public class AutenticazioneController {
                         @RequestParam final String password,
                         final Model model) {
         Utente utente = autenticazioneService.login(username, password);
-        if (utente == null) {
-            model.addAttribute("error", true);
-            return "autenticazione/Login";
-        } else {
-            model.addAttribute("loggedUser", utente);
+        if(utente.getRuolo().getName().equals("OPERATORE")){
+            model.addAttribute("utente",utente);
+            return "LoggedHomepage";
         }
-        return "HelloWorld";
+
+        else if(utente.getRuolo().getName().equals("CLIENTE")){
+            model.addAttribute("utente",utente);
+            return "LoggedHomepage";
+        }
+
+        model.addAttribute("error",true);
+
+
+        return "autenticazione/Login";
 
     }
 
@@ -89,7 +100,6 @@ public class AutenticazioneController {
 
     /**
      * Implementa la funzionalità della registrazione del nuovo utente.
-     * @param u utente
      * @param m la sessione in cui salvare l'utente
      * @param nome del nuovo utente
      * @param cognome del nuovo utente
@@ -100,31 +110,30 @@ public class AutenticazioneController {
      * Autori: Miriam Ferrara e Sabrina Ceccarelli
      */
     @PostMapping("/registrazione/registrazioneSuccesso")
-    public String RegistrazioneProcesso(Utente u, Model m,
+    public String RegistrazioneProcesso(Model m,
                                         @RequestParam("nome") String nome,
                                         @RequestParam("cognome") String cognome,
                                         @RequestParam("indirizzo") String indirizzo,
                                         @RequestParam("cellulare") String cellulare) {
 
-        Utente utent =new Utente();
-        utent.setNome(nome);
-        utent.setCognome(cognome);
-        utent.setIndirizzo(indirizzo);
-        utent.setCellulare(cellulare);
+        Cliente cliente=new Cliente();
+        cliente.setNome(nome);
+        cliente.setCognome(cognome);
+        cliente.setIndirizzo(indirizzo);
+        cliente.setNumeroTelefono(cellulare);
+        cliente.setUsername(cliente.generateString());
+        cliente.setPassword(cliente.generateString());
 
-        Operatore op = new Operatore();
-        String username= op.generateString();
-        String password = op.generateString();
+        clienteDAO.save(cliente);
+        m.addAttribute("visualizza",cliente);
 
-        u.setUsername(username);
-        u.setPassword(password);
-
-        utent.setUsername(username);
-        utent.setPassword(password);
-
-        personaDAO.save(u);
-        m.addAttribute("visualizza",  utent);
+        System.out.println(clienteDAO.findByNome(cliente.getNome()));
         return "/autenticazione/registrazioneSuccesso";
+    }
+
+    @ModelAttribute("utente")
+    public Utente utente(){
+        return new Utente();
     }
 
 }

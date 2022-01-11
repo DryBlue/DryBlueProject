@@ -11,4 +11,5 @@ public interface ClienteDAO extends CrudRepository<Cliente, String> {
     Cliente findByNumeroTelefono(String numTel);
     Cliente findByNome(String nome);
     Cliente findByCognome(String cognome);
+    Cliente findByUsername(String username);
 }

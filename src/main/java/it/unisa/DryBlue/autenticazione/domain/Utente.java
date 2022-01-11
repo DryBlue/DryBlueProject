@@ -31,17 +31,14 @@ public class Utente implements Serializable {
     private String indirizzo;
     private String cellulare;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Set<Ruolo> ruoli= new HashSet<>();
+    private Ruolo ruolo= new Ruolo();
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Cliente cliente;
 
-    public void addRole(final Ruolo r) {
-        ruoli.add(r);
-    }
 }

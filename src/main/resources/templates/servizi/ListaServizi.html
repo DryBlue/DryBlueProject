@@ -33,8 +33,11 @@
                 </th:block>
             </tbody>
         </table>
-        <!-- Aggiungere divisione ruoli (modifca e rimuovi) -->
         </div>
+    </div>
+
+    <div th:if="${utente.getRuolo().getName().equals('OPERATORE')}">
+        <a th:href="@{'/servizio/aggiuntaServizio'}">Aggiungi servizio</a>
     </div>
 </body>
 </html>

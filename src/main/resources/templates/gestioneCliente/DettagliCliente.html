@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://w3.org/1999/xhtml">
 <head>
 <!-- <head th:include="fragments :: head"> -->
     <title id="pageTitle">DryBlue | Dettagli cliente</title>
@@ -20,7 +20,6 @@
     </tr>
     </thead>
     <tbody>
-        <tr th:if="${telefono==clientela.numeroTelefono}">
             <td th:text="${clientela.username}"></td>
             <td th:text="${clientela.nome}"></td>
             <td th:text="${clientela.cognome}"></td>

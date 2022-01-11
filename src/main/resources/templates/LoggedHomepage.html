@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>DryBlue | Homepage</title>
+</head>
+<body>
+<h1>DryBlue</h1>
+<hr>
+
+<div th:if="${utente.getRuolo().getName().equals('OPERATORE')}">
+    <a th:href="@{/autenticazione/HelloWorld}">Nuovo Ordine</a>  <!-- AGGIUNGERE PATH CREAZIONE ORDINE-->
+    <a th:href="@{/autenticazione/HelloWorld}">Lista Ordini</a>  <!-- AGGIUNGERE PATH LISTA ORDINI -->
+    <a th:href="@{/autenticazione/HelloWorld}">Lista Macchinari</a> <!-- AGGIUNGERE PATH LISTA MACCHINARI -->
+    <a th:href="@{/gestioneCliente/clienti}">Lista Clienti</a>
+    <a th:href="@{/servizio/listaServizi}">Lista Servizi</a>
+    <a th:href="@{/autenticazione/HelloWorld}">Logout</a>  <!--AGGIUNGERE PATH LOGOUT -->
+
+    <h3>Benvenuto </h3> <h3 th:text="${utente.nome}"></h3>
+
+</div>
+
+<div th:if="${utente.getRuolo().getName().equals('CLIENTE')}">
+    <a th:href="@{/autenticazione/HelloWorld}">Nuovo Ordine</a>  <!-- AGGIUNGERE PATH CREAZIONE ORDINE-->
+    <a th:href="@{/autenticazione/HelloWorld}">Lista Ordini</a>  <!-- AGGIUNGERE PATH LISTA ORDINI -->
+    <form method="post" th:action="@{/gestioneCliente/clienti/dettagliCliente}">
+        <input type="hidden" id="telefono" name="telefono" th:value="${utente.cellulare}">
+        <button type="submit">Profilo</button>
+    </form>
+    <a th:href="@{/autenticazione/HelloWorld}">Logout</a>  <!--AGGIUNGERE PATH LOGOUT -->
+
+    <h3>Benvenuto </h3> <h3 th:text="${utente.nome}"></h3>
+
+</div>
+
+</body>
+</html>

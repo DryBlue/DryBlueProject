@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface OperatoreDAO extends CrudRepository<Operatore,String> {
 
-    Utente findByUsername(String username);
+    Operatore findByUsername(String username);
 }

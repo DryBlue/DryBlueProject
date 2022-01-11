@@ -33,17 +33,21 @@
             <td th:text="${cliente.numeroTelefono}"></td>
             <td th:text="${cliente.email}"></td>
             <td>
-                <form method="post" th:action="@{/clienti/dettagliCliente}">
+                <form method="post" th:action="@{/gestioneCliente/clienti/dettagliCliente}">
                     <input type="hidden" id="telefono" name="telefono" th:value="${cliente.numeroTelefono}">
                     <button type="submit">Dettagli Cliente</button>
                 </form>
             </td>
             <td>
-                <a th:href="@{'/clienti/modifica'}">
+                <a th:href="@{/autenticazione/registrazione}">
+                    Aggiungi Cliente
+                </a>
+
+                <a th:href="@{/clienti/modifica}">
                     Modifica
                 </a>
 
-                <a th:href="@{'/clienti/rimuovi'}">
+                <a th:href="@{/clienti/rimuovi}">
                     Rimuovi
                 </a> </td>
             </td>
