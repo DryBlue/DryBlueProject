@@ -79,8 +79,6 @@ public class AutenticazioneController {
         }
 
         model.addAttribute("error",true);
-
-
         return "autenticazione/Login";
 
     }
@@ -146,7 +144,7 @@ public class AutenticazioneController {
         public String logout(HttpServletRequest request){
             HttpSession httpSession = request.getSession();
             httpSession.invalidate();
-            return "/templates/Homepage";
+            return "redirect:/";
         }
 
     }
