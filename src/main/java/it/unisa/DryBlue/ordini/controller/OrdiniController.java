@@ -1,5 +1,6 @@
 package it.unisa.DryBlue.ordini.controller;
 
+import it.unisa.DryBlue.autenticazione.domain.Utente;
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import it.unisa.DryBlue.gestioneCliente.services.GestioneClienteService;
 import it.unisa.DryBlue.ordini.domain.RigaOrdine;
@@ -63,6 +64,36 @@ public class OrdiniController {
                 sede, dataConsegnaDesiderata, sedeDesiderata, note);
         return "LoggedHomepage";
 
+    }
+
+    @GetMapping("/ListaOrdini")
+    private String listaOrdini(@RequestParam(value = "filter", defaultValue = "Attivi")  String filter,
+                               final Model model){
+        Utente u = (Utente) model.getAttribute("utente");
+        if (u.getRuolo().getName().equals("OPERATORE")){
+            if (filter.equals("Totali")){
+                model.addAttribute("ordini", ordiniService.visualizzaOrdiniTotali());
+                return "ordini/ListaOrdini";
+            }
+            else if (filter.equals("Attivi")){
+                model.addAttribute("ordini", ordiniService.visualizzaOrdiniFiltroOperatore(filter));
+                return "ordini/ListaOrdini";
+            }
+            else {
+                model.addAttribute("ordini", ordiniService.visualizzaOrdiniFiltroOperatore(filter));
+                return "ordini/ListaOrdini";
+            }
+        }
+        else {
+            if (filter.equals("Attivi")){
+                model.addAttribute("ordini", ordiniService.visualizzaOrdiniFiltroUtente(filter, u.getCellulare()));
+                return "ordini/ListaOrdini";
+            }
+            else {
+                model.addAttribute("ordini", ordiniService.visualizzaOrdiniFiltroUtente(filter, u.getCellulare()));
+                return "ordini/ListaOrdini";
+            }
+        }
     }
 
 }

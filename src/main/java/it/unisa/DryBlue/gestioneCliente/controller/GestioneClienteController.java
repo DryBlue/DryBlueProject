@@ -39,9 +39,7 @@ public class GestioneClienteController {
 
     @PostMapping("/clienti/dettagliCliente")
     public String dettagli(@RequestParam("telefono") final String numTel, final Model model) {
-        System.out.println(numTel);
         Cliente c = gestioneClienteService.findByTelefono(numTel);
-        System.out.println(c);
         model.addAttribute("clientela", c);
         return "/gestioneCliente/DettagliCliente";
     }

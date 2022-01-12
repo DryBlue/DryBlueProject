@@ -9,8 +9,8 @@
 <hr>
 
 <div th:if="${utente.getRuolo().getName().equals('OPERATORE')}">
-    <a th:href="@{/ordini/form}">Nuovo Ordine</a>  <!-- AGGIUNGERE PATH CREAZIONE ORDINE-->
-    <a th:href="@{/autenticazione/HelloWorld}">Lista Ordini</a>  <!-- AGGIUNGERE PATH LISTA ORDINI -->
+    <a th:href="@{/ordini/form}">Nuovo Ordine</a>
+    <a th:href="@{/ordini/ListaOrdini}">Lista Ordini</a>
     <a th:href="@{/autenticazione/HelloWorld}">Lista Macchinari</a> <!-- AGGIUNGERE PATH LISTA MACCHINARI -->
     <a th:href="@{/gestioneCliente/clienti}">Lista Clienti</a>
     <a th:href="@{/servizio/listaServizi}">Lista Servizi</a>
@@ -21,8 +21,8 @@
 </div>
 
 <div th:if="${utente.getRuolo().getName().equals('CLIENTE')}">
-    <a th:href="@{/ordini/form}">Nuovo Ordine</a>  <!-- AGGIUNGERE PATH CREAZIONE ORDINE-->
-    <a th:href="@{/autenticazione/HelloWorld}">Lista Ordini</a>  <!-- AGGIUNGERE PATH LISTA ORDINI -->
+    <a th:href="@{/ordini/form}">Nuovo Ordine</a>
+    <a th:href="@{/ordini/ListaOrdini}">Lista Ordini</a>
 
     <form method="post" th:action="@{/gestioneCliente/clienti/dettagliCliente}">
         <input type="hidden" id="telefono" name="telefono" th:value="${utente.cellulare}">

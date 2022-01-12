@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -74,34 +75,46 @@ public class OrdiniServiceImpl implements OrdiniService{
     }
 
     @Override
-    public List<Ordine> visualizzaOrdini(Object obj, Cliente cliente) {
-        String classe = String.valueOf(obj.getClass());
-        List<Ordine> ordini, ordiniReturn = null;
-        if(classe.equals("String")){
-             ordini = ordineDAO.findAllByStato((String) obj);
-             if(cliente != null){
-                 for(Ordine o: ordini){
-                     if(o.getCliente().equals(cliente)){
-                         ordiniReturn.add(o);
-                     }
-                 }
-                 return ordiniReturn;
-             }
-             return ordini;
+    public List<Ordine> visualizzaOrdiniFiltroOperatore(String filtro) {
+        if (filtro.equals("Consegnato")){
+            return ordineDAO.findAllByStato(filtro);
         }
-        else if(classe.equals("LocalDate")){
-            ordini = ordineDAO.findAllByDataConsegnaDesiderata((LocalDate) obj);
-            if(cliente != null){
-                for(Ordine o: ordini){
-                    if(o.getCliente().equals(cliente)){
-                        ordiniReturn.add(o);
-                    }
-                }
-                return ordiniReturn;
-            }
+        else {
+            List<Ordine> ordini = ordineDAO.findAllByStato("Macchiato");
+            ordini.addAll(ordineDAO.findAllByStato("Pronto"));
+            ordini.addAll(ordineDAO.findAllByStato("Imbustato"));
             return ordini;
         }
-        return null;
+    }
+
+    @Override
+    public List<Ordine> visualizzaOrdiniFiltroUtente(String filtro, String telefono) {
+        List<Ordine> prova = new ArrayList<>();
+        if (filtro.equals("Consegnato")){
+            List<Ordine> ordini = ordineDAO.findAllByStato(filtro);
+            for (Ordine x : ordini) {
+                if (x.getCliente().getNumeroTelefono().equals(telefono)){
+                    prova.add(x);
+                }
+            }
+            return prova;
+        }
+        else {
+            List<Ordine> ordini = ordineDAO.findAllByStato("Macchiato");
+            ordini.addAll(ordineDAO.findAllByStato("Pronto"));
+            ordini.addAll(ordineDAO.findAllByStato("Imbustato"));
+            for (Ordine x : ordini) {
+                if (x.getCliente().getNumeroTelefono().equals(telefono)){
+                    prova.add(x);
+                }
+            }
+            return prova;
+        }
+    }
+
+    @Override
+    public List<Ordine> visualizzaOrdiniTotali() {
+        return (List<Ordine>) ordineDAO.findAll();
     }
 
     @Override

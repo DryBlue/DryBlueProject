@@ -16,7 +16,11 @@ public interface OrdiniService {
 
     Boolean modificaOrdine(LocalDate data, Sede sede, String stato, Integer idOrdine);
 
-    List<Ordine> visualizzaOrdini(Object obj, Cliente cliente);
+    List<Ordine> visualizzaOrdiniFiltroOperatore(String filtro);
+
+    List<Ordine> visualizzaOrdiniFiltroUtente(String filtro, String telefono);
+
+    List<Ordine> visualizzaOrdiniTotali();
 
     Etichetta stampaEtichetta(Ordine ordine);
 

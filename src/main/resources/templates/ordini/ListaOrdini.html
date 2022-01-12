@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>DryBlue | Lista ordini</title>
+</head>
+<body>
+<!-- div -->
+<form method="get" th:action="@{/ordini/ListaOrdini}">
+    <select name="filter">
+        <option value="Attivi">Ordini Attivi</option>
+        <option value="Consegnato">Ordini Conclusi</option>
+        <div th:if="${utente.getRuolo().getName().equals('OPERATORE')}">
+            <option value="Totali">Ordini Totali</option>
+        </div>
+    </select>
+    <button type="submit">Ricerca</button>
+</form>
+<table border="1">
+    <thead>
+    <tr>
+        <div th:if="${utente.getRuolo().getName().equals('OPERATORE')}">
+        <th>Username</th>
+        </div>
+        <th>Numero Ordine</th>
+        <th>Note</th>
+        <th>Stato</th>
+        <th>Dettagli</th>
+        <th>Operazioni</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="ordine : ${ordini}">
+        <tr>
+            <div th:if="${utente.getRuolo().getName().equals('OPERATORE')}">
+                <td th:text="${ordine.getCliente().getUsername()}"></td>
+            </div>
+            <td th:text="${ordine.id}"></td>
+            <div th:if="${ordine.note == null}">
+                <td>Nessuna nota scritta</td>
+            </div>
+            <div th:if="${ordine.note != null}">
+                <td th:text="${ordine.note}"></td>
+            </div>
+            <td th:text="${ordine.stato}"></td>
+            <td>
+                <form method="post" th:action="@{/ordini/dettaglioOrdine}">
+                    <input type="hidden" id="codiceOrdine" name="codiceOrdine" th:value="${ordine.id}">
+                    <button type="submit">Dettaglio Ordine</button>
+                </form>
+            </td>
+            <td>
+                <form method="post" th:action="@{/ordini/StampaEtichetta}">
+                    <input type="hidden" id="codiceOrdine1" name="codiceOrdine1" th:value="${ordine.id}">
+                    <button type="submit">Stampa Etichetta</button>
+                </form>
+                <div th:if="${utente.getRuolo().getName().equals('OPERATORE')}">
+                    <div th:if="${ordine.propostaModifica != null}">
+                        <div th:if="${ordine.stato != 'Consegnato'}">
+                            <form method="post" th:action="@{/ordini/ValutazioneProposta}">
+                                <input type="hidden" id="codiceOrdine2" name="codiceOrdine2" th:value="${ordine.id}">
+                                <button type="submit">Valutazione Proposta</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div th:if="${ordine.stato != 'Concluso'}">
+                        <form method="post" th:action="@{/ordini/Modifica}">
+                            <input type="hidden" id="codiceOrdine3" name="codiceOrdine3" th:value="${ordine.id}">
+                            <button type="submit">Modifica</button>
+                        </form>
+                    </div>
+                </div>
+                <div th:if="${utente.getRuolo().getName().equals('CLIENTE')}">
+                  <div th:if="${ordine.stato != 'Consegnato'}">
+                      <div th:if="${ordine.propostaModifica == null}">
+                          <form method="post" th:action="@{/ordini/PropostaModifica}">
+                              <input type="hidden" id="codiceOrdine4" name="codiceOrdine4" th:value="${ordine.id}">
+                              <button type="submit">Proponi Modifica</button>
+                          </form>
+                      </div>
+                  </div>
+                </div>
+            </td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+</body>
+</html>
