@@ -2,29 +2,35 @@
 <html xmlns:th="http://w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Nuovo Ordine Cliente</title>
+    <title>Nuovo Ordine</title>
 </head>
 <body>
 
 <h1>Aggiungi un nuovo ordine</h1>
 
-<!-- l'action del form è un placeholder, da cambiare appensa possibile -->
-<form name="aggiuntaOrdineC" id="aggiuntaOrdineC" th:action="@{/ordini/aggiuntaOrdineCliente.html}" method="POST">
+
+<form method="post" th:action="@{/ordine/aggiuntaOrdine}" >
 
         <select name="ordine">
             <div th:each="servizio : ${servizi}">
                 <option th:text="${servizio.nome}"></option>
             </div>
         </select>
-    <br>
+
+    <label for="quantity"></label>
+    <input type="number" id="quantity" name="quantity" value="1" min="1" max="10">
+
+
+    <!-- Aggiunge l'ordine nella riga ordine, da controllare -->
+    <button  type="button" name="button" id="addButton" th:text="#{ordine.righeOrdine.add}">+</button><br>
+
 
     <select name="ritiro">
         <option value="opzione1">Ritiro</option>
         <option value="opzione2">Consegna</option>
     </select><br>
 
-    <label for="quantity"></label>
-    <input type="number" id="quantity" name="quantity" value="1" min="1" max="10"><br>
+
 
         <label name="date">Data consegna desiderata</label>
         <input type="date"><br>
@@ -44,10 +50,11 @@
     </div>
 
     <h2>Note:</h2>
-    <textarea name="note" form="aggiuntaOrdineC"></textarea> <br>
-    <button type="submit" form="aggiuntaOrdineC" value="Submit">Conferma</button><br>
+    <textarea name="note"></textarea> <br>
+
+    <button type="submit">Conferma</button><br>
     <!-- Possiamo fare che se premi questo bottone torna alla pagina precedente o sbianca le caselle -->
-    <button type="submit">Annulla</button><br>
+    <button type="reset">Annulla</button><br>
 </form>
 
 

@@ -34,8 +34,9 @@ public class OrdiniController {
         return "ordini/aggiuntaOrdine";
     }
 
-    @PostMapping("/aggiuntaOrdineCliente")
-    private String aggiuntaOrdineCliente(@RequestParam("rigaOrdine") Set<RigaOrdine> rigaOrdine,
+    @PostMapping("/aggiuntaOrdine")
+    private String aggiuntaOrdine(final Model model,
+                                    @RequestParam("rigaOrdine") Set<RigaOrdine> rigaOrdine,
                                     @RequestParam("quantita") Integer quantita,
                                     @RequestParam("cliente") Cliente cliente,
                                     @RequestParam("tipologiaRitiro") String tipologiaRitiro,
@@ -46,23 +47,9 @@ public class OrdiniController {
     {
         ordiniService.creazioneOrdine(rigaOrdine, quantita, cliente, tipologiaRitiro,
                 sede, dataConsegnaDesiderata, sedeDesiderata, note);
-        return "/Homepage";
+        model.getAttribute("utente");
 
-    }
-
-    @PostMapping("/aggiuntaOrdineOperatore")
-    private String aggiuntaOrdineOperatore(@RequestParam("rigaOrdine") Set<RigaOrdine> rigaOrdine,
-                                         @RequestParam("quantita") Integer quantita,
-                                         @RequestParam("cliente") Cliente cliente,
-                                         @RequestParam("tipologiaRitiro") String tipologiaRitiro,
-                                         @RequestParam("sede") Sede sede,
-                                         @RequestParam("dataConsegnaDesiderata")LocalDate dataConsegnaDesiderata,
-                                         @RequestParam("sedeDesiderata") Integer sedeDesiderata,
-                                         @RequestParam("note") String note)
-    {
-        ordiniService.creazioneOrdine(rigaOrdine, quantita, cliente, tipologiaRitiro,
-                sede, dataConsegnaDesiderata, sedeDesiderata, note);
-        return "LoggedHomepage";
+        return "/LoggedHomepage";
 
     }
 
