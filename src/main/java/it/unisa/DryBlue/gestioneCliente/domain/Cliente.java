@@ -17,7 +17,7 @@ import java.util.Set;
 @Entity
 public class Cliente implements Serializable {
 
-    private static final long serialVersionUID= 1L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     private String numeroTelefono;
@@ -42,7 +42,7 @@ public class Cliente implements Serializable {
     @OneToMany
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Set<Ordine> ordini=new HashSet<>();
+    private Set<Ordine> ordini = new HashSet<>();
 
     @OneToOne
     @ToString.Exclude

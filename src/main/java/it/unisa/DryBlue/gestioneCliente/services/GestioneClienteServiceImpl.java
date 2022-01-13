@@ -9,12 +9,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class GestioneClienteServiceImpl implements GestioneClienteService{
+public class GestioneClienteServiceImpl implements GestioneClienteService {
 
     private final ClienteDAO clienteDAO;
 
     @Override
-    public Cliente aggiungiCliente(String numTelefono, String indirizzo, String nome, String cognome) {
+    public Cliente aggiungiCliente(final String numTelefono, final String indirizzo,
+                                   final String nome, final String cognome) {
         Cliente cliente = new Cliente();
         cliente.setNumeroTelefono(numTelefono);
         cliente.setIndirizzo(indirizzo);
@@ -25,7 +26,7 @@ public class GestioneClienteServiceImpl implements GestioneClienteService{
     }
 
     @Override
-    public Cliente reimpostaPassword(String password, Cliente cliente) {
+    public Cliente reimpostaPassword(final String password, final Cliente cliente) {
         Cliente cliente1 = clienteDAO.findById(cliente.getNumeroTelefono()).get();
         cliente1.setPassword(password);
         clienteDAO.save(cliente1);
@@ -33,15 +34,17 @@ public class GestioneClienteServiceImpl implements GestioneClienteService{
     }
 
     @Override
-    public void rimuoviCliente(Cliente cliente) {
+    public void rimuoviCliente(final Cliente cliente) {
         clienteDAO.delete(cliente);
     }
 
     @Override
-    public List<Cliente> findTuttiIClienti() { return (List<Cliente>) clienteDAO.findAll(); }
+    public List<Cliente> findTuttiIClienti() {
+        return (List<Cliente>) clienteDAO.findAll();
+    }
 
     @Override
-    public Cliente findByTelefono(String telefono) {
+    public Cliente findByTelefono(final String telefono) {
         return clienteDAO.findByNumeroTelefono(telefono);
     }
 

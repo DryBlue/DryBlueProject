@@ -26,7 +26,7 @@ public class OrdiniController {
 
 
     @GetMapping("/form")
-    private String form(final Model model){
+    private String form(final Model model) {
         model.addAttribute("servizi", servizioService.findServizi());
         model.addAttribute("sedi", ordiniService.visualizzaSedi());
         model.addAttribute("clienti", gestioneClienteService.findTuttiIClienti());
@@ -36,15 +36,14 @@ public class OrdiniController {
 
     @PostMapping("/aggiuntaOrdine")
     private String aggiuntaOrdine(final Model model,
-                                    @RequestParam("rigaOrdine") Set<RigaOrdine> rigaOrdine,
-                                    @RequestParam("quantita") Integer quantita,
-                                    @RequestParam("cliente") Cliente cliente,
-                                    @RequestParam("tipologiaRitiro") String tipologiaRitiro,
-                                    @RequestParam("sede") Sede sede,
-                                    @RequestParam("dataConsegnaDesiderata")LocalDate dataConsegnaDesiderata,
-                                    @RequestParam("sedeDesiderata") Integer sedeDesiderata,
-                                    @RequestParam("note") String note)
-    {
+                                  final @RequestParam("rigaOrdine") Set<RigaOrdine> rigaOrdine,
+                                  final @RequestParam("quantita") Integer quantita,
+                                  final @RequestParam("cliente") Cliente cliente,
+                                  final @RequestParam("tipologiaRitiro") String tipologiaRitiro,
+                                  final @RequestParam("sede") Sede sede,
+                                  final @RequestParam("dataConsegnaDesiderata")LocalDate dataConsegnaDesiderata,
+                                  final @RequestParam("sedeDesiderata") Integer sedeDesiderata,
+                                  final @RequestParam("note") String note) {
         ordiniService.creazioneOrdine(rigaOrdine, quantita, cliente, tipologiaRitiro,
                 sede, dataConsegnaDesiderata, sedeDesiderata, note);
         model.getAttribute("utente");
@@ -54,29 +53,25 @@ public class OrdiniController {
     }
 
     @GetMapping("/ListaOrdini")
-    private String listaOrdini(@RequestParam(value = "filter", defaultValue = "Attivi")  String filter,
-                               final Model model){
+    private String listaOrdini(final @RequestParam(value = "filter", defaultValue = "Attivi")  String filter,
+                               final Model model) {
         Utente u = (Utente) model.getAttribute("utente");
-        if (u.getRuolo().getName().equals("OPERATORE")){
-            if (filter.equals("Totali")){
+        if (u.getRuolo().getName().equals("OPERATORE")) {
+            if (filter.equals("Totali")) {
                 model.addAttribute("ordini", ordiniService.visualizzaOrdiniTotali());
                 return "ordini/ListaOrdini";
-            }
-            else if (filter.equals("Attivi")){
+            } else if (filter.equals("Attivi")) {
+                model.addAttribute("ordini", ordiniService.visualizzaOrdiniFiltroOperatore(filter));
+                return "ordini/ListaOrdini";
+            } else {
                 model.addAttribute("ordini", ordiniService.visualizzaOrdiniFiltroOperatore(filter));
                 return "ordini/ListaOrdini";
             }
-            else {
-                model.addAttribute("ordini", ordiniService.visualizzaOrdiniFiltroOperatore(filter));
-                return "ordini/ListaOrdini";
-            }
-        }
-        else {
-            if (filter.equals("Attivi")){
+        } else {
+            if (filter.equals("Attivi")) {
                 model.addAttribute("ordini", ordiniService.visualizzaOrdiniFiltroUtente(filter, u.getCellulare()));
                 return "ordini/ListaOrdini";
-            }
-            else {
+            } else {
                 model.addAttribute("ordini", ordiniService.visualizzaOrdiniFiltroUtente(filter, u.getCellulare()));
                 return "ordini/ListaOrdini";
             }
@@ -84,9 +79,9 @@ public class OrdiniController {
     }
 
     @PostMapping("/dettaglioOrdine")
-    private String dettaglioOrdine(@RequestParam("codiceOrdine") int idOrdine,final Model model){
+    private String dettaglioOrdine(final @RequestParam("codiceOrdine") int idOrdine, final Model model) {
         model.getAttribute("utente");
-        model.addAttribute("dOrdine",ordiniService.findById(idOrdine).get());
+        model.addAttribute("dOrdine", ordiniService.findById(idOrdine).get());
         return "ordini/DettaglioOrdine";
     }
 

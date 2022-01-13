@@ -19,13 +19,11 @@ import org.springframework.context.annotation.Bean;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 @SpringBootApplication
 public class DryBlueApplication {
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		SpringApplication.run(DryBlueApplication.class, args);
 	}
 
@@ -39,8 +37,7 @@ public class DryBlueApplication {
 								  final RigaOrdineDAO rigaOrdineDAO,
 								  final EtichettaDAO etichettaDAO,
 								  final PropostaModificaDAO propostaModificaDAO
-	)
-	{
+	) {
 		return args -> {
 
 			Sede sede1 = new Sede("Ariano Irpino, via Cardito, 52");
@@ -119,11 +116,12 @@ public class DryBlueApplication {
 			rigaOrdine1.setOrdine(ordine1);
 
 			ordineDAO.saveAll(Arrays.asList(ordine1, ordine2, ordine3));
-			rigaOrdineDAO.saveAll(Arrays.asList(rigaOrdine,rigaOrdine1));
+			rigaOrdineDAO.saveAll(Arrays.asList(rigaOrdine, rigaOrdine1));
 
 			ArrayList<RigaOrdine> righe = (ArrayList<RigaOrdine>) rigaOrdineDAO.findAllByOrdine(ordine1);
-			for(RigaOrdine r : righe)
+			for (RigaOrdine r : righe) {
 				ordine1.getRigheOrdine().add(r);
+			}
 			ordineDAO.save(ordine1);
 
 			Macchinario macchinario = new Macchinario();

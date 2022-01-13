@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
@@ -16,12 +15,12 @@ public class PageController {
     private final OrdiniService ordiniService;
 
     @GetMapping("/")
-    public String getHomepage(){
+    public String getHomepage() {
         return "Homepage";
     }
 
     @GetMapping("/about")
-    public String getSedi(final Model model){
+    public String getSedi(final Model model) {
         model.addAttribute("sedi", ordiniService.visualizzaSedi());
         model.getAttribute("utente");
         return "About";

@@ -34,7 +34,6 @@ public class AutenticazioneServiceImpl implements AutenticazioneService {
     private final ClienteDAO clienteDAO;
     private final OperatoreDAO operatoreDAO;
 
-   
      /**
      * Implementa la funzionalità di login
      * per un Utente registrato.
@@ -52,9 +51,9 @@ public class AutenticazioneServiceImpl implements AutenticazioneService {
             Operatore o;
             Utente u = new Utente();
 
-            if((clienteDAO.findByUsername(username))!=null){
-                c=clienteDAO.findByUsername(username);
-                if(c.getPassword().equals(password)){
+            if ((clienteDAO.findByUsername(username)) != null) {
+                c = clienteDAO.findByUsername(username);
+                if (c.getPassword().equals(password)) {
                     u.setUsername(username);
                     u.setPassword(password);
                     u.setNome(c.getNome());
@@ -66,9 +65,9 @@ public class AutenticazioneServiceImpl implements AutenticazioneService {
                 }
             }
 
-            if((operatoreDAO.findByUsername(username))!=null){
-                o=operatoreDAO.findByUsername(username);
-                if(o.getPassword().equals(password)){
+            if ((operatoreDAO.findByUsername(username)) != null) {
+                o = operatoreDAO.findByUsername(username);
+                if (o.getPassword().equals(password)) {
                     u.setUsername(username);
                     u.setPassword(password);
                     u.setNome(o.getNome());
@@ -87,7 +86,7 @@ public class AutenticazioneServiceImpl implements AutenticazioneService {
     }
 
     @Override
-    public Utente findByUsername(String username) {
+    public Utente findByUsername(final String username) {
         return utenteDAO.findByUsername(username);
     }
 

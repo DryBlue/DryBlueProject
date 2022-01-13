@@ -4,7 +4,7 @@ import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+
 
 @Repository
 public interface ClienteDAO extends CrudRepository<Cliente, String> {

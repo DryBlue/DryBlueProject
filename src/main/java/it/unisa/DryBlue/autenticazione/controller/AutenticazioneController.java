@@ -9,7 +9,6 @@ import it.unisa.DryBlue.autenticazione.services.AutenticazioneService;
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -71,9 +70,7 @@ public class AutenticazioneController {
      * @return rimanda alla pagina di home.
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@RequestParam final String username,
-                        @RequestParam final String password,
-                        final Model model) {
+    public String login(@RequestParam final String username, @RequestParam final String password, final Model model) {
         Utente utente = autenticazioneService.login(username, password);
         if (utente.getRuolo().getName().equals("OPERATORE")) {
             model.addAttribute("utente", utente);
@@ -98,7 +95,7 @@ public class AutenticazioneController {
      * Autori: Miriam Ferrara e Sabrina Ceccarelli
      */
     @GetMapping("/registrazione")
-    public String Registrazione(Model model) {
+    public String Registrazione(final Model model) {
         model.addAttribute("regUtente", new Utente());
         return "/autenticazione/registrazione";
     }
@@ -117,11 +114,10 @@ public class AutenticazioneController {
      * Autori: Miriam Ferrara e Sabrina Ceccarelli
      */
     @PostMapping("/registrazione/registrazioneSuccesso")
-    public String RegistrazioneProcesso(Model m,
-                                        @RequestParam("nome") String nome,
-                                        @RequestParam("cognome") String cognome,
-                                        @RequestParam("indirizzo") String indirizzo,
-                                        @RequestParam("cellulare") String cellulare) {
+    public String RegistrazioneProcesso(final Model m, final @RequestParam("nome") String nome,
+                                        final @RequestParam("cognome") String cognome,
+                                        final @RequestParam("indirizzo") String indirizzo,
+                                        final @RequestParam("cellulare") String cellulare) {
 
         Cliente cliente = new Cliente();
         cliente.setNome(nome);
@@ -148,35 +144,32 @@ public class AutenticazioneController {
     public class LogoutController {
 
         @RequestMapping(value = "/logout", method = RequestMethod.GET)
-        public String logout(HttpServletRequest request) {
+        public String logout(final HttpServletRequest request) {
             HttpSession httpSession = request.getSession();
             httpSession.invalidate();
             return "redirect:/";
         }
     }
 
-        @PostMapping(value = "/newPassword")
-        public String updatePassword(final Model model,
-                                     @RequestParam("newPassword") String newPassword) {
-            Utente utente = (Utente) model.getAttribute("utente");
-            if(utente.getRuolo().getName().equals("OPERATORE")){
-                Operatore operatore = operatoreDAO.findByUsername(utente.getUsername());
-                operatore.setPassword(newPassword);
-                operatoreDAO.save(operatore);
-            }
-
-            else if(utente.getRuolo().getName().equals("CLIENTE")){
-                Cliente cliente = clienteDAO.findByUsername(utente.getUsername());
-                cliente.setPassword(newPassword);
-                clienteDAO.save(cliente);
-            }
-
-            return "LoggedHomepage";
+    @PostMapping(value = "/newPassword")
+    public String updatePassword(final Model model, final @RequestParam("newPassword") String newPassword) {
+        Utente utente = (Utente) model.getAttribute("utente");
+        if (utente.getRuolo().getName().equals("OPERATORE")) {
+            Operatore operatore = operatoreDAO.findByUsername(utente.getUsername());
+            operatore.setPassword(newPassword);
+            operatoreDAO.save(operatore);
+        } else if (utente.getRuolo().getName().equals("CLIENTE")) {
+            Cliente cliente = clienteDAO.findByUsername(utente.getUsername());
+            cliente.setPassword(newPassword);
+            clienteDAO.save(cliente);
         }
 
-        @GetMapping(value = "/paginaReset")
-        public String paginaReset(final Model model){
-            model.getAttribute("utente");
-            return "autenticazione/newPassword";
-        }
+        return "LoggedHomepage";
+    }
+
+    @GetMapping(value = "/paginaReset")
+    public String paginaReset(final Model model) {
+        model.getAttribute("utente");
+        return "autenticazione/newPassword";
+    }
 }

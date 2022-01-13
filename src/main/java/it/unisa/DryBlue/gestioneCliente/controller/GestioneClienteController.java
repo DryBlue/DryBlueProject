@@ -1,7 +1,6 @@
 package it.unisa.DryBlue.gestioneCliente.controller;
 
 
-import it.unisa.DryBlue.autenticazione.domain.Utente;
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import it.unisa.DryBlue.gestioneCliente.services.GestioneClienteService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,7 @@ public class GestioneClienteController {
 
 
     @GetMapping("/clienti")
-    public String trovaTuttiIClienti(final Model model){
+    public String trovaTuttiIClienti(final Model model) {
         model.addAttribute("clienti", gestioneClienteService.findTuttiIClienti());
         model.getAttribute("utente");
         return "/gestioneCliente/ListaClienti";
@@ -28,13 +27,13 @@ public class GestioneClienteController {
     @GetMapping("/clienti/modifica")
     public String Modifica(final Model model) {
         model.getAttribute("utente");
-        return "HelloWorld";//TODO modificare path di ritorno
+        return "HelloWorld"; //TODO modificare path di ritorno
     }
 
     @GetMapping("/clienti/rimuovi")
     public String Rimuovi(final Model model) {
         model.getAttribute("utente");
-        return "HelloWorld";//TODO modificare path di ritorno
+        return "HelloWorld"; //TODO modificare path di ritorno
     }
 
     @PostMapping("/clienti/dettagliCliente")
