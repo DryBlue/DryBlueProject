@@ -20,5 +20,4 @@ public interface AutenticazioneService {
       * @return L'utente se presente, altrimenti null
       */
      Utente findByUsername(String username);
-
 }

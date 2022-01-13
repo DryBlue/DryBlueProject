@@ -43,5 +43,4 @@ public class GestioneClienteController {
         model.addAttribute("clientela", c);
         return "/gestioneCliente/DettagliCliente";
     }
-
 }

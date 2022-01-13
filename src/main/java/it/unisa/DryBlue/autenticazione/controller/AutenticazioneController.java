@@ -1,12 +1,15 @@
 package it.unisa.DryBlue.autenticazione.controller;
 
+import it.unisa.DryBlue.autenticazione.dao.OperatoreDAO;
 import it.unisa.DryBlue.autenticazione.dao.UtenteDAO;
+import it.unisa.DryBlue.autenticazione.domain.Operatore;
 import it.unisa.DryBlue.gestioneCliente.dao.ClienteDAO;
 import it.unisa.DryBlue.autenticazione.domain.Utente;
 import it.unisa.DryBlue.autenticazione.services.AutenticazioneService;
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -28,6 +31,8 @@ public class AutenticazioneController {
     private UtenteDAO personaDAO;
     @Autowired
     private ClienteDAO clienteDAO;
+    @Autowired
+    private OperatoreDAO operatoreDAO;
 
     private Utente persona;
 
@@ -146,6 +151,30 @@ public class AutenticazioneController {
             httpSession.invalidate();
             return "redirect:/";
         }
-
     }
+
+        @PostMapping(value = "/newPassword")
+        public String updatePassword(final Model model,
+                                     @RequestParam("newPassword") String newPassword) {
+            Utente utente = (Utente) model.getAttribute("utente");
+            if(utente.getRuolo().getName().equals("OPERATORE")){
+                Operatore operatore = operatoreDAO.findByUsername(utente.getUsername());
+                operatore.setPassword(newPassword);
+                operatoreDAO.save(operatore);
+            }
+
+            else if(utente.getRuolo().getName().equals("CLIENTE")){
+                Cliente cliente = clienteDAO.findByUsername(utente.getUsername());
+                cliente.setPassword(newPassword);
+                clienteDAO.save(cliente);
+            }
+
+            return "LoggedHomepage";
+        }
+
+        @GetMapping(value = "/paginaReset")
+        public String paginaReset(final Model model){
+            model.getAttribute("utente");
+            return "autenticazione/newPassword";
+        }
 }

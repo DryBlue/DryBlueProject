@@ -91,5 +91,4 @@ public class AutenticazioneServiceImpl implements AutenticazioneService {
         return utenteDAO.findByUsername(username);
     }
 
-
 }
