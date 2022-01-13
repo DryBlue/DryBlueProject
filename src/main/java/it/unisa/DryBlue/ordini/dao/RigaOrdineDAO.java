@@ -7,5 +7,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface RigaOrdineDAO extends CrudRepository<RigaOrdine, Integer> {
-    //List<RigaOrdine> findAllByOrdine(Ordine ordine);
+    List<RigaOrdine> findAllByOrdine(Ordine ordine);
 }

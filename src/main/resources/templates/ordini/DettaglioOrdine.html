@@ -13,7 +13,7 @@
     <ul>
         <li>Numero Ordine: <p th:text="${dOrdine.id}"></p></li>
         <li>Contenuto:
-            <table>
+            <table border = "1">
                 <thead>
                     <tr>
                         <th>Servizio</th>
@@ -26,7 +26,7 @@
                     <th:block th:each="rigaordine : ${dOrdine.righeOrdine}">
                     <tr>
                          <td th:text="${rigaordine.getServizio().getTipologia()}"></td>
-                         <td th:text="${rigaordine.caratteristiche}"></td>
+                         <td th:text="${rigaordine.getServizio().getCaratteristiche()}"></td>
                          <td th:text="${rigaordine.quantita}"></td>
                     </tr>
                     </th:block>

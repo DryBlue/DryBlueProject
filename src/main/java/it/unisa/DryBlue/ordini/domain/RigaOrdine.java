@@ -2,13 +2,13 @@ package it.unisa.DryBlue.ordini.domain;
 
 import it.unisa.DryBlue.servizi.domain.Servizio;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
 public class RigaOrdine implements Serializable {
 
@@ -17,6 +17,8 @@ public class RigaOrdine implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
+
+    @NonNull
     private Integer quantita;
 
     @ManyToOne

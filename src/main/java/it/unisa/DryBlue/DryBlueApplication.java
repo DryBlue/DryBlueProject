@@ -17,6 +17,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -44,6 +45,7 @@ public class DryBlueApplication {
 
 			Sede sede1 = new Sede("Ariano Irpino, via Cardito, 52");
 			Sede sede2 = new Sede("Ariano Irpino, corso Vittorio Emanuele, 250");
+			sedeDAO.saveAll(Arrays.asList(sede1, sede2));
 
 			Cliente cliente1 = new Cliente();
 			cliente1.setNumeroTelefono("3456327821");
@@ -68,6 +70,9 @@ public class DryBlueApplication {
 			cliente3.setNome("Gianfranco");
 			cliente3.setCognome("Bonromeo");
 			cliente3.setIndirizzo("Via Polpette al sugo 45");
+			clienteDAO.saveAll(Arrays.asList(cliente1, cliente2, cliente3));
+
+
 
 			Servizio servizio = new Servizio();
 			servizio.setNome("Lavaggio maglia blu");
@@ -86,6 +91,7 @@ public class DryBlueApplication {
 			servizio3.setTipologia("Lavaggio");
 			servizio3.setCaratteristiche("Jeans");
 			servizio3.setPrezzo(10.20);
+			servizioDAO.saveAll(Arrays.asList(servizio, servizio2, servizio3));
 
 			RigaOrdine rigaOrdine = new RigaOrdine();
 			rigaOrdine.setQuantita(1);
@@ -96,23 +102,29 @@ public class DryBlueApplication {
 			rigaOrdine1.setServizio(servizio2);
 
 
-
 			LocalDate tmpdate = LocalDate.of(2022, 2, 3);
-			Ordine ordine1 = new Ordine(tmpdate, "ritiro", "Macchiato");
+			Ordine ordine1 = new Ordine(tmpdate, "In sede", "Macchiato");
 			ordine1.setCliente(cliente3);
 			ordine1.setSede(sede1);
-			ordine1.setRigheOrdine(new HashSet<RigaOrdine>());
-			ordine1.getRigheOrdine().add(rigaOrdine);
-			ordine1.getRigheOrdine().add(rigaOrdine1);
-			LocalDate tmpdate1 = LocalDate.of(2022,  1, 20);
-			Ordine ordine2 = new Ordine(tmpdate1, "ritiro", "Consegnato");
-			ordine2.setCliente(cliente3);
-			ordine2.setSede(sede1);
-			LocalDate tmpdate2 = LocalDate.of(2022,  1, 21);
-			Ordine ordine3 = new Ordine(tmpdate1, "ritiro", "Imbustato");
-			ordine3.setCliente(cliente1);
-			ordine3.setSede(sede1);
 
+			LocalDate tmpdate1 = LocalDate.of(2022,  1, 20);
+			Ordine ordine2 = new Ordine(tmpdate1, "Consegna", "Consegnato");
+			ordine2.setCliente(cliente3);
+
+			LocalDate tmpdate2 = LocalDate.of(2022,  1, 21);
+			Ordine ordine3 = new Ordine(tmpdate1, "Consegna", "Imbustato");
+			ordine3.setCliente(cliente1);
+
+			rigaOrdine.setOrdine(ordine1);
+			rigaOrdine1.setOrdine(ordine1);
+
+			ordineDAO.saveAll(Arrays.asList(ordine1, ordine2, ordine3));
+			rigaOrdineDAO.saveAll(Arrays.asList(rigaOrdine,rigaOrdine1));
+
+			ArrayList<RigaOrdine> righe = (ArrayList<RigaOrdine>) rigaOrdineDAO.findAllByOrdine(ordine1);
+			for(RigaOrdine r : righe)
+				ordine1.getRigheOrdine().add(r);
+			ordineDAO.save(ordine1);
 
 			Macchinario macchinario = new Macchinario();
 			macchinario.setMatricola("AB1234");
@@ -150,12 +162,11 @@ public class DryBlueApplication {
 			propostaModifica.setSede(sede1);
 
 
-			sedeDAO.saveAll(Arrays.asList(sede1, sede2));
-			clienteDAO.saveAll(Arrays.asList(cliente1, cliente2, cliente3));
-			ordineDAO.saveAll(Arrays.asList(ordine1, ordine2, ordine3));
-			rigaOrdineDAO.saveAll(Arrays.asList(rigaOrdine,rigaOrdine1));
+
+
+
 			macchinarioDAO.save(macchinario);
-			servizioDAO.saveAll(Arrays.asList(servizio, servizio2, servizio3));
+
 			operatoreDAO.saveAll(Arrays.asList(operatore, operatore2));
 			etichettaDAO.save(etichetta);
 			propostaModificaDAO.save(propostaModifica);
