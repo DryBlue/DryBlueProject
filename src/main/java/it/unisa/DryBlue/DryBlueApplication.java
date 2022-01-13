@@ -1,3 +1,4 @@
+
 package it.unisa.DryBlue;
 
 import it.unisa.DryBlue.autenticazione.dao.OperatoreDAO;
@@ -17,6 +18,8 @@ import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @SpringBootApplication
 public class DryBlueApplication {
@@ -35,7 +38,7 @@ public class DryBlueApplication {
 								  final RigaOrdineDAO rigaOrdineDAO,
 								  final EtichettaDAO etichettaDAO,
 								  final PropostaModificaDAO propostaModificaDAO
-								  )
+	)
 	{
 		return args -> {
 
@@ -66,30 +69,6 @@ public class DryBlueApplication {
 			cliente3.setCognome("Bonromeo");
 			cliente3.setIndirizzo("Via Polpette al sugo 45");
 
-			LocalDate tmpdate = LocalDate.of(2022, 2, 3);
-			Ordine ordine1 = new Ordine(tmpdate, "ritiro", "Macchiato");
-			ordine1.setCliente(cliente3);
-			ordine1.setSede(sede1);
-			LocalDate tmpdate1 = LocalDate.of(2022,  1, 20);
-			Ordine ordine2 = new Ordine(tmpdate1, "ritiro", "Consegnato");
-			ordine2.setCliente(cliente3);
-			ordine2.setSede(sede1);
-			LocalDate tmpdate2 = LocalDate.of(2022,  1, 21);
-			Ordine ordine3 = new Ordine(tmpdate1, "ritiro", "Imbustato");
-			ordine3.setCliente(cliente1);
-			ordine3.setSede(sede1);
-
-			Macchinario macchinario = new Macchinario();
-			macchinario.setMatricola("AB1234");
-			macchinario.setDenominazione("MacchinaX");
-			macchinario.setCaratteristiche("Bella");
-			macchinario.setCostruttore("Whirlpool");
-			macchinario.setManutentore("X");
-			macchinario.setTelefonoManutenzione("3387610971");
-			macchinario.setStato("In funzione");
-			macchinario.setSede(sede1);
-
-
 			Servizio servizio = new Servizio();
 			servizio.setNome("Lavaggio maglia blu");
 			servizio.setTipologia("Lavaggio");
@@ -108,6 +87,44 @@ public class DryBlueApplication {
 			servizio3.setCaratteristiche("Jeans");
 			servizio3.setPrezzo(10.20);
 
+			RigaOrdine rigaOrdine = new RigaOrdine();
+			rigaOrdine.setQuantita(1);
+			rigaOrdine.setServizio(servizio);
+
+			RigaOrdine rigaOrdine1 = new RigaOrdine();
+			rigaOrdine1.setQuantita(1);
+			rigaOrdine1.setServizio(servizio2);
+
+
+
+			LocalDate tmpdate = LocalDate.of(2022, 2, 3);
+			Ordine ordine1 = new Ordine(tmpdate, "ritiro", "Macchiato");
+			ordine1.setCliente(cliente3);
+			ordine1.setSede(sede1);
+			ordine1.setRigheOrdine(new HashSet<RigaOrdine>());
+			ordine1.getRigheOrdine().add(rigaOrdine);
+			ordine1.getRigheOrdine().add(rigaOrdine1);
+			LocalDate tmpdate1 = LocalDate.of(2022,  1, 20);
+			Ordine ordine2 = new Ordine(tmpdate1, "ritiro", "Consegnato");
+			ordine2.setCliente(cliente3);
+			ordine2.setSede(sede1);
+			LocalDate tmpdate2 = LocalDate.of(2022,  1, 21);
+			Ordine ordine3 = new Ordine(tmpdate1, "ritiro", "Imbustato");
+			ordine3.setCliente(cliente1);
+			ordine3.setSede(sede1);
+
+
+			Macchinario macchinario = new Macchinario();
+			macchinario.setMatricola("AB1234");
+			macchinario.setDenominazione("MacchinaX");
+			macchinario.setCaratteristiche("Bella");
+			macchinario.setCostruttore("Whirlpool");
+			macchinario.setManutentore("X");
+			macchinario.setTelefonoManutenzione("3387610971");
+			macchinario.setStato("In funzione");
+			macchinario.setSede(sede1);
+
+
 			Operatore operatore = new Operatore();
 			operatore.setNome("Luigi");
 			operatore.setCognome("Di maio");
@@ -120,10 +137,6 @@ public class DryBlueApplication {
 			operatore2.setUsername("admin");
 			operatore2.setPassword("admin");
 
-			RigaOrdine rigaOrdine = new RigaOrdine();
-			rigaOrdine.setOrdine(ordine1);
-			rigaOrdine.setQuantita(1);
-			rigaOrdine.setServizio(servizio);
 
 			Etichetta etichetta = new Etichetta();
 			etichetta.setOrdine(ordine1);
@@ -140,16 +153,17 @@ public class DryBlueApplication {
 			sedeDAO.saveAll(Arrays.asList(sede1, sede2));
 			clienteDAO.saveAll(Arrays.asList(cliente1, cliente2, cliente3));
 			ordineDAO.saveAll(Arrays.asList(ordine1, ordine2, ordine3));
+			rigaOrdineDAO.saveAll(Arrays.asList(rigaOrdine,rigaOrdine1));
 			macchinarioDAO.save(macchinario);
 			servizioDAO.saveAll(Arrays.asList(servizio, servizio2, servizio3));
 			operatoreDAO.saveAll(Arrays.asList(operatore, operatore2));
-			rigaOrdineDAO.save(rigaOrdine);
 			etichettaDAO.save(etichetta);
 			propostaModificaDAO.save(propostaModifica);
 
 			System.out.println(clienteDAO.findAll());
 			System.out.println(operatoreDAO.findAll());
 			System.out.println(ordineDAO.findAll());
+			System.out.println(rigaOrdineDAO.findAll());
 		};
-	 }
 	}
+}

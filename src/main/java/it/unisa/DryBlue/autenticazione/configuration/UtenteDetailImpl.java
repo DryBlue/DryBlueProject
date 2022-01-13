@@ -2,7 +2,6 @@ package it.unisa.DryBlue.autenticazione.configuration;
 
 import it.unisa.DryBlue.autenticazione.domain.Ruolo;
 import it.unisa.DryBlue.autenticazione.domain.Utente;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,7 +22,7 @@ public class UtenteDetailImpl implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        Ruolo ruolo=user.getRuolo();
+        Ruolo ruolo = user.getRuolo();
         authorities.add(new SimpleGrantedAuthority(ruolo.getName()));
 
         return authorities;

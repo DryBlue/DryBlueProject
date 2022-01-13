@@ -2,6 +2,7 @@ package it.unisa.DryBlue.ordini.domain;
 
 import it.unisa.DryBlue.servizi.domain.Servizio;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.io.Serializable;

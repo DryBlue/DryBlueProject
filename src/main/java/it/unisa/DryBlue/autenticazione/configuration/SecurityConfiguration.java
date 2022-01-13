@@ -1,6 +1,6 @@
 package it.unisa.DryBlue.autenticazione.configuration;
 
-import it.unisa.DryBlue.autenticazione.domain.Ruolo;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -48,8 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(HttpSecurity security) throws Exception
-    {
+    protected void configure(final HttpSecurity security) throws Exception {
         security.httpBasic().disable();
     }
 

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>DryBlue | Dettaglio Ordine</title>
+</head>
+<body>
+
+    <h3>
+     Dettaglio Ordine
+    </h3>
+
+    <ul>
+        <li>Numero Ordine: <p th:text="${dOrdine.id}"></p></li>
+        <li>Contenuto:
+            <table>
+                <thead>
+                    <tr>
+                        <th>Servizio</th>
+                        <th>Capo</th>
+                        <th>Quantita'</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <th:block th:each="rigaordine : ${dOrdine.righeOrdine}">
+                    <tr>
+                         <td th:text="${rigaordine.getServizio().getTipologia()}"></td>
+                         <td th:text="${rigaordine.caratteristiche}"></td>
+                         <td th:text="${rigaordine.quantita}"></td>
+                    </tr>
+                    </th:block>
+                </tbody>
+
+            </table>
+        </li>
+        <li>Data Consegna:<p th:text="${dOrdine.dataConsegnaDesiderata}"></p></li>
+        <li>Modalità di ritiro: <p th:text="${dOrdine.tipologiaRitiro}"></p></li>
+
+        <div th:if="${dOrdine.tipologiaRitiro.equals('In sede')}">
+            <li>Sede di ritiro  <p th:text="${dOrdine.sede.getIndirizzo()}"></p></li>
+        </div>
+
+        <div th:if="${dOrdine.note!=null}">
+            <li>Note:  <p th:text="${dOrdine.note}"></p></li>
+        </div>
+    </ul>
+
+
+
+
+
+
+</body>
+</html>

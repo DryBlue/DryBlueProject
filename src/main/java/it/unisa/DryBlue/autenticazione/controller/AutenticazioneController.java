@@ -36,7 +36,7 @@ public class AutenticazioneController {
 
     private Utente persona;
 
-    @PostMapping ("/HelloWorld")
+    @PostMapping("/HelloWorld")
     @Transactional
     public String getDashboard() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -52,6 +52,7 @@ public class AutenticazioneController {
     /**
      * Implementa la funzionalità che permette
      * di visualizzare la view del login.
+     *
      * @param model il Model
      * @return la pagina dove è visualizzato
      */
@@ -63,9 +64,10 @@ public class AutenticazioneController {
 
     /**
      * Implementa la funzionalità di login come utente.
+     *
      * @param username dell'utente.
      * @param password password dell'utente.
-     * @param model la sessione in cui salvare l'utente.
+     * @param model    la sessione in cui salvare l'utente.
      * @return rimanda alla pagina di home.
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -73,17 +75,15 @@ public class AutenticazioneController {
                         @RequestParam final String password,
                         final Model model) {
         Utente utente = autenticazioneService.login(username, password);
-        if(utente.getRuolo().getName().equals("OPERATORE")){
-            model.addAttribute("utente",utente);
+        if (utente.getRuolo().getName().equals("OPERATORE")) {
+            model.addAttribute("utente", utente);
+            return "LoggedHomepage";
+        } else if (utente.getRuolo().getName().equals("CLIENTE")) {
+            model.addAttribute("utente", utente);
             return "LoggedHomepage";
         }
 
-        else if(utente.getRuolo().getName().equals("CLIENTE")){
-            model.addAttribute("utente",utente);
-            return "LoggedHomepage";
-        }
-
-        model.addAttribute("error",true);
+        model.addAttribute("error", true);
         return "autenticazione/Login";
 
     }
@@ -91,9 +91,10 @@ public class AutenticazioneController {
     /**
      * Implementa la funzionalità che permette
      * di visualizzare la view della registrazione.
+     *
      * @param model Model
      * @return la pagina registrazione.html
-     *
+     * <p>
      * Autori: Miriam Ferrara e Sabrina Ceccarelli
      */
     @GetMapping("/registrazione")
@@ -105,13 +106,14 @@ public class AutenticazioneController {
 
     /**
      * Implementa la funzionalità della registrazione del nuovo utente.
-     * @param m la sessione in cui salvare l'utente
-     * @param nome del nuovo utente
-     * @param cognome del nuovo utente
+     *
+     * @param m         la sessione in cui salvare l'utente
+     * @param nome      del nuovo utente
+     * @param cognome   del nuovo utente
      * @param indirizzo del nuovo utente
      * @param cellulare del nuovo utente
      * @return la pagina registrazioneSuccesso.html
-     *
+     * <p>
      * Autori: Miriam Ferrara e Sabrina Ceccarelli
      */
     @PostMapping("/registrazione/registrazioneSuccesso")
@@ -121,7 +123,7 @@ public class AutenticazioneController {
                                         @RequestParam("indirizzo") String indirizzo,
                                         @RequestParam("cellulare") String cellulare) {
 
-        Cliente cliente=new Cliente();
+        Cliente cliente = new Cliente();
         cliente.setNome(nome);
         cliente.setCognome(cognome);
         cliente.setIndirizzo(indirizzo);
@@ -130,14 +132,14 @@ public class AutenticazioneController {
         cliente.setPassword(cliente.generateString());
 
         clienteDAO.save(cliente);
-        m.addAttribute("visualizza",cliente);
+        m.addAttribute("visualizza", cliente);
 
         System.out.println(clienteDAO.findByNome(cliente.getNome()));
         return "/autenticazione/registrazioneSuccesso";
     }
 
     @ModelAttribute("utente")
-    public Utente utente(){
+    public Utente utente() {
         return new Utente();
     }
 
@@ -145,8 +147,8 @@ public class AutenticazioneController {
     @Controller
     public class LogoutController {
 
-        @RequestMapping(value="/logout",method = RequestMethod.GET)
-        public String logout(HttpServletRequest request){
+        @RequestMapping(value = "/logout", method = RequestMethod.GET)
+        public String logout(HttpServletRequest request) {
             HttpSession httpSession = request.getSession();
             httpSession.invalidate();
             return "redirect:/";

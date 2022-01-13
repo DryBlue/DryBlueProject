@@ -83,4 +83,11 @@ public class OrdiniController {
         }
     }
 
+    @PostMapping("/dettaglioOrdine")
+    private String dettaglioOrdine(@RequestParam("codiceOrdine") int idOrdine,final Model model){
+        model.getAttribute("utente");
+        model.addAttribute("dOrdine",ordiniService.findById(idOrdine).get());
+        return "ordini/DettaglioOrdine";
+    }
+
 }

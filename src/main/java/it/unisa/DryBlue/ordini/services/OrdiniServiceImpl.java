@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -129,5 +130,10 @@ public class OrdiniServiceImpl implements OrdiniService{
     @Override
     public List<Sede> visualizzaSedi() {
         return (List<Sede>)sedeDAO.findAll();
+    }
+
+    @Override
+    public Optional<Ordine> findById(Integer idOrdine) {
+        return ordineDAO.findById(idOrdine);
     }
 }

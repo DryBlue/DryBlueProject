@@ -2,10 +2,10 @@ package it.unisa.DryBlue.ordini.services;
 
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import it.unisa.DryBlue.ordini.domain.*;
-import it.unisa.DryBlue.servizi.domain.Servizio;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface OrdiniService {
@@ -25,4 +25,6 @@ public interface OrdiniService {
     Etichetta stampaEtichetta(Ordine ordine);
 
     List<Sede> visualizzaSedi();
+
+    Optional<Ordine> findById(Integer idOrdine);
 }
