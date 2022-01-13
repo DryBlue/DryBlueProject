@@ -64,7 +64,7 @@
                         </div>
                     </div>
                     <div th:if="${ordine.stato != 'Concluso'}">
-                        <form method="post" th:action="@{/ordini/Modifica}">
+                        <form method="post" th:action="@{/ordini/ListaOrdini/Modifica}">
                             <input type="hidden" id="codiceOrdine3" name="codiceOrdine3" th:value="${ordine.id}">
                             <button type="submit">Modifica</button>
                         </form>

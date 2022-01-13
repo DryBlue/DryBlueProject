@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ModficaDettagliOrdineOperatore</title>
+</head>
+<body>
+<h1 style="text-align: center">Valutazione Proposta</h1>
+
+<form id="modifica" th:action="@{/ordini/ListaOrdini/ModificaOrdine}" method="post">
+    <legend>Modifica Stato <br></legend>
+    <select name="stato">
+        <option value="Macchiato">Macchiato</option>
+        <option value="Pronto">Pronto</option>
+        <option value="Imbustato">Imbustato</option>
+        <option value="Consegnato">Consegnato</option>
+    </select><br><br>
+    <input type="hidden" name="idOrdine" th:value="${id}">
+<button type="submit"  form="modifica">Modifica</button>
+   <br><br><br><br>
+</form>
+
+
+<label>Modifica sede </label><br>
+<input type="radio"><label>Ariano Irpino, via Cardito, 52</label><br>
+<input type="radio"><label>Ariano Irpino, corso Vittorio Emanuele, 250</label><br><br>
+<button type="submit">Modifica</button>
+<br><br><br><br>
+
+
+
+<label>Modifica data <br>
+    Data attuale metti la data <br><br>
+    Nuova data <input type="date"> <br><br>
+    <button type="submit" >Modifica</button>
+</label><br>
+
+</body>
+</html>

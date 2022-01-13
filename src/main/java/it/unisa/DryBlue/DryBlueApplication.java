@@ -67,8 +67,18 @@ public class DryBlueApplication {
 			cliente3.setNome("Gianfranco");
 			cliente3.setCognome("Bonromeo");
 			cliente3.setIndirizzo("Via Polpette al sugo 45");
-			clienteDAO.saveAll(Arrays.asList(cliente1, cliente2, cliente3));
 
+
+
+			Cliente cliente4 = new Cliente();
+			cliente4.setNumeroTelefono("3332994445");
+			cliente4.setUsername("user1");
+			cliente4.setPassword("user1");
+			cliente4.setNome("Camilla");
+			cliente4.setCognome("Bonomelli");
+			cliente4.setIndirizzo("Via Polpette al sugo 45");
+			cliente4.setEmail("miriamferrara1397@gmail.com");
+			clienteDAO.saveAll(Arrays.asList(cliente1, cliente2, cliente3,cliente4));
 
 
 			Servizio servizio = new Servizio();
@@ -112,10 +122,16 @@ public class DryBlueApplication {
 			Ordine ordine3 = new Ordine(tmpdate1, "Consegna", "Imbustato");
 			ordine3.setCliente(cliente1);
 
+			LocalDate tmpdate3 = LocalDate.of(2022, 1, 11);
+			Ordine ordine4 = new Ordine(tmpdate1, "ritiro", "Imbustato");
+			ordine4.setCliente(cliente4);
+			ordine4.setSede(sede1);
+
+
 			rigaOrdine.setOrdine(ordine1);
 			rigaOrdine1.setOrdine(ordine1);
 
-			ordineDAO.saveAll(Arrays.asList(ordine1, ordine2, ordine3));
+			ordineDAO.saveAll(Arrays.asList(ordine1, ordine2, ordine3,ordine4));
 			rigaOrdineDAO.saveAll(Arrays.asList(rigaOrdine, rigaOrdine1));
 
 			ArrayList<RigaOrdine> righe = (ArrayList<RigaOrdine>) rigaOrdineDAO.findAllByOrdine(ordine1);
@@ -152,6 +168,7 @@ public class DryBlueApplication {
 			etichetta.setOrdine(ordine1);
 			etichetta.setSede(sede1);
 
+
 			PropostaModifica propostaModifica = new PropostaModifica();
 			propostaModifica.setDataProposta(tmpdate);
 			propostaModifica.setCliente(cliente1);
@@ -159,20 +176,18 @@ public class DryBlueApplication {
 			propostaModifica.setStato("Sospeso");
 			propostaModifica.setSede(sede1);
 
-
-
-
-
 			macchinarioDAO.save(macchinario);
 
 			operatoreDAO.saveAll(Arrays.asList(operatore, operatore2));
 			etichettaDAO.save(etichetta);
 			propostaModificaDAO.save(propostaModifica);
 
+
 			System.out.println(clienteDAO.findAll());
 			System.out.println(operatoreDAO.findAll());
 			System.out.println(ordineDAO.findAll());
 			System.out.println(rigaOrdineDAO.findAll());
+
 		};
 	}
 }

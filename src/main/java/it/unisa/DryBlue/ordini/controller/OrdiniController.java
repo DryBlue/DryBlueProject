@@ -3,11 +3,15 @@ package it.unisa.DryBlue.ordini.controller;
 import it.unisa.DryBlue.autenticazione.domain.Utente;
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import it.unisa.DryBlue.gestioneCliente.services.GestioneClienteService;
+import it.unisa.DryBlue.ordini.dao.OrdineDAO;
+import it.unisa.DryBlue.ordini.domain.Ordine;
 import it.unisa.DryBlue.ordini.domain.RigaOrdine;
 import it.unisa.DryBlue.ordini.domain.Sede;
 import it.unisa.DryBlue.ordini.services.OrdiniService;
+import it.unisa.DryBlue.ordini.util.MailSingletonSender;
 import it.unisa.DryBlue.servizi.services.ServizioService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +27,9 @@ public class OrdiniController {
     private final OrdiniService ordiniService;
     private final ServizioService servizioService;
     private final GestioneClienteService gestioneClienteService;
+    @Autowired
+    private final MailSingletonSender sender;
+    private final OrdineDAO ordineDAO;
 
 
     @GetMapping("/form")
@@ -83,6 +90,34 @@ public class OrdiniController {
         model.getAttribute("utente");
         model.addAttribute("dOrdine", ordiniService.findById(idOrdine).get());
         return "ordini/DettaglioOrdine";
+    }
+
+    @PostMapping("/ListaOrdini/Modifica")
+    public String Modifica(Model m,
+                           @RequestParam("codiceOrdine3") String id_ordine) {
+
+        m.addAttribute("id", id_ordine);
+        m.getAttribute("utente");
+        return "/ordini/ModificaOrdineOperatore";
+
+    }
+
+    @PostMapping("/ListaOrdini/ModificaOrdine")
+    public String ModificaOrdine(Model m,
+                                 @RequestParam("stato") String stato,
+                                 @RequestParam("idOrdine") Integer id_ordine) {
+
+        ordiniService.modificaOrdine(null, null, stato, id_ordine);
+        m.getAttribute("utente");
+        Ordine ordine = ordineDAO.findById(id_ordine).get();
+        String email = ordine.getCliente().getEmail();
+
+
+        if(email != null) {
+            sender.sendEmail(ordine, email);
+
+        }
+        return listaOrdini("Attivi", m);
     }
 
 }

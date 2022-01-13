@@ -16,6 +16,7 @@ import java.util.Random;
 @Entity
 public class Operatore implements Serializable {
 
+
     @Id
     private String username;
 
