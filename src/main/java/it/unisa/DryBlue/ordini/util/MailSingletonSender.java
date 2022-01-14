@@ -57,8 +57,8 @@ import org.springframework.mail.javamail.JavaMailSender;
                 return "Salve,\nSiamo la lavanderia DryBlue.\n" +
                         "Questo messaggio è stato generato automaticamente dal sistema DryBlueLaundry " +
                         "per informarla che lo stato del suo ordine è stato cambiato in " +stato+ ".\n" +
-                        "Per maggiori informazioni accedi alla tua area utente e " +
-                        "controllare la tua lista ordini attivi per tener traccia del tuo ordine.\n\n" +
+                        "Per maggiori informazioni acceda alla sua area utente e " +
+                        "controlli la sua lista ordini attivi per tener traccia del suo ordine.\n\n" +
                         "Cordiali saluti.\n";
 
         }

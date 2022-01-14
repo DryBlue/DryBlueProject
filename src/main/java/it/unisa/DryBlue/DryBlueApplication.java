@@ -68,8 +68,6 @@ public class DryBlueApplication {
 			cliente3.setCognome("Bonromeo");
 			cliente3.setIndirizzo("Via Polpette al sugo 45");
 
-
-
 			Cliente cliente4 = new Cliente();
 			cliente4.setNumeroTelefono("3332994445");
 			cliente4.setUsername("user1");
@@ -77,7 +75,7 @@ public class DryBlueApplication {
 			cliente4.setNome("Camilla");
 			cliente4.setCognome("Bonomelli");
 			cliente4.setIndirizzo("Via Polpette al sugo 45");
-			cliente4.setEmail("miriamferrara1397@gmail.com");
+			cliente4.setEmail("m.ferrara115@studenti.unisa.it");
 			clienteDAO.saveAll(Arrays.asList(cliente1, cliente2, cliente3,cliente4));
 
 
@@ -181,7 +179,6 @@ public class DryBlueApplication {
 			operatoreDAO.saveAll(Arrays.asList(operatore, operatore2));
 			etichettaDAO.save(etichetta);
 			propostaModificaDAO.save(propostaModifica);
-
 
 			System.out.println(clienteDAO.findAll());
 			System.out.println(operatoreDAO.findAll());
