@@ -17,7 +17,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class OrdiniServiceImpl implements OrdiniService{
+public class OrdiniServiceImpl implements OrdiniService {
 
     private final OrdineDAO ordineDAO;
     private final PropostaModificaDAO propostaModificaDAO;
@@ -25,17 +25,23 @@ public class OrdiniServiceImpl implements OrdiniService{
     private final SedeDAO sedeDAO;
 
     @Override
-    public Ordine creazioneOrdine(Set<RigaOrdine> rigaOrdine, Integer quantita, Cliente cliente, String tipologiaRitiro,
-                                  Sede sede, LocalDate dataConsegnaDesiderata, Integer sedeDesiderata, String note) {
+    public Ordine creazioneOrdine(final Set<RigaOrdine> rigaOrdine,
+                                  final Integer quantita,
+                                  final Cliente cliente,
+                                  final String tipologiaRitiro,
+                                  final Sede sede,
+                                  final LocalDate dataConsegnaDesiderata,
+                                  final Integer sedeDesiderata,
+                                  final String note) {
         Ordine ordine = new Ordine();
         ordine.setDataConsegnaDesiderata(dataConsegnaDesiderata);
         ordine.setTipologiaRitiro(tipologiaRitiro);
-        if(note != null){
+        if (note != null) {
             ordine.setNote(note);
         }
         ordine.setStato("Macchiato");
         ordine.setCliente(cliente);
-        if(tipologiaRitiro.equals("In sede") && sede != null){
+        if (tipologiaRitiro.equals("In sede") && sede != null) {
             ordine.setSede(sede);
         }
         ordineDAO.save(ordine);
@@ -43,18 +49,17 @@ public class OrdiniServiceImpl implements OrdiniService{
     }
 
     @Override
-    public void propostaModifica(LocalDate data, String sede, Ordine ordine) {
+    public void propostaModifica(final LocalDate data, final String sede, final Ordine ordine) {
         Cliente c = ordine.getCliente();
         PropostaModifica propostaModifica = new PropostaModifica();
         propostaModifica.setCliente(c);
         propostaModifica.setOrdine(ordine);
-        if(data.compareTo(ordine.getDataConsegnaDesiderata()) == 0){
+        if (data.compareTo(ordine.getDataConsegnaDesiderata()) == 0) {
             LocalDate d = ordine.getDataConsegnaDesiderata();
             Sede s = sedeDAO.findByIndirizzo(sede);
             propostaModifica.setSede(s);
             propostaModifica.setDataProposta(d);
-        }
-        else if(sede.equals(ordine.getSede().getIndirizzo())){
+        } else if (sede.equals(ordine.getSede().getIndirizzo())) {
             Sede s = ordine.getSede();
             propostaModifica.setDataProposta(data);
             propostaModifica.setSede(s);
@@ -67,17 +72,18 @@ public class OrdiniServiceImpl implements OrdiniService{
     }
 
     @Override
-    public Boolean modificaOrdine(LocalDate data, Sede sede, String stato, Integer idOrdine) {
+    public Boolean modificaOrdine(final LocalDate data, final Sede sede,
+                                  final String stato, final Integer idOrdine) {
         Ordine ordine = ordineDAO.findById(idOrdine).get();
-        if(data != null){
+        if (data != null) {
             ordine.setDataConsegnaDesiderata(data);
             ordineDAO.save(ordine);
             return true;
-        }else if(sede != null){
+        } else if (sede != null) {
             ordine.setSede(sede);
             ordineDAO.save(ordine);
             return true;
-        }else if(stato != null){
+        } else if (stato != null) {
             ordine.setStato(stato);
             ordineDAO.save(ordine);
             return true;
@@ -86,11 +92,10 @@ public class OrdiniServiceImpl implements OrdiniService{
     }
 
     @Override
-    public List<Ordine> visualizzaOrdiniFiltroOperatore(String filtro) {
-        if (filtro.equals("Consegnato")){
+    public List<Ordine> visualizzaOrdiniFiltroOperatore(final String filtro) {
+        if (filtro.equals("Consegnato")) {
             return ordineDAO.findAllByStato(filtro);
-        }
-        else {
+        } else {
             List<Ordine> ordini = ordineDAO.findAllByStato("Macchiato");
             ordini.addAll(ordineDAO.findAllByStato("Pronto"));
             ordini.addAll(ordineDAO.findAllByStato("Imbustato"));
@@ -99,23 +104,22 @@ public class OrdiniServiceImpl implements OrdiniService{
     }
 
     @Override
-    public List<Ordine> visualizzaOrdiniFiltroUtente(String filtro, String telefono) {
+    public List<Ordine> visualizzaOrdiniFiltroUtente(final String filtro, final String telefono) {
         List<Ordine> prova = new ArrayList<>();
-        if (filtro.equals("Consegnato")){
+        if (filtro.equals("Consegnato")) {
             List<Ordine> ordini = ordineDAO.findAllByStato(filtro);
             for (Ordine x : ordini) {
-                if (x.getCliente().getNumeroTelefono().equals(telefono)){
+                if (x.getCliente().getNumeroTelefono().equals(telefono)) {
                     prova.add(x);
                 }
             }
             return prova;
-        }
-        else {
+        } else {
             List<Ordine> ordini = ordineDAO.findAllByStato("Macchiato");
             ordini.addAll(ordineDAO.findAllByStato("Pronto"));
             ordini.addAll(ordineDAO.findAllByStato("Imbustato"));
             for (Ordine x : ordini) {
-                if (x.getCliente().getNumeroTelefono().equals(telefono)){
+                if (x.getCliente().getNumeroTelefono().equals(telefono)) {
                     prova.add(x);
                 }
             }
@@ -129,7 +133,7 @@ public class OrdiniServiceImpl implements OrdiniService{
     }
 
     @Override
-    public Etichetta stampaEtichetta(Ordine ordine) {
+    public Etichetta stampaEtichetta(final Ordine ordine) {
         Etichetta etichetta = new Etichetta();
         etichetta.setOrdine(ordine);
         etichetta.setSede(ordine.getSede());
@@ -139,11 +143,11 @@ public class OrdiniServiceImpl implements OrdiniService{
 
     @Override
     public List<Sede> visualizzaSedi() {
-        return (List<Sede>)sedeDAO.findAll();
+        return (List<Sede>) sedeDAO.findAll();
     }
 
     @Override
-    public Optional<Ordine> findById(Integer idOrdine) {
+    public Optional<Ordine> findById(final Integer idOrdine) {
         return ordineDAO.findById(idOrdine);
     }
 }

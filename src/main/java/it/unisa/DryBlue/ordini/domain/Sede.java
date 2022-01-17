@@ -14,19 +14,19 @@ import java.util.Set;
 @Entity
 public class Sede implements Serializable {
 
-    private static final long serialVersionUID= 1L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    public Integer id;
+    private Integer id;
 
     @NonNull
-    public String indirizzo;
+    private String indirizzo;
 
     @OneToMany
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Set<Ordine> ordini=new HashSet<>();
+    private Set<Ordine> ordini = new HashSet<>();
 
     @OneToOne
     @ToString.Exclude
@@ -41,6 +41,6 @@ public class Sede implements Serializable {
     @OneToMany
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Set<Macchinario> macchinari= new HashSet<>();
+    private Set<Macchinario> macchinari = new HashSet<>();
 
 }

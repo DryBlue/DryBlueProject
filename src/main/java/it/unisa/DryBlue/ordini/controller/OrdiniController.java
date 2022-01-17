@@ -14,7 +14,6 @@ import it.unisa.DryBlue.ordini.util.MailSingletonSender;
 import it.unisa.DryBlue.ordini.util.PDFExport;
 import it.unisa.DryBlue.servizi.services.ServizioService;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,9 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -124,7 +121,7 @@ public class OrdiniController {
         Ordine ordine = ordineDAO.findById(id_ordine).get();
         String email = ordine.getCliente().getEmail();
 
-        if(email != null) {
+        if (email != null) {
             sender.sendEmail(ordine, email);
         }
         return listaOrdini("Attivi", m);
@@ -144,9 +141,9 @@ public class OrdiniController {
     @PostMapping("/ListaOrdini/ModificaSede")
     public String ModificaOrdine(final Model m, final @RequestParam("idOrdine") Integer id_ordine) {
         Ordine ordine = ordineDAO.findById(id_ordine).get();
-        if(ordine.getSede().getIndirizzo().equals("Ariano Irpino, via Cardito, 52")) {
-            ordine.setSede(sedeDAO.findByIndirizzo("Ariano Irpino, corso Vittorio Emanuele, 250"));;
-        } else if(ordine.getSede().getIndirizzo().equals("Ariano Irpino, corso Vittorio Emanuele, 250")) {
+        if (ordine.getSede().getIndirizzo().equals("Ariano Irpino, via Cardito, 52")) {
+            ordine.setSede(sedeDAO.findByIndirizzo("Ariano Irpino, corso Vittorio Emanuele, 250"));
+        } else if (ordine.getSede().getIndirizzo().equals("Ariano Irpino, corso Vittorio Emanuele, 250")) {
             ordine.setSede(sedeDAO.findByIndirizzo("Ariano Irpino, via Cardito, 52"));
         }
         ordineDAO.save(ordine);
@@ -156,7 +153,7 @@ public class OrdiniController {
 
 
     @PostMapping("/StampaEtichetta")
-    public void exportToPDF(HttpServletResponse response, final Model m,  final @RequestParam("codiceOrdine1") Integer id_ordine) throws Exception {
+    public void exportToPDF(final HttpServletResponse response, final Model m,  final @RequestParam("codiceOrdine1") Integer id_ordine) throws Exception {
         response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
@@ -168,12 +165,12 @@ public class OrdiniController {
         m.addAttribute("id", id_ordine);
         Ordine ordine = ordineDAO.findById(id_ordine).get();
         String nome = ordine.getCliente().getNome();
-        String cognome= ordine.getCliente().getCognome();
+        String cognome = ordine.getCliente().getCognome();
         String indirizzo = ordine.getCliente().getIndirizzo();
         ordiniService.stampaEtichetta(ordine);
 
         PDFExport e = new  PDFExport();
-        e.export(response, nome,cognome,indirizzo);
+        e.export(response, nome, cognome, indirizzo);
     }
 
     @PostMapping("/propostaModifica")
@@ -190,7 +187,7 @@ public class OrdiniController {
 
     @GetMapping("/propostaModifica")
     public String propostaPage(final Model model,
-                                   final @RequestParam("codiceOrdine4") Integer id){
+                               final @RequestParam("codiceOrdine4") Integer id) {
         model.addAttribute("ordine", ordiniService.findById(id).get());
         model.addAttribute("sedi", ordiniService.visualizzaSedi());
         return "/ordini/propostaModifica";

@@ -12,23 +12,23 @@ import java.io.Serializable;
 @Entity
 public class Servizio implements Serializable {
 
-    private static final long serialVersionUID= 1L;
+    private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
-    public Integer id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Integer id;
 
     @NonNull
-    public String nome;
+    private String nome;
 
     @NonNull
-    public String tipologia;
+    private String tipologia;
 
     @NonNull
-    public String caratteristiche;
+    private String caratteristiche;
 
     @NonNull
-    public double prezzo;
+    private double prezzo;
 
     @OneToOne
     @ToString.Exclude

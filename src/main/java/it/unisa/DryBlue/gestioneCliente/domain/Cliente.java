@@ -50,13 +50,17 @@ public class Cliente implements Serializable {
     private PropostaModifica propostaModifica;
 
     public String generateString() {
-        int leftLimit = 48; // numero '0'
-        int rightLimit = 122; // lettera 'z'
-        int targetStringLength = 10;
+        final int leftLimit = 48; // numero '0'
+        final int rightLimit = 122; // lettera 'z'
+        final int targetStringLength = 10;
+        final int filter1 = 57;
+        final int filter2 = 65;
+        final int filter3 = 90;
+        final int filter4 = 97;
         Random random = new Random();
 
         return random.ints(leftLimit, rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .filter(i -> (i <= filter1 || i >= filter2) && (i <= filter3 || i >= filter4))
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();

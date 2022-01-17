@@ -15,7 +15,7 @@ import java.util.Set;
 @Entity
 public class Ordine implements Serializable {
 
-    private static final long serialVersionUID= 1L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -55,6 +55,6 @@ public class Ordine implements Serializable {
     @OneToMany(cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<RigaOrdine> righeOrdine=new HashSet<>();
+    private Set<RigaOrdine> righeOrdine = new HashSet<>();
 
 }

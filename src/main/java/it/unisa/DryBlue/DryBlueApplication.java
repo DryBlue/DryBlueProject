@@ -22,7 +22,6 @@ import java.util.Arrays;
 
 @SpringBootApplication
 public class DryBlueApplication {
-
 	public static void main(final String[] args) {
 		SpringApplication.run(DryBlueApplication.class, args);
 	}
@@ -35,11 +34,9 @@ public class DryBlueApplication {
 								  final ServizioDAO servizioDAO,
 								  final OperatoreDAO operatoreDAO,
 								  final RigaOrdineDAO rigaOrdineDAO,
-								  final EtichettaDAO etichettaDAO,
-								  final PropostaModificaDAO propostaModificaDAO
+								  final EtichettaDAO etichettaDAO
 	) {
 		return args -> {
-
 			Sede sede1 = new Sede("Ariano Irpino, via Cardito, 52");
 			Sede sede2 = new Sede("Ariano Irpino, corso Vittorio Emanuele, 250");
 			sedeDAO.saveAll(Arrays.asList(sede1, sede2));
@@ -76,26 +73,28 @@ public class DryBlueApplication {
 			cliente4.setCognome("Bonomelli");
 			cliente4.setIndirizzo("Via Polpette al sugo 45");
 			cliente4.setEmail("m.ferrara115@studenti.unisa.it");
-			clienteDAO.saveAll(Arrays.asList(cliente1, cliente2, cliente3,cliente4));
+			clienteDAO.saveAll(Arrays.asList(cliente1, cliente2, cliente3, cliente4));
 
-
+			final double prezzo1 = 10.20;
 			Servizio servizio = new Servizio();
 			servizio.setNome("Lavaggio maglia blu");
 			servizio.setTipologia("Lavaggio");
 			servizio.setCaratteristiche("Maglia blu");
-			servizio.setPrezzo(10.20);
+			servizio.setPrezzo(prezzo1);
 
+			final double prezzo2 = 5.20;
 			Servizio servizio2 = new Servizio();
 			servizio2.setNome("Stiratura maglia blu");
 			servizio2.setTipologia("Stiratura");
 			servizio2.setCaratteristiche("Maglia blu");
-			servizio2.setPrezzo(5.20);
+			servizio2.setPrezzo(prezzo2);
 
+			final double prezzo3 = 10.40;
 			Servizio servizio3 = new Servizio();
 			servizio3.setNome("Lavaggio jeans");
 			servizio3.setTipologia("Lavaggio");
 			servizio3.setCaratteristiche("Jeans");
-			servizio3.setPrezzo(10.20);
+			servizio3.setPrezzo(prezzo3);
 			servizioDAO.saveAll(Arrays.asList(servizio, servizio2, servizio3));
 
 			RigaOrdine rigaOrdine = new RigaOrdine();
@@ -106,21 +105,27 @@ public class DryBlueApplication {
 			rigaOrdine1.setQuantita(1);
 			rigaOrdine1.setServizio(servizio2);
 
-
-			LocalDate tmpdate = LocalDate.of(2022, 2, 3);
+			final int year = 2022;
+			final int month1 = 2;
+			final int month2 = 1;
+			final int day1 = 3;
+			final int day2 = 20;
+			final int day3 = 21;
+			final int day4 = 11;
+			LocalDate tmpdate = LocalDate.of(year, month1, day1);
 			Ordine ordine1 = new Ordine(tmpdate, "In sede", "Macchiato");
 			ordine1.setCliente(cliente3);
 			ordine1.setSede(sede2);
 
-			LocalDate tmpdate1 = LocalDate.of(2022,  1, 20);
+			LocalDate tmpdate1 = LocalDate.of(year,  month2, day2);
 			Ordine ordine2 = new Ordine(tmpdate1, "Consegna", "Consegnato");
 			ordine2.setCliente(cliente3);
 
-			LocalDate tmpdate2 = LocalDate.of(2022,  1, 21);
+			LocalDate tmpdate2 = LocalDate.of(year,  month2, day3);
 			Ordine ordine3 = new Ordine(tmpdate1, "Consegna", "Imbustato");
 			ordine3.setCliente(cliente1);
 
-			LocalDate tmpdate3 = LocalDate.of(2022, 1, 11);
+			LocalDate tmpdate3 = LocalDate.of(year, month2, day4);
 			Ordine ordine4 = new Ordine(tmpdate1, "ritiro", "Imbustato");
 			ordine4.setCliente(cliente4);
 			ordine4.setSede(sede1);
@@ -129,7 +134,7 @@ public class DryBlueApplication {
 			rigaOrdine.setOrdine(ordine1);
 			rigaOrdine1.setOrdine(ordine1);
 
-			ordineDAO.saveAll(Arrays.asList(ordine1, ordine2, ordine3,ordine4));
+			ordineDAO.saveAll(Arrays.asList(ordine1, ordine2, ordine3, ordine4));
 			rigaOrdineDAO.saveAll(Arrays.asList(rigaOrdine, rigaOrdine1));
 
 			ArrayList<RigaOrdine> righe = (ArrayList<RigaOrdine>) rigaOrdineDAO.findAllByOrdine(ordine1);

@@ -18,36 +18,36 @@ public class ServiziController {
 
 
     @GetMapping("/aggiuntaServizio")
-    public String aggiunta(final Model model){
+    public String aggiunta(final Model model) {
         return "/servizi/aggiuntaServizio";
     }
 
     @PostMapping("/aggiuntaServizio")
     private String aggiuntaServizio(final Model model,
-                                    @RequestParam("name") String nome,
-                                    @RequestParam("tipologia") String tipologia,
-                                    @RequestParam("caratteristiche") String caratteristiche,
-                                    @RequestParam("prezzo") double prezzo){
-        servizioService.aggiungiServizio(nome,tipologia,caratteristiche,prezzo);
+                                    final @RequestParam("name") String nome,
+                                    final @RequestParam("tipologia") String tipologia,
+                                    final @RequestParam("caratteristiche") String caratteristiche,
+                                    final @RequestParam("prezzo") double prezzo) {
+        servizioService.aggiungiServizio(nome, tipologia, caratteristiche, prezzo);
         model.getAttribute("utente");
         return "/servizi/ListaServizi";
     }
 
     @GetMapping("/aggiuntaMacchinario")
-    public String aggiuntaMac(){
+    public String aggiuntaMac() {
         return "/servizi/aggiuntaMacchinario";
     }
 
     @PostMapping("/aggiuntaMacchinario")
     private String aggiuntaMacchinario(final Model model,
-                                       @RequestParam("denomination") String denominazione,
-                                       @RequestParam("matricola") String matricola,
-                                       @RequestParam("costruttore") String costruttore,
-                                       @RequestParam("caratteristiche") String caratteristiche,
-                                       @RequestParam("manutentore") String manutentore,
-                                       @RequestParam("stato") String stato,
-                                       @RequestParam("numeroMan") String telefonoManutenzione,
-                                       @RequestParam("sede")Sede sede){
+                                       final @RequestParam("denomination") String denominazione,
+                                       final @RequestParam("matricola") String matricola,
+                                       final @RequestParam("costruttore") String costruttore,
+                                       final @RequestParam("caratteristiche") String caratteristiche,
+                                       final @RequestParam("manutentore") String manutentore,
+                                       final @RequestParam("stato") String stato,
+                                       final @RequestParam("numeroMan") String telefonoManutenzione,
+                                       final @RequestParam("sede")Sede sede) {
         servizioService.aggiungiMacchinario(denominazione, matricola, costruttore, caratteristiche,
                                             manutentore, stato, telefonoManutenzione, sede);
         model.getAttribute("utente");
@@ -55,7 +55,7 @@ public class ServiziController {
     }
 
     @GetMapping("/listaServizi")
-    public String trovaServizi(final Model model){
+    public String trovaServizi(final Model model) {
         model.addAttribute("servizi", servizioService.findServizi());
         model.getAttribute("utente");
         return "/servizi/ListaServizi";

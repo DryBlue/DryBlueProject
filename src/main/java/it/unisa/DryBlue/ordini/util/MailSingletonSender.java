@@ -28,7 +28,7 @@ import org.springframework.mail.javamail.JavaMailSender;
          * @param object       Object che rappresenta l'oggetto coinvolto ai cambiamenti
          * @param destinatario String che rappresenta l'email del destinatario
          */
-        public void sendEmail(Object object, String destinatario) {
+        public void sendEmail(final Object object, final String destinatario) {
 
             SimpleMailMessage msg = new SimpleMailMessage();
             msg.setFrom("drybluelaundry@gmail.com");
@@ -49,17 +49,17 @@ import org.springframework.mail.javamail.JavaMailSender;
          * @param obj Object che rappresenta l'oggetto coinvolto ai cambiamenti
          * @return String contenente il messaggio
          * */
-        private String message(Object obj) {
+        private String message(final Object obj) {
                 Ordine ordine = (Ordine) obj;
                 String stato = ordine.getStato();
 
 
-                return "Salve,\nSiamo la lavanderia DryBlue.\n" +
-                        "Questo messaggio è stato generato automaticamente dal sistema DryBlueLaundry " +
-                        "per informarla che lo stato del suo ordine è stato cambiato in " +stato+ ".\n" +
-                        "Per maggiori informazioni acceda alla sua area utente e " +
-                        "controlli la sua lista ordini attivi per tener traccia del suo ordine.\n\n" +
-                        "Cordiali saluti.\n";
+                return "Salve,\nSiamo la lavanderia DryBlue.\n"
+                       + "Questo messaggio è stato generato automaticamente dal sistema DryBlueLaundry "
+                       + "per informarla che lo stato del suo ordine è stato cambiato in " + stato + ".\n"
+                       + "Per maggiori informazioni acceda alla sua area utente e "
+                       + "controlli la sua lista ordini attivi per tener traccia del suo ordine.\n\n"
+                       + "Cordiali saluti.\n";
 
         }
 

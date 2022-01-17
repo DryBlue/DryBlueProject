@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 
     @SpringBootTest
     @ExtendWith(MockitoExtension.class)
-    public class ServizioServiceImplTest{
+    public class ServizioServiceImplTest {
         @Mock
         private ServizioDAO servizioDAO;
 
@@ -36,8 +36,10 @@ import static org.mockito.Mockito.*;
         @BeforeEach
         public void init() {
             servizioService = new ServizioServiceImpl(servizioDAO, macchinarioDAO);
-            servizio1 = new Servizio("Leggins", "lavaggio","lavaggio a secco",10.5);
-            servizio2 = new Servizio("Giacca", "stiratura","stiratura base",6.5);
+            final double prezzo1 = 10.5;
+            final double prezzo2 = 6.5;
+            servizio1 = new Servizio("Leggins", "lavaggio", "lavaggio a secco", prezzo1);
+            servizio2 = new Servizio("Giacca", "stiratura", "stiratura base", prezzo2);
         }
 
           /**
@@ -48,7 +50,7 @@ import static org.mockito.Mockito.*;
         @Test
         public void aggiungiServizioSuccess() {
             when(servizioDAO.save(servizio1)).thenReturn(servizio1);
-            servizioService.aggiungiServizio("Leggins", "lavaggio","lavaggio a secco",10.5);
+            servizioService.aggiungiServizio("Leggins", "lavaggio", "lavaggio a secco", 10.5);
             verify(servizioDAO, times(1)).save(servizio1);
         }
 
