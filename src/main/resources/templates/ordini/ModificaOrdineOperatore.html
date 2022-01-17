@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>DryBlue | Modifica Ordine</title>
@@ -22,17 +22,43 @@
 
 
 <label>Modifica sede </label><br>
-<input type="radio"><label>Ariano Irpino, via Cardito, 52</label><br>
-<input type="radio"><label>Ariano Irpino, corso Vittorio Emanuele, 250</label><br><br>
-<button type="submit">Modifica</button>
+<table border = "1">
+    <tr>
+        <td>Sede attuale:</td>
+        <td th:text="${ordine.getSede().getIndirizzo()}"></td>
+    </tr>
+    <tr>
+        <td>Sede alternativa:</td>
+        <div th:if="${ordine.getSede().getIndirizzo().equals('Ariano Irpino, via Cardito, 52')}">
+            <td>Ariano Irpino, corso Vittorio Emanuele, 250</td>
+        </div>
+        <div th:if="${ordine.getSede().getIndirizzo().equals('Ariano Irpino, corso Vittorio Emanuele, 250')}">
+            <td>Ariano Irpino, via Cardito, 52</td>
+        </div>
+    </tr>
+</table>
+<form th:action="@{/ordini/ListaOrdini/ModificaSede}" method="post">
+    <input type="hidden" name="idOrdine" th:value="${id}">
+    <button type="submit">Modifica</button>
+</form>
 <br><br><br><br>
 
 
 
 <label>Modifica data <br>
-    Data attuale metti la data <br><br>
-    Nuova data <input type="date"> <br><br>
-    <button type="submit" >Modifica</button>
+    <table border = "1">
+        <tr>
+            <td>Sede attuale:</td>
+            <td th:text="${ordine.getDataConsegnaDesiderata()}"></td>
+        </tr>
+    </table>
+    <form th:action="@{/ordini/ListaOrdini/ModificaData}" method="post">
+        <p>Nuova data:</p>
+        <input type="date" name="data">
+        <input type="hidden" name="idOrdine" th:value="${id}">
+        <br><br>
+        <button type="submit" >Modifica</button>
+    </form>
 </label><br>
 
 </body>

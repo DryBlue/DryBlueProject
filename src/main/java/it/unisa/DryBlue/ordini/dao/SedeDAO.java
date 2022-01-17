@@ -6,4 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 
 public interface SedeDAO extends CrudRepository<Sede, Integer> {
+    Sede findByIndirizzo(String indirizzo);
 }

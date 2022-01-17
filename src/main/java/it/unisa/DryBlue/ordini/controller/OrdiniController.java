@@ -4,6 +4,7 @@ import it.unisa.DryBlue.autenticazione.domain.Utente;
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import it.unisa.DryBlue.gestioneCliente.services.GestioneClienteService;
 import it.unisa.DryBlue.ordini.dao.OrdineDAO;
+import it.unisa.DryBlue.ordini.dao.SedeDAO;
 import it.unisa.DryBlue.ordini.domain.Ordine;
 import it.unisa.DryBlue.ordini.domain.RigaOrdine;
 import it.unisa.DryBlue.ordini.domain.Sede;
@@ -12,6 +13,7 @@ import it.unisa.DryBlue.ordini.util.MailSingletonSender;
 import it.unisa.DryBlue.ordini.util.PDFExport;
 import it.unisa.DryBlue.servizi.services.ServizioService;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +38,7 @@ public class OrdiniController {
     @Autowired
     private final MailSingletonSender sender;
     private final OrdineDAO ordineDAO;
-
+    private final SedeDAO sedeDAO;
 
     @GetMapping("/form")
     private String form(final Model model) {
@@ -103,6 +105,7 @@ public class OrdiniController {
                            @RequestParam("codiceOrdine3") String id_ordine) {
 
         m.addAttribute("id", id_ordine);
+        m.addAttribute("ordine", ordineDAO.findById(Integer.valueOf(id_ordine)).get());
         m.getAttribute("utente");
         return "/ordini/ModificaOrdineOperatore";
 
@@ -121,6 +124,29 @@ public class OrdiniController {
         if(email != null) {
             sender.sendEmail(ordine, email);
         }
+        return listaOrdini("Attivi", m);
+    }
+
+    @PostMapping("/ListaOrdini/ModificaData")
+    public String ModificaData(Model m,
+                               @RequestParam("data")String data,
+                               @RequestParam("idOrdine") Integer id_ordine) {
+        Ordine ordine = ordineDAO.findById(id_ordine).get();
+        LocalDate date = LocalDate.parse(data);
+        ordine.setDataConsegnaDesiderata(date);
+        ordineDAO.save(ordine);
+        return listaOrdini("Attivi", m);
+    }
+
+    @PostMapping("/ListaOrdini/ModificaSede")
+    public String ModificaOrdine(final Model m, final @RequestParam("idOrdine") Integer id_ordine) {
+        Ordine ordine = ordineDAO.findById(id_ordine).get();
+        if(ordine.getSede().getIndirizzo().equals("Ariano Irpino, via Cardito, 52")) {
+            ordine.setSede(sedeDAO.findByIndirizzo("Ariano Irpino, corso Vittorio Emanuele, 250"));;
+        } else if(ordine.getSede().getIndirizzo().equals("Ariano Irpino, corso Vittorio Emanuele, 250")) {
+            ordine.setSede(sedeDAO.findByIndirizzo("Ariano Irpino, via Cardito, 52"));
+        }
+        ordineDAO.save(ordine);
         return listaOrdini("Attivi", m);
     }
 

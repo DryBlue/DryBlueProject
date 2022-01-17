@@ -110,7 +110,7 @@ public class DryBlueApplication {
 			LocalDate tmpdate = LocalDate.of(2022, 2, 3);
 			Ordine ordine1 = new Ordine(tmpdate, "In sede", "Macchiato");
 			ordine1.setCliente(cliente3);
-			ordine1.setSede(sede1);
+			ordine1.setSede(sede2);
 
 			LocalDate tmpdate1 = LocalDate.of(2022,  1, 20);
 			Ordine ordine2 = new Ordine(tmpdate1, "Consegna", "Consegnato");
