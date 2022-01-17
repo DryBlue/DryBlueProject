@@ -73,7 +73,7 @@
                 <div th:if="${utente.getRuolo().getName().equals('CLIENTE')}">
                   <div th:if="${ordine.stato != 'Consegnato'}">
                       <div th:if="${ordine.propostaModifica == null}">
-                          <form method="post" th:action="@{/ordini/PropostaModifica}">
+                          <form method="get" th:action="@{/ordini/propostaModifica}">
                               <input type="hidden" id="codiceOrdine4" name="codiceOrdine4" th:value="${ordine.id}">
                               <button type="submit">Proponi Modifica</button>
                           </form>

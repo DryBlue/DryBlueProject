@@ -167,18 +167,11 @@ public class DryBlueApplication {
 			etichetta.setSede(sede1);
 
 
-			PropostaModifica propostaModifica = new PropostaModifica();
-			propostaModifica.setDataProposta(tmpdate);
-			propostaModifica.setCliente(cliente1);
-			propostaModifica.setOrdine(ordine1);
-			propostaModifica.setStato("Sospeso");
-			propostaModifica.setSede(sede1);
 
 			macchinarioDAO.save(macchinario);
 
 			operatoreDAO.saveAll(Arrays.asList(operatore, operatore2));
 			etichettaDAO.save(etichetta);
-			propostaModificaDAO.save(propostaModifica);
 
 			System.out.println(clienteDAO.findAll());
 			System.out.println(operatoreDAO.findAll());

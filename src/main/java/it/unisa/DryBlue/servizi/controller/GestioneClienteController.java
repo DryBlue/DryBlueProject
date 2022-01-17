@@ -1,4 +1,4 @@
-package it.unisa.DryBlue.gestioneCliente.controller;
+package it.unisa.DryBlue.servizi.controller;
 
 
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;

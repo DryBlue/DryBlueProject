@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Proposta Modifica</title>
+</head>
+<body>
+
+<h1 align="center">Proposta modifica</h1>
+
+<form method="post" th:action="@{/ordini/propostaModifica}">
+
+    <h2>Modifica sede</h2><br>
+    <!-- inserire due label con le sedi/indirizzi delle sedi -->
+    <label>Sede attuale:</label> <label th:text="${ordine.sede.getIndirizzo()}"></label><br>
+    <label>Sede alternativa:</label>
+    <select id="sedeNuova" name="sedeNuova">
+        <div th:each="sede : ${sedi}">
+            <option th:text="${sede.indirizzo}"></option>
+        </div>
+    </select>
+
+    <h2>Modifica data</h2><br>
+    <label>Data attuale: </label><label id="dataAttuale" name="dataAttuale" th:text="${ordine.dataConsegnaDesiderata}"></label><br>
+    <label>Data desiderata: </label><input type="date" id="dataProposta" name="dataProposta"><br>
+    <input type="hidden" id="Ordine" name="Ordine" th:value="${ordine.id}">
+    <input type="submit">
+    <input type="reset">
+
+</form>
+
+</body>
+</html>

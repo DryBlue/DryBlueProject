@@ -14,7 +14,7 @@
     <a th:href="@{/autenticazione/HelloWorld}">Lista Macchinari</a> <!-- AGGIUNGERE PATH LISTA MACCHINARI -->
     <a th:href="@{/gestioneCliente/clienti}">Lista Clienti</a>
     <a th:href="@{/servizio/listaServizi}">Lista Servizi</a>
-    <a th:href="@{/autenticazione/paginaReset}">Reset Password</a>
+    <a th:href="@{/servizio/aggiuntaMacchinario}">Agg Macchinario</a>
     <a th:href="@{/logout}">Logout</a>
 
     <h3>Benvenuto </h3> <h3 th:text="${utente.nome}"></h3>
@@ -30,7 +30,7 @@
         <button type="submit">Profilo</button>
     </form>
     <a th:href="@{/logout}">Logout</a>
-    <a th:href="@{/newPassword}">Reset Password</a> <!-- Aggiungere path -->
+
 
     <h3>Benvenuto </h3> <h3 th:text="${utente.nome}"></h3>
 

@@ -12,7 +12,7 @@ public interface OrdiniService {
     Ordine creazioneOrdine(Set<RigaOrdine> rigaOrdine, Integer quantita, Cliente cliente, String tipologiaRitiro,
                            Sede sede, LocalDate dataConsegnaDesiderata, Integer sedeDesiderata, String note);
 
-    void propostaModifica(LocalDate data, Sede sede, Ordine ordine);
+    void propostaModifica(LocalDate data, String sede, Ordine ordine);
 
     Boolean modificaOrdine(LocalDate data, Sede sede, String stato, Integer idOrdine);
 

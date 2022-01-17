@@ -43,16 +43,26 @@ public class OrdiniServiceImpl implements OrdiniService{
     }
 
     @Override
-    public void propostaModifica(LocalDate data, Sede sede, Ordine ordine) {
+    public void propostaModifica(LocalDate data, String sede, Ordine ordine) {
+        Cliente c = ordine.getCliente();
         PropostaModifica propostaModifica = new PropostaModifica();
+        propostaModifica.setCliente(c);
         propostaModifica.setOrdine(ordine);
-        if(data != null){
-            propostaModifica.setDataProposta(data);
-        }else if(sede != null){
-            propostaModifica.setSede(sede);
+        if(data.compareTo(ordine.getDataConsegnaDesiderata()) == 0){
+            LocalDate d = ordine.getDataConsegnaDesiderata();
+            Sede s = sedeDAO.findByIndirizzo(sede);
+            propostaModifica.setSede(s);
+            propostaModifica.setDataProposta(d);
         }
+        else if(sede.equals(ordine.getSede().getIndirizzo())){
+            Sede s = ordine.getSede();
+            propostaModifica.setDataProposta(data);
+            propostaModifica.setSede(s);
+        }
+
         propostaModifica.setStato("In attesa");
         propostaModificaDAO.save(propostaModifica);
+        ordine.setPropostaModifica(propostaModifica);
 
     }
 

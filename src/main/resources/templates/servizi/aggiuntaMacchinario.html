@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Aggiunta Macchinario</title>
+</head>
+<body>
+
+<h1>Aggiunta di un Macchinario</h1><br>
+
+<form method="post" th:action="@{/servizio/aggiuntaMacchinario}">
+    Denominazione*<input type="text" placeholder="Denominazione" id="denomination" name="denomination" required><br>
+    Matricola*<input type="text" placeholder="Matricola" id="matricola" name="matricola" required><br>
+    Costruttore<input type="text" placeholder="Costruttore" id="costruttore" name="costruttore"><br>
+    Caratteristiche<input type="text" placeholder="Caratteristiche" id="caratteristiche" name="caratteristiche"><br>
+    Manutentore*<input type="text" placeholder="Manutentore" id="manutentore" name="manutentore" required><br>
+    Stato d'attività*<input type="text" placeholder="Stato attività" id="stato" name="stato" required><br>
+    Numero Manutenzione<input type="text" placeholder="Numero Manutenzione" id="numeroMan" name="numeroMan"><br>
+    <button type="submit">Aggiungi</button>
+    <button type="reset">Annulla</button>
+
+</form>
+
+</body>
+</html>

@@ -9,9 +9,10 @@
 <h1>Aggiungi un nuovo ordine</h1>
 
 
-<form method="post" th:action="@{/ordine/aggiuntaOrdine}" >
+<form method="post" th:action="@{/ordine/aggiuntaOrdine}">
 
-        <select name="ordine">
+    <form method="post" th:action="@{/ordine/aggiuntaRiga}">
+        <select name="ordine" id="ordine">
             <div th:each="servizio : ${servizi}">
                 <option th:text="${servizio.nome}"></option>
             </div>
@@ -22,7 +23,13 @@
 
 
     <!-- Aggiunge l'ordine nella riga ordine, da controllare -->
-    <button  type="button" name="button" id="addButton" th:text="#{ordine.righeOrdine.add}">+</button><br>
+    <button type="submit">Aggiungi</button><br>
+
+    </form>
+
+    <div th:each="riga : ${righe}">
+        <label th:text="${riga}"></label>
+    </div>
 
 
     <select name="ritiro">
@@ -53,8 +60,8 @@
     <textarea name="note"></textarea> <br>
 
     <button type="submit">Conferma</button><br>
-    <!-- Possiamo fare che se premi questo bottone torna alla pagina precedente o sbianca le caselle -->
     <button type="reset">Annulla</button><br>
+
 </form>
 
 

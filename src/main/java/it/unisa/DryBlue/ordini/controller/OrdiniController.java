@@ -4,6 +4,7 @@ import it.unisa.DryBlue.autenticazione.domain.Utente;
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import it.unisa.DryBlue.gestioneCliente.services.GestioneClienteService;
 import it.unisa.DryBlue.ordini.dao.OrdineDAO;
+import it.unisa.DryBlue.ordini.dao.RigaOrdineDAO;
 import it.unisa.DryBlue.ordini.dao.SedeDAO;
 import it.unisa.DryBlue.ordini.domain.Ordine;
 import it.unisa.DryBlue.ordini.domain.RigaOrdine;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -39,6 +41,7 @@ public class OrdiniController {
     private final MailSingletonSender sender;
     private final OrdineDAO ordineDAO;
     private final SedeDAO sedeDAO;
+    private final RigaOrdineDAO rigaOrdineDAO;
 
     @GetMapping("/form")
     private String form(final Model model) {
@@ -50,20 +53,21 @@ public class OrdiniController {
     }
 
     @PostMapping("/aggiuntaOrdine")
-    private String aggiuntaOrdine(final Model model,
-                                  final @RequestParam("rigaOrdine") Set<RigaOrdine> rigaOrdine,
-                                  final @RequestParam("quantita") Integer quantita,
-                                  final @RequestParam("cliente") Cliente cliente,
-                                  final @RequestParam("tipologiaRitiro") String tipologiaRitiro,
-                                  final @RequestParam("sede") Sede sede,
-                                  final @RequestParam("dataConsegnaDesiderata")LocalDate dataConsegnaDesiderata,
-                                  final @RequestParam("sedeDesiderata") Integer sedeDesiderata,
-                                  final @RequestParam("note") String note) {
-        ordiniService.creazioneOrdine(rigaOrdine, quantita, cliente, tipologiaRitiro,
-                sede, dataConsegnaDesiderata, sedeDesiderata, note);
+    private String aggiuntaOrdine(final Model model) {
+        model.addAttribute("righe");
+        ordiniService.creazioneOrdine();
         model.getAttribute("utente");
 
-        return "/LoggedHomepage";
+        return "/ordini/ListaOrdini";
+
+    }
+
+    @PostMapping("/aggiuntaRiga")
+    public String aggiuntaRiga(final Model model,
+                               final @RequestParam("ordine") String ordine,
+                               final @RequestParam()){
+
+        return aggiuntaOrdine(model);
 
     }
 
@@ -101,8 +105,8 @@ public class OrdiniController {
     }
 
     @PostMapping("/ListaOrdini/Modifica")
-    public String Modifica(Model m,
-                           @RequestParam("codiceOrdine3") String id_ordine) {
+    public String Modifica(final Model m,
+                           final @RequestParam("codiceOrdine3") String id_ordine) {
 
         m.addAttribute("id", id_ordine);
         m.addAttribute("ordine", ordineDAO.findById(Integer.valueOf(id_ordine)).get());
@@ -112,9 +116,9 @@ public class OrdiniController {
     }
 
     @PostMapping("/ListaOrdini/ModificaOrdine")
-    public String ModificaOrdine(Model m,
-                                 @RequestParam("stato") String stato,
-                                 @RequestParam("idOrdine") Integer id_ordine) {
+    public String ModificaOrdine(final Model m,
+                                 final @RequestParam("stato") String stato,
+                                 final @RequestParam("idOrdine") Integer id_ordine) {
 
         ordiniService.modificaOrdine(null, null, stato, id_ordine);
         m.getAttribute("utente");
@@ -128,9 +132,9 @@ public class OrdiniController {
     }
 
     @PostMapping("/ListaOrdini/ModificaData")
-    public String ModificaData(Model m,
-                               @RequestParam("data")String data,
-                               @RequestParam("idOrdine") Integer id_ordine) {
+    public String ModificaData(final Model m,
+                               final @RequestParam("data")String data,
+                               final @RequestParam("idOrdine") Integer id_ordine) {
         Ordine ordine = ordineDAO.findById(id_ordine).get();
         LocalDate date = LocalDate.parse(data);
         ordine.setDataConsegnaDesiderata(date);
@@ -153,7 +157,7 @@ public class OrdiniController {
 
 
     @PostMapping("/StampaEtichetta")
-    public void exportToPDF(HttpServletResponse response, Model m,  @RequestParam("codiceOrdine1") Integer id_ordine) throws Exception {
+    public void exportToPDF(HttpServletResponse response, final Model m,  final @RequestParam("codiceOrdine1") Integer id_ordine) throws Exception {
         response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
@@ -172,5 +176,26 @@ public class OrdiniController {
         PDFExport e = new  PDFExport();
         e.export(response, nome,cognome,indirizzo);
     }
+
+    @PostMapping("/propostaModifica")
+    public String propostaModifica(final Model model,
+                                   final @RequestParam("sedeNuova") String sede,
+                                   final @RequestParam("dataProposta") String data,
+                                   final @RequestParam("Ordine") Integer id) {
+        LocalDate date = LocalDate.parse(data);
+        Ordine ordine = ordineDAO.findById(id).get();
+        ordiniService.propostaModifica(date, sede, ordine);
+
+        return listaOrdini("Attivi", model);
+    }
+
+    @GetMapping("/propostaModifica")
+    public String propostaPage(final Model model,
+                                   final @RequestParam("codiceOrdine4") Integer id){
+        model.addAttribute("ordine", ordiniService.findById(id).get());
+        model.addAttribute("sedi", ordiniService.visualizzaSedi());
+        return "/ordini/propostaModifica";
+    }
+
 
 }

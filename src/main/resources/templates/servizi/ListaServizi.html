@@ -36,8 +36,9 @@
         </div>
     </div>
 
-    <div th:if="${utente.getRuolo().getName().equals('OPERATORE')}">
-        <a th:href="@{'/servizio/aggiuntaServizio'}">Aggiungi servizio</a>
+    <div th:if="${utente.getRuolo().getName().equals('OPERATORE')}"><br>
+
+        <a th:href="@{/servizio/aggiuntaServizio}">Aggiungi servizio</a>
     </div>
 </body>
 </html>
