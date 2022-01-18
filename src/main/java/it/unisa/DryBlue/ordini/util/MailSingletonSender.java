@@ -58,7 +58,7 @@ import org.springframework.mail.javamail.JavaMailSender;
                        + "Questo messaggio è stato generato automaticamente dal sistema DryBlueLaundry "
                        + "per informarla che lo stato del suo ordine è stato cambiato in " + stato + ".\n"
                        + "Per maggiori informazioni acceda alla sua area utente e "
-                       + "controlli la sua lista ordini attivi per tener traccia del suo ordine.\n\n"
+                       + "controlli la lista ordini attivi per tener traccia del suo ordine.\n\n"
                        + "Cordiali saluti.\n";
 
         }

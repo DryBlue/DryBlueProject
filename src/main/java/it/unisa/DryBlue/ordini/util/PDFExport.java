@@ -34,7 +34,7 @@ public class PDFExport {
 
 
     public void export(final HttpServletResponse response, final String nome,
-                       final String cognome, final String indirizzo) throws Exception {
+                       final String cognome, final String indirizzo, final Integer code) throws Exception {
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, response.getOutputStream());
 
@@ -42,14 +42,25 @@ public class PDFExport {
         final int size = 28;
         fontTitolo.setSize(size);
         fontTitolo.setColor(Color.blue);
+
+        Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+         final int size1 = 20;
+        font.setSize(size1);
+
        document.open();
 
         Paragraph titolo = new Paragraph("DryBlueLaundry", fontTitolo);
         titolo.setAlignment(Paragraph.ALIGN_CENTER);
         document.add(titolo);
 
+        Paragraph ordine = new Paragraph("Ordine: " + code, font);
+        final int spacing0 = 50;
+        ordine.setSpacingBefore(spacing0);
+        ordine.setAlignment(Paragraph.ALIGN_CENTER);
+        document.add(ordine);
+
         PdfPTable table = new PdfPTable(2);
-        final int spacing = 100;
+        final int spacing = 10;
         table.setSpacingBefore(spacing);
 
 
@@ -57,10 +68,6 @@ public class PDFExport {
         table.addCell(nome + " " + cognome + "\n" + indirizzo);
         table.addCell("DryBlueLaundry\nAriano Irpino, via Cardito, 52\nItalia");
 
-        final int columns = 3;
-        final int spacingB = 50;
-        PdfPTable table1 = new PdfPTable(columns);
-        table1.setSpacingBefore(spacingB);
 
             document.add(table);
             document.close();

@@ -1,12 +1,15 @@
 package it.unisa.DryBlue.ordini.controller;
 
 import it.unisa.DryBlue.autenticazione.domain.Utente;
+import it.unisa.DryBlue.gestioneCliente.dao.ClienteDAO;
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import it.unisa.DryBlue.gestioneCliente.services.GestioneClienteService;
 import it.unisa.DryBlue.ordini.dao.OrdineDAO;
+import it.unisa.DryBlue.ordini.dao.PropostaModificaDAO;
 import it.unisa.DryBlue.ordini.dao.RigaOrdineDAO;
 import it.unisa.DryBlue.ordini.dao.SedeDAO;
 import it.unisa.DryBlue.ordini.domain.Ordine;
+import it.unisa.DryBlue.ordini.domain.PropostaModifica;
 import it.unisa.DryBlue.ordini.domain.RigaOrdine;
 import it.unisa.DryBlue.ordini.domain.Sede;
 import it.unisa.DryBlue.ordini.services.OrdiniService;
@@ -36,9 +39,13 @@ public class OrdiniController {
     private final GestioneClienteService gestioneClienteService;
     @Autowired
     private final MailSingletonSender sender;
+   // @Autowired
+    //private final MailSingletonSenderProposta senderProposta;
     private final OrdineDAO ordineDAO;
     private final SedeDAO sedeDAO;
     private final RigaOrdineDAO rigaOrdineDAO;
+    private final PropostaModificaDAO propostaModificaDAO;
+    private final ClienteDAO clienteDAO;
 
     @GetMapping("/form")
     private String form(final Model model) {
@@ -170,7 +177,7 @@ public class OrdiniController {
         ordiniService.stampaEtichetta(ordine);
 
         PDFExport e = new  PDFExport();
-        e.export(response, nome, cognome, indirizzo);
+        e.export(response, nome, cognome, indirizzo, id_ordine);
     }
 
     @PostMapping("/propostaModifica")
@@ -182,6 +189,9 @@ public class OrdiniController {
         Ordine ordine = ordineDAO.findById(id).get();
         ordiniService.propostaModifica(date, sede, ordine);
 
+        PropostaModifica proposta= ordine.getPropostaModifica();
+        proposta.setDataProposta(date);
+        propostaModificaDAO.save(proposta);
         return listaOrdini("Attivi", model);
     }
 
@@ -193,5 +203,51 @@ public class OrdiniController {
         return "/ordini/propostaModifica";
     }
 
+    @PostMapping("/ValutazioneProposta")
+    public String ValutazioneProposta(Model m, @RequestParam("codiceOrdine2") Integer id_ordine) {
+        m.getAttribute("utente");
+        Ordine ordine = ordineDAO.findById(id_ordine).get();
+
+        String telefono = ordine.getCliente().getNumeroTelefono();
+        Cliente cliente = clienteDAO.findByNumeroTelefono(telefono);
+
+        m.addAttribute("ordin", ordine);
+        m.addAttribute("cliente", cliente);
+
+        return "/ordini/ValutazionePropostaOperatore";
+
+    }
+
+/*
+    @PostMapping("/ValutazioneAccetta")
+    public String ValutazioneAccetta(Model m,
+                                     @RequestParam("accetta") Integer accetta) {
+        m.getAttribute("utente");
+        Ordine ordine = ordineDAO.findById(accetta).get();
+        String email = ordine.getCliente().getEmail();
+
+        String scelta="ACCETTATA";
+       if(email != null) {
+           senderProposta.sendEmail(email, scelta);
+        }
+        //return "/ordini/ModificaOrdineOperatore";
+        return listaOrdini("Attivi", m);
+    }
+
+    @PostMapping("/ValutazioneRifiuta")
+    public String ValutazioneRifiuta(Model m, @RequestParam("rifiuta") Integer rifiuta) {
+        m.getAttribute("utente");
+        Ordine ordine = ordineDAO.findById(rifiuta).get();
+        String email = ordine.getCliente().getEmail();
+
+        String scelta="RIFIUTATA";
+       if(email != null) {
+           senderProposta.sendEmail(email, scelta);
+        }
+
+        return listaOrdini("Attivi", m);
+
+    }
+*/
 
 }
