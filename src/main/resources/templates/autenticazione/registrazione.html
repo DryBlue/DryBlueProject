@@ -1,26 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <meta charset="UTF-8">
-    <title>Registrazione</title>
+    <title>DryBlue | Registrazione</title>
 </head>
 <body>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+
 
 <h1 style= "text-align:center">Registrazione Cliente</h1>
 <p style= "text-align:center"> inserisci i dati del cliente da registrare</p>
-<div style="text-align: center">
 
-<form  th:action="@{/autenticazione/registrazione/registrazioneSuccesso}" method="post" th:object="${regUtente}"  >
-    <label>Nome*: </label> <input type="text" placeholder="Nome" id="nome" name="nome" th:field="*{nome}" required ><br><br>
-    <label>Cognome*: </label> <input type=" text"placeholder="Cognome" id="cognome" name="cognome" th:field="*{cognome}" required ><br><br>
-    <label>Indirizzo*: </label> <input type="text" placeholder="Indirizzo" id="indirizzo" name="indirizzo" th:field="*{indirizzo}" required><br><br>
-    <label>Cellulare*:  </label> <input type="text" placeholder="cellulare" id="cellulare" name="cellulare" th:field="*{cellulare}" required ><br><br>
-    <label>*Campo Obbligatorio<br>
-        <input type="checkbox"> Autorizzo il trattamento dei miei dati personali
-                                (ai sensi dell'art.7 del GDPR 2016/679 e della normativa nazionale vigente)</label><br><br>
-    <button type="submit">Registra l'utente </button>
-     </form>
+    <div class="container" style="text-align: center">
+             <form class="row g-3" th:action="@{/autenticazione/registrazione/registrazioneSuccesso}" method="post" th:object="${regUtente}"  >
+                 <div class="col-md-6">
+                 <label>Nome*: </label> <input type="text" placeholder="Nome" id="nome" name="nome" th:field="*{nome}" required ><br><br>
+                 </div>
 
-</div>
+                 <div class="col-md-6">
+                 <label>Cognome*: </label> <input type=" text"placeholder="Cognome" id="cognome" name="cognome" th:field="*{cognome}" required ><br><br>
+                 </div>
+
+                     <div class="col-md-6">
+                     <label>Indirizzo*: </label> <input type="text" placeholder="Indirizzo" id="indirizzo" name="indirizzo" th:field="*{indirizzo}" required><br><br>
+                     </div>
+                 <div class="col-md-6">
+                 <label>Cellulare*:  </label> <input type="text" placeholder="cellulare" id="cellulare" name="cellulare" th:field="*{cellulare}" required ><br><br>
+                 </div>
+
+                    <div class="col-12">
+                        <div class="form-check">
+                            <label>*Campo Obbligatorio</label> <br><input class="form-check-input" type="checkbox">
+                            <label  class="form-check-label">Autorizzo il trattamento dei miei dati personali
+                                            (ai sensi dell'art.7 del GDPR 2016/679 e della normativa nazionale vigente)</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                     <button type="submit" class="btn btn-primary">Registra l'utente </button>
+                     </div>
+                 </form>
+            </div>
 </body>
 </html>
