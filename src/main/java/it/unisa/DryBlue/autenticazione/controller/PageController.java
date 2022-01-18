@@ -25,4 +25,16 @@ public class PageController {
         model.getAttribute("utente");
         return "About";
     }
+
+    @GetMapping("/navbarCliente")
+    public String goNavBar(final Model model){
+        model.getAttribute("utente");
+        return "navbarCliente";
+    }
+
+    @GetMapping("/navbarOperatore")
+    public String goNavBarOperatore(final Model model){
+        model.getAttribute("utente");
+        return "navbarOperatore";
+    }
 }

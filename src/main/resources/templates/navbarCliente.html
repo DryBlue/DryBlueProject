@@ -2,9 +2,8 @@
 <html lang="en" xmlns:th="http://w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="style/homepage.css">
 </head>
 <body>
 
@@ -20,42 +19,25 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href = "@{'/Homepage'}">Homepage</a>
+                    <a class="nav-link active" aria-current="page" th:href = "@{'/LoggedHomepage'}">Homepage</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href = "@{'servizio/listaServizi'}">Servizi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href = "@{'/about'}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Sedi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contatti</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 
-
-
-<div class="container-sm">
-    <div class="row">
-        <div class="col-4">
-<form th:action="@{/autenticazione/login}" method="post" autocomplete="off">
-                <h2 class="text-center">Esegui l'accesso</h2>
-                <div class="form-group">
-                    <label>
-                        <input class="form-control" type="text" name="username" placeholder="Username:" required>
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label>
-                        <input class="form-control" type="password" name="password" placeholder="Password:" required>
-                    </label>
-                </div>
-                <div class="form-group">
-                    <input class="form-control button" type="submit" name="Login" value="Login">
-                </div>
-            </form>
-</div>
-
-<div>
-    <a th:href="@{/autenticazione/forgotPassword}"><button type="button" class="btn btn-primary">Primo Accesso</button></a>
-</div>
-    </div>
-</div>
-</div>
 
 </body>
 </html>

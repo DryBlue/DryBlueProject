@@ -11,7 +11,7 @@
 <div th:if="${utente.getRuolo().getName().equals('OPERATORE')}">
     <a th:href="@{/ordini/form}">Nuovo Ordine</a>
     <a th:href="@{/ordini/ListaOrdini}">Lista Ordini</a>
-    <a th:href="@{/servizio/listaMacchinari}">Lista Macchinari</a>
+    <a th:href="@{/autenticazione/HelloWorld}">Lista Macchinari</a> <!-- AGGIUNGERE PATH LISTA MACCHINARI -->
     <a th:href="@{/gestioneCliente/clienti}">Lista Clienti</a>
     <a th:href="@{/servizio/listaServizi}">Lista Servizi</a>
     <a th:href="@{/servizio/aggiuntaMacchinario}">Agg Macchinario</a>

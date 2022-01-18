@@ -167,6 +167,24 @@ public class AutenticazioneController {
         return "LoggedHomepage";
     }
 
+    @GetMapping(value  = "/forgotPassword")
+    public String dimenticatoPassword(final Model model) {
+        model.getAttribute("utente");
+        return "autenticazione/forgotPassword";
+    }
+
+    @PostMapping(value  = "/ReimpostaPassword")
+    public String forgotPassword(final Model model,
+                                 final @RequestParam("username") String username) {
+        Utente utente = personaDAO.findByUsername(username);
+         if (utente != null) {
+            return "autenticazione/newPassword";
+           } else {
+            return "Homepage";
+        }
+
+    }
+
     @GetMapping(value = "/paginaReset")
     public String paginaReset(final Model model) {
         model.getAttribute("utente");
