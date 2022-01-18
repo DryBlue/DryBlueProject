@@ -14,6 +14,7 @@ import it.unisa.DryBlue.ordini.domain.RigaOrdine;
 import it.unisa.DryBlue.ordini.domain.Sede;
 import it.unisa.DryBlue.ordini.services.OrdiniService;
 import it.unisa.DryBlue.ordini.util.MailSingletonSender;
+import it.unisa.DryBlue.ordini.util.MailSingletonSenderProposta;
 import it.unisa.DryBlue.ordini.util.PDFExport;
 import it.unisa.DryBlue.servizi.services.ServizioService;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +40,8 @@ public class OrdiniController {
     private final GestioneClienteService gestioneClienteService;
     @Autowired
     private final MailSingletonSender sender;
-   // @Autowired
-    //private final MailSingletonSenderProposta senderProposta;
+    @Autowired
+    private final MailSingletonSenderProposta senderProposta;
     private final OrdineDAO ordineDAO;
     private final SedeDAO sedeDAO;
     private final RigaOrdineDAO rigaOrdineDAO;
@@ -218,7 +219,7 @@ public class OrdiniController {
 
     }
 
-/*
+
     @PostMapping("/ValutazioneAccetta")
     public String ValutazioneAccetta(Model m,
                                      @RequestParam("accetta") Integer accetta) {
@@ -248,6 +249,6 @@ public class OrdiniController {
         return listaOrdini("Attivi", m);
 
     }
-*/
+
 
 }

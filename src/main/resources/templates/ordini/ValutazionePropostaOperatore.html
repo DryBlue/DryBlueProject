@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>DryBlue | Valutazione Proposta</title>
+</head>
+<body>
+<h1 style="text-align: center">Valutazione Proposta</h1>
+<h3>L'utente <span th:text="${cliente.nome} + ' ' + ${cliente.cognome}"></span>
+    ha effettuato la seguente proposta di modifica per l'ordine <span th:text="${ordin.id}"></span> </h3>
+
+<p>Dettagli attuali:<br>
+<ul>
+    <li>Numero Ordine: <p th:text="${ordin.id}"></p></li>
+    <li>Contenuto:
+        <table border = "1">
+            <thead>
+            <tr>
+                <th>Servizio</th>
+                <th>Capo</th>
+                <th>Quantita'</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <th:block th:each="rigaordine : ${ordin.righeOrdine}">
+                <tr>
+                    <td th:text="${rigaordine.getServizio().getTipologia()}"></td>
+                    <td th:text="${rigaordine.getServizio().getCaratteristiche()}"></td>
+                    <td th:text="${rigaordine.quantita}"></td>
+                </tr>
+            </th:block>
+            </tbody>
+
+        </table><br>
+    </li>
+    <li>Data Consegna:<p th:text="${ordin.dataConsegnaDesiderata}"></p></li>
+    <li>Modalità di ritiro: <p th:text="${ordin.tipologiaRitiro}"></p></li>
+
+    <div th:if="${ordin.tipologiaRitiro.equals('In sede')}">
+        <li>Sede di ritiro  <p th:text="${ordin.sede.getIndirizzo()}"></p></li>
+    </div>
+
+    <div th:if="${ordin.note!=null}">
+        <li>Note:  <p th:text="${ordin.note}"></p></li>
+    </div>
+</ul>
+</p><br>
+
+
+<p>Proposta: <br>
+ Data desiderata: inserire data della proposta cliente
+</p><br>
+
+<form th:action="@{/ordini/ValutazioneAccetta}" method="post">
+    <input type="hidden" id="accetta" name="accetta" value="accetta" th:value="${ordin.id}">
+<button type="submit" >Accetta </button>
+</form>
+<form th:action="@{/ordini/ValutazioneRifiuta}" method="post">
+    <input type="hidden" id="rifiuta" name="rifiuta" th:value="${ordin.id}">
+    <button type="submit" >Rifiuta</button>
+</form>
+</body>
+</html>
