@@ -64,7 +64,7 @@ public class OrdiniController {
                                   final @RequestParam("cliente") Cliente cliente,
                                   final @RequestParam("tipologiaRitiro") String tipologiaRitiro,
                                   final @RequestParam("sede") Sede sede,
-                                  final @RequestParam("dataConsegnaDesiderata")LocalDate dataConsegnaDesiderata,
+                                  final @RequestParam("dataConsegnaDesiderata") LocalDate dataConsegnaDesiderata,
                                   final @RequestParam("sedeDesiderata") Integer sedeDesiderata,
                                   final @RequestParam("note") String note) {
         ordiniService.creazioneOrdine(rigaOrdine, quantita, cliente, tipologiaRitiro,
@@ -76,7 +76,7 @@ public class OrdiniController {
     }
 
     @GetMapping("/ListaOrdini")
-    private String listaOrdini(final @RequestParam(value = "filter", defaultValue = "Attivi")  String filter,
+    private String listaOrdini(final @RequestParam(value = "filter", defaultValue = "Attivi") String filter,
                                final Model model) {
         Utente u = (Utente) model.getAttribute("utente");
         if (u.getRuolo().getName().equals("OPERATORE")) {
@@ -137,7 +137,7 @@ public class OrdiniController {
 
     @PostMapping("/ListaOrdini/ModificaData")
     public String ModificaData(final Model m,
-                               final @RequestParam("data")String data,
+                               final @RequestParam("data") String data,
                                final @RequestParam("idOrdine") Integer id_ordine) {
         Ordine ordine = ordineDAO.findById(id_ordine).get();
         LocalDate date = LocalDate.parse(data);
@@ -159,9 +159,8 @@ public class OrdiniController {
     }
 
 
-
     @PostMapping("/StampaEtichetta")
-    public void exportToPDF(final HttpServletResponse response, final Model m,  final @RequestParam("codiceOrdine1") Integer id_ordine) throws Exception {
+    public void exportToPDF(final HttpServletResponse response, final Model m, final @RequestParam("codiceOrdine1") Integer id_ordine) throws Exception {
         response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
@@ -177,7 +176,7 @@ public class OrdiniController {
         String indirizzo = ordine.getCliente().getIndirizzo();
         ordiniService.stampaEtichetta(ordine);
 
-        PDFExport e = new  PDFExport();
+        PDFExport e = new PDFExport();
         e.export(response, nome, cognome, indirizzo, id_ordine);
     }
 
@@ -190,7 +189,7 @@ public class OrdiniController {
         Ordine ordine = ordineDAO.findById(id).get();
         ordiniService.propostaModifica(date, sede, ordine);
 
-        PropostaModifica proposta= ordine.getPropostaModifica();
+        PropostaModifica proposta = ordine.getPropostaModifica();
         proposta.setDataProposta(date);
         propostaModificaDAO.save(proposta);
         return listaOrdini("Attivi", model);
@@ -206,12 +205,12 @@ public class OrdiniController {
 
 
     @PostMapping("/ValutazioneProposta")
-    public String ValutazioneProposta(Model m, @RequestParam("codiceOrdine2") Integer id_ordine) {
+    public String ValutazioneProposta(final Model m, final @RequestParam("codiceOrdine2") Integer id_ordine) {
         m.getAttribute("utente");
         Ordine ordine = ordineDAO.findById(id_ordine).get();
-        Integer idProp= ordine.getPropostaModifica().getId();
-        PropostaModifica pr= propostaModificaDAO.findById(idProp).get();
-        String data= pr.getDataProposta().toString();
+        Integer idProp = ordine.getPropostaModifica().getId();
+        PropostaModifica pr = propostaModificaDAO.findById(idProp).get();
+        String data = pr.getDataProposta().toString();
         String telefono = ordine.getCliente().getNumeroTelefono();
         Cliente cliente = clienteDAO.findByNumeroTelefono(telefono);
 
@@ -224,29 +223,29 @@ public class OrdiniController {
 
 
     @PostMapping("/ValutazioneAccetta")
-    public String ValutazioneAccetta(Model m,
-                                     @RequestParam("accetta") Integer accetta) {
+    public String ValutazioneAccetta(final Model m,
+                                     final @RequestParam("accetta") Integer accetta) {
         m.getAttribute("utente");
         Ordine ordine = ordineDAO.findById(accetta).get();
         String email = ordine.getCliente().getEmail();
 
-        String scelta="ACCETTATA";
-       if(email != null) {
-           senderProposta.sendEmail(email, scelta);
+        String scelta = "ACCETTATA";
+        if (email != null) {
+            senderProposta.sendEmail(email, scelta);
         }
         //return "/ordini/ModificaOrdineOperatore";
         return listaOrdini("Attivi", m);
     }
 
     @PostMapping("/ValutazioneRifiuta")
-    public String ValutazioneRifiuta(Model m, @RequestParam("rifiuta") Integer rifiuta) {
+    public String ValutazioneRifiuta(final Model m, final @RequestParam("rifiuta") Integer rifiuta) {
         m.getAttribute("utente");
         Ordine ordine = ordineDAO.findById(rifiuta).get();
         String email = ordine.getCliente().getEmail();
 
-        String scelta="RIFIUTATA";
-       if(email != null) {
-           senderProposta.sendEmail(email, scelta);
+        String scelta = "RIFIUTATA";
+        if (email != null) {
+            senderProposta.sendEmail(email, scelta);
         }
 
         return listaOrdini("Attivi", m);

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>DryBlue | Lista Macchinari</title>
+</head>
+<body>
+    <a th:href="@{/servizio/aggiuntaMacchinario}">Aggiungi Nuovo Macchinario</a>
+
+    <div class="container">
+        <div class="row">
+            <h1 class="text-center">Lista Macchinari</h1>
+            <hr>
+            <table border = "1">
+                <thead>
+                <tr>
+                    <th>Denominazione</th>
+                    <th>Matricola</th>
+                    <th>Manutentore</th>
+                    <th>Stato</th>
+                    <th>Caratteristiche</th>
+                    <th>Costruttore</th>
+                    <th>Numero manutenzione</th>
+                    <!-- <th>Operazioni</th>  Non abbiamo modifica e rimozione-->
+                </tr>
+                </thead>
+
+                <tbody>
+                <th:block th:each="macchinario : ${macchinari}">
+                    <tr>
+                        <td th:text="${macchinario.denominazione}"></td>
+                        <td th:text="${macchinario.matricola}"></td>
+                        <td th:text="${macchinario.manutentore}"></td>
+                        <td>
+                            <form id="modifica" th:action="@{/servizio/aggiornaStatoMacchinario}" method="post">
+                                 <select name="stato">
+                                    <div th:if="${macchinario.getStato().equals('In funzione')}">
+                                        <option value="In funzione">In funzione</option>
+                                        <option value="Inattivo">Inattivo</option>
+                                    </div>
+                                    <div th:if="${macchinario.getStato().equals('Inattivo')}">
+                                        <option value="Inattivo">Inattivo</option>
+                                        <option value="In funzione">In funzione</option>
+                                    </div>
+                                </select><br><br>
+                                <input type="hidden" name="matricola" th:value="${macchinario.matricola}">
+                                <button type="submit"  form="modifica">Modifica</button>
+                            </form>
+                        </td>
+                        <td th:text="${macchinario.caratteristiche}"></td>
+                        <td th:text="${macchinario.costruttore}"></td>
+                        <td th:text="${macchinario.telefonoManutenzione}"></td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -51,7 +51,7 @@ public class ServiziController {
         servizioService.aggiungiMacchinario(denominazione, matricola, costruttore, caratteristiche,
                                             manutentore, stato, telefonoManutenzione, sede);
         model.getAttribute("utente");
-        return "/servizi/listaMacchinari";
+        return "/servizi/ListaMacchinari";
     }
 
     @GetMapping("/listaServizi")
@@ -60,5 +60,21 @@ public class ServiziController {
         model.getAttribute("utente");
         return "/servizi/ListaServizi";
     }
+
+    @GetMapping("/listaMacchinari")
+    public String trovaMacchinari(final Model model) {
+        model.addAttribute("macchinari", servizioService.findMacchinari());
+        model.getAttribute("utente");
+        return "/servizi/ListaMacchinari";
+    }
+
+    @PostMapping("/aggiornaStatoMacchinario")
+    public String aggiornaStatoMacchinario(final Model model,
+                                         final @RequestParam("matricola") String matricola,
+                                         final @RequestParam("stato") String stato) {
+        servizioService.aggiornaStatoMacchinario(matricola, stato);
+        return trovaMacchinari(model);
+    }
+
 
 }

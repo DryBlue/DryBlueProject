@@ -153,6 +153,16 @@ public class DryBlueApplication {
             macchinario.setStato("In funzione");
             macchinario.setSede(sede1);
 
+            Macchinario macchinario2 = new Macchinario();
+            macchinario2.setMatricola("CD3456");
+            macchinario2.setDenominazione("MacchinaY");
+            macchinario2.setCaratteristiche("Bella");
+            macchinario2.setCostruttore("Whirlpool");
+            macchinario2.setManutentore("X");
+            macchinario2.setTelefonoManutenzione("3387610971");
+            macchinario2.setStato("Inattivo");
+            macchinario2.setSede(sede2);
+
 
             Operatore operatore = new Operatore();
             operatore.setNome("Luigi");
@@ -172,7 +182,7 @@ public class DryBlueApplication {
             etichetta.setSede(sede1);
 
 
-            macchinarioDAO.save(macchinario);
+            macchinarioDAO.saveAll(Arrays.asList(macchinario, macchinario2));
 
             operatoreDAO.saveAll(Arrays.asList(operatore, operatore2));
             etichettaDAO.save(etichetta);

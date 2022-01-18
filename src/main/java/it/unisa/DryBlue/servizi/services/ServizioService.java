@@ -21,4 +21,6 @@ public interface ServizioService {
     void modificaServizio(Integer idServizio, String nome, String tipologia, String caratteristiche, double prezzo);
 
     List<Servizio> findServizi();
+
+    List<Macchinario> findMacchinari();
 }

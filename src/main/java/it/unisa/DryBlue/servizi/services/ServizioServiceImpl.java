@@ -106,4 +106,9 @@ public class ServizioServiceImpl implements ServizioService {
     public List<Servizio> findServizi() {
         return (List<Servizio>) servizioDAO.findAll();
     }
+
+    @Override
+    public List<Macchinario> findMacchinari() {
+        return (List<Macchinario>) macchinarioDAO.findAll();
+    }
 }
