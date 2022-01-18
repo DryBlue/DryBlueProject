@@ -85,9 +85,5 @@ public class AutenticazioneServiceImpl implements AutenticazioneService {
         return null;
     }
 
-    @Override
-    public Utente findByUsername(final String username) {
-        return utenteDAO.findByUsername(username);
-    }
 
 }

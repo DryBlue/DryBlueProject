@@ -14,10 +14,4 @@ public interface AutenticazioneService {
       */
      Utente login(String username, String password);
 
-     /**
-      * Implementa la funzionalità di trovare un utente.
-      * @param username La username dell'utente
-      * @return L'utente se presente, altrimenti null
-      */
-     Utente findByUsername(String username);
 }

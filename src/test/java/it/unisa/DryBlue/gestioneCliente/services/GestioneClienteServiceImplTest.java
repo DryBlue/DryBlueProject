@@ -1,9 +1,8 @@
-package it.unisa.DryBlue.gestioneCliente;
+package it.unisa.DryBlue.gestioneCliente.services;
 
 import it.unisa.DryBlue.gestioneCliente.dao.ClienteDAO;
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
-import it.unisa.DryBlue.gestioneCliente.services.GestioneClienteService;
-import it.unisa.DryBlue.servizi.domain.Servizio;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,13 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class GestioneClienteServiceImplTest {
-    @Mock
-    private ClienteDAO clienteDAO;
 
     @Autowired
     private GestioneClienteService gestioneClienteService;

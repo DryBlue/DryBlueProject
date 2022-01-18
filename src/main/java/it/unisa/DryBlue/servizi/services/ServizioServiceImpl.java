@@ -40,7 +40,7 @@ public class ServizioServiceImpl implements ServizioService {
     @Override
     public Boolean aggiornaStatoMacchinario(final String matricola, final String stato) {
         Macchinario macchinario;
-        macchinario = macchinarioDAO.findById(matricola).get();
+        macchinario = macchinarioDAO.findById(matricola).orElse(null);
         if (macchinario != null) {
             macchinario.setStato(stato);
             macchinarioDAO.save(macchinario);

@@ -119,4 +119,16 @@ public class ServizioServiceImplTest {
         when(macchinarioDAO.findAll()).thenReturn(macchinari);
         assertEquals(servizioService.findMacchinari(), macchinari);
     }
+    @Test
+    public void aggiornaStatoMacchinarioSuccess() {
+        when(macchinarioDAO.findById("AB1234")).thenReturn(Optional.ofNullable(macchinario1));
+        when(macchinarioDAO.save(macchinario1)).thenReturn(macchinario1);
+        assertEquals(servizioService.aggiornaStatoMacchinario("AB1234", "In funzione"), true);
+    }
+
+    @Test
+    public void aggiornaStatoMacchinarioFail() {
+        when(macchinarioDAO.findById("")).thenReturn(Optional.empty());
+        assertEquals(servizioService.aggiornaStatoMacchinario("", "In funzione"), false);
+    }
 }
