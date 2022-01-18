@@ -49,7 +49,8 @@
 
 
 <p>Proposta: <br>
- Data desiderata: inserire data della proposta cliente
+ Data desiderata:<p th:text="${dataP.dataProposta}">
+</p>
 </p><br>
 
 <form th:action="@{/ordini/ValutazioneAccetta}" method="post">

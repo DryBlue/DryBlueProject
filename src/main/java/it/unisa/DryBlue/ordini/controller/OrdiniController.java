@@ -204,17 +204,20 @@ public class OrdiniController {
         return "/ordini/propostaModifica";
     }
 
+
     @PostMapping("/ValutazioneProposta")
     public String ValutazioneProposta(Model m, @RequestParam("codiceOrdine2") Integer id_ordine) {
         m.getAttribute("utente");
         Ordine ordine = ordineDAO.findById(id_ordine).get();
-
+        Integer idProp= ordine.getPropostaModifica().getId();
+        PropostaModifica pr= propostaModificaDAO.findById(idProp).get();
+        String data= pr.getDataProposta().toString();
         String telefono = ordine.getCliente().getNumeroTelefono();
         Cliente cliente = clienteDAO.findByNumeroTelefono(telefono);
 
         m.addAttribute("ordin", ordine);
         m.addAttribute("cliente", cliente);
-
+        m.addAttribute("dataP", pr);
         return "/ordini/ValutazionePropostaOperatore";
 
     }
