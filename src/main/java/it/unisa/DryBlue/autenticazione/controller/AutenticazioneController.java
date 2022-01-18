@@ -163,8 +163,7 @@ public class AutenticazioneController {
             cliente.setPassword(newPassword);
             clienteDAO.save(cliente);
         }
-
-        return "LoggedHomepage";
+        return "Homepage";
     }
 
     @GetMapping(value  = "/forgotPassword")
