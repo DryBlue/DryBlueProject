@@ -1,7 +1,7 @@
 package it.unisa.DryBlue.servizi;
 
 /**
- * DA TESTARE METODI rimuoviMacchinario, aggiornaStatoMacchinario, rimuoviServizio, modificaServizio
+ * DA TESTARE METODI aggiornaStatoMacchinario
  */
 
 import it.unisa.DryBlue.ordini.domain.Sede;
@@ -24,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
@@ -41,7 +42,7 @@ public class ServizioServiceImplTest {
 
     private Servizio servizio1, servizio2;
 
-    private Macchinario macchinario1;
+    private Macchinario macchinario1, macchinario2;
 
     private Sede sede1;
 
@@ -56,7 +57,12 @@ public class ServizioServiceImplTest {
         macchinario1 = new Macchinario("Lavatrice12", "LavatriceIndustriale", "Whirlpool", "Mario Rossi",
                 "333222333222", "In funzione");
         macchinario1.setMatricola("AB1234");
+        macchinario2 = new Macchinario("Lavatrice13", "LavatriceIndustriale", "Whirlpool", "Mario Rossi",
+                "333222333222", "Inattivo");
+        macchinario2.setMatricola("BC2345");
         macchinario1.setSede(sede1);
+        macchinario2.setSede(sede1);
+
     }
 
     /**
@@ -98,8 +104,19 @@ public class ServizioServiceImplTest {
         servizioService.aggiungiMacchinario("AB1234", "Lavatrice12", "LavatriceIndustriale",
                 "Whirlpool", "Mario Rossi", "333222333222", "In Funzione", sede1);
         verify(macchinarioDAO, times(1)).save(macchinario1);
-
     }
 
-
+    /**
+     * Metodo che testa il caso in cui la ricerca dei Macchinari va a buon fine
+     *
+     * @result Il test è superato se il metodo findAll del DAO è correttamente invocato
+     */
+    @Test
+    public void findMacchinariSuccess() {
+        List<Macchinario> macchinari = new ArrayList<>();
+        macchinari.add(macchinario1);
+        macchinari.add(macchinario2);
+        when(macchinarioDAO.findAll()).thenReturn(macchinari);
+        assertEquals(servizioService.findMacchinari(), macchinari);
+    }
 }

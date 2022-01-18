@@ -36,16 +36,6 @@ public class ServizioServiceImpl implements ServizioService {
     }
 
 
-    @Override
-    public Boolean rimuoviMacchinario(final String matricola) {
-        Macchinario macchinario;
-        macchinario = macchinarioDAO.findById(matricola).get();
-        if (macchinario != null) {
-            macchinarioDAO.delete(macchinario);
-            return true;
-        }
-        return false;
-    }
 
     @Override
     public Boolean aggiornaStatoMacchinario(final String matricola, final String stato) {
@@ -69,37 +59,6 @@ public class ServizioServiceImpl implements ServizioService {
         servizio.setPrezzo(prezzo);
         servizioDAO.save(servizio);
         return servizio;
-    }
-
-    @Override
-    public Boolean rimuoviServizio(final Integer idServizio) {
-        Servizio servizio;
-        servizio = servizioDAO.findById(idServizio).get();
-        if (servizio != null) {
-            servizioDAO.delete(servizio);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void modificaServizio(final Integer idServizio, final String nome, final String tipologia,
-                                 final String caratteristiche, final double prezzo) {
-        Servizio servizio;
-        servizio = servizioDAO.findById(idServizio).get();
-        if (nome != null) {
-            servizio.setNome(nome);
-        }
-        if (tipologia != null) {
-            servizio.setTipologia(tipologia);
-        }
-        if (caratteristiche != null) {
-            servizio.setCaratteristiche(caratteristiche);
-        }
-        if (!Double.isNaN(prezzo)) {
-            servizio.setPrezzo(prezzo);
-        }
-        servizioDAO.save(servizio);
     }
 
     @Override
