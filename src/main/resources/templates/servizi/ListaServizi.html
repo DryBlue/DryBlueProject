@@ -44,9 +44,10 @@
         </div>
     </div>
 
-    <div th:if="${utente.getRuolo().getName().equals('OPERATORE')}"><br>
-
+    <div th:unless="${utente.getRuolo().getName().equals('OPERATORE')}"><br>
         <a th:href="@{/servizio/aggiuntaServizio}"><button button type="button" class="btn btn-primary">Aggiungi servizio</button></a>
     </div>
+
+
 </body>
 </html>

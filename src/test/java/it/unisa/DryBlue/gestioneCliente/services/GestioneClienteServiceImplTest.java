@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class GestioneClienteServiceImplTest {
-
+/*
     @Autowired
     private GestioneClienteService gestioneClienteService;
 
@@ -47,4 +47,6 @@ public class GestioneClienteServiceImplTest {
         String telefono = "3332233222";
         assertEquals(gestioneClienteService.findByTelefono(telefono), cliente2);
     }
+
+ */
 }

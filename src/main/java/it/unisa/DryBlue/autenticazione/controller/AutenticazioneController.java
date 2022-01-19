@@ -152,7 +152,7 @@ public class AutenticazioneController {
     }
 
     @GetMapping(value = "/newPassword")
-    public String reimpostaPassword(final Model model){
+    public String reimpostaPassword(final Model model) {
         model.getAttribute("utente");
         return "autenticazione/newPassword";
     }
@@ -176,19 +176,19 @@ public class AutenticazioneController {
         return "redirect:/";
     }
 
-    @GetMapping(value  = "/forgotPassword")
+    @GetMapping(value = "/forgotPassword")
     public String dimenticatoPassword(final Model model) {
         model.getAttribute("utente");
         return "autenticazione/forgotPassword";
     }
 
-    @PostMapping(value  = "/ReimpostaPassword")
+    @PostMapping(value = "/ReimpostaPassword")
     public String forgotPassword(final Model model,
                                  final @RequestParam("username") String username) {
         Cliente cliente = clienteDAO.findByUsername(username);
-         if (cliente != null) {
+        if (cliente != null) {
             return "autenticazione/newPassword";
-           } else {
+        } else {
             return "redirect:/";
         }
 
@@ -200,9 +200,9 @@ public class AutenticazioneController {
         return "autenticazione/newPassword";
     }
 
-    @GetMapping(value= "/Homepage")
-        public String tornaHome(final Model model){
-            model.getAttribute("utente");
-            return "redirect:/";
-        }
+    @GetMapping(value = "/Homepage")
+    public String tornaHome(final Model model) {
+        model.getAttribute("utente");
+        return "redirect:/";
+    }
 }

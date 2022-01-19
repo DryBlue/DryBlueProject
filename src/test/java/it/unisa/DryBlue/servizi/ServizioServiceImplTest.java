@@ -22,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
@@ -94,6 +95,27 @@ import static org.mockito.Mockito.*;
                     "Whirlpool", "Mario Rossi", "333222333222", "In Funzione", sede1);
             verify(macchinarioDAO, times(1)).save(macchinario1);
 
+        }
+
+        @Test
+        public void findMacchinariTest() {
+            List<Macchinario> list = new ArrayList<>();
+            list.add(macchinario1);
+            when(macchinarioDAO.findAll()).thenReturn(list);
+            assertEquals(servizioService.findMacchinari(), list);
+        }
+
+        @Test
+        public void aggiornaStatoMacchinarioSuccess() {
+            when(macchinarioDAO.findById("AB1234")).thenReturn(Optional.ofNullable(macchinario1));
+            when(macchinarioDAO.save(macchinario1)).thenReturn(macchinario1);
+            assertEquals(servizioService.aggiornaStatoMacchinario("AB1234", "In funzione"), true);
+        }
+
+        @Test
+        public void aggiornaStatoMacchinarioFail() {
+            when(macchinarioDAO.findById("")).thenReturn(Optional.empty());
+            assertEquals(servizioService.aggiornaStatoMacchinario("", "In funzione"), false);
         }
 
 

@@ -27,13 +27,13 @@ public class PageController {
     }
 
     @GetMapping("/navbarCliente")
-    public String goNavBar(final Model model){
+    public String goNavBar(final Model model) {
         model.getAttribute("utente");
         return "navbarCliente";
     }
 
     @GetMapping("/navbarOperatore")
-    public String goNavBarOperatore(final Model model){
+    public String goNavBarOperatore(final Model model) {
         model.getAttribute("utente");
         return "navbarOperatore";
     }
