@@ -13,9 +13,9 @@
             $("#ritiro").click(function(){
                 var status = $("#ritiro option:selected").attr("grouping");
                 if(status == "In sede"){
-                    $("#sedeDesiderata").show();
+                    $("#sedeScelta").show();
                 }else{
-                    $("#sedeDesiderata").hide();
+                    $("#sedeScelta").hide();
                 }
 
             });
@@ -70,9 +70,9 @@
             <label for="date" name="date"></label>
     </div>
 
-        <div name="sedeDesiderata" id="sedeDesiderata">
+        <div name="sedeScelta" id="sedeScelta">
     <h4>Sede desiderata</h4>
-    <select name="sedeScelta" id="sedeScelta">
+    <select name="sedeDesiderata" id="sedeDesiderata">
         <div id="sede" th:each="sede : ${sedi}">
 
             <option th:text="${sede.indirizzo}"></option>
