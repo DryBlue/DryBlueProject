@@ -49,7 +49,8 @@ public class OrdiniController {
     private final ClienteDAO clienteDAO;
     private final Set<RigaOrdine> righe;
 
-    @GetMapping("/form")
+
+    @GetMapping ("/form")
     private String form(final Model model) {
         model.addAttribute("servizi", servizioService.findServizi());
         model.addAttribute("sedi", ordiniService.visualizzaSedi());

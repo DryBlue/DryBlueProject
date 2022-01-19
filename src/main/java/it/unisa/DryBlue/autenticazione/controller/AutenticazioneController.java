@@ -74,10 +74,10 @@ public class AutenticazioneController {
         Utente utente = autenticazioneService.login(username, password);
         if (utente.getRuolo().getName().equals("OPERATORE")) {
             model.addAttribute("utente", utente);
-            return "LoggedHomepage";
+            return "redirect:/LoggedHomepage";
         } else if (utente.getRuolo().getName().equals("CLIENTE")) {
             model.addAttribute("utente", utente);
-            return "LoggedHomepage";
+            return "redirect:/LoggedHomepage";
         }
 
         model.addAttribute("error", true);
