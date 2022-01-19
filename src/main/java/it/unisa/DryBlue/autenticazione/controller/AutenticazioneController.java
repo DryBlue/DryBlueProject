@@ -159,7 +159,8 @@ public class AutenticazioneController {
 
 
     @PostMapping(value = "/newPassword")
-    public String updatePassword(final Model model, final @RequestParam("newPassword") String newPassword) {
+    public String updatePassword(final Model model,
+                                 final @RequestParam("newPassword") String newPassword) {
         Utente utente = (Utente) model.getAttribute("utente");
         if (utente.getRuolo().getName().equals("OPERATORE")) {
             Operatore operatore = operatoreDAO.findByUsername(utente.getUsername());

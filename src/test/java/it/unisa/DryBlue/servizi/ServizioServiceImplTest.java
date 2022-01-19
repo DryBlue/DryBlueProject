@@ -65,8 +65,9 @@ import static org.mockito.Mockito.*;
            */
         @Test
         public void aggiungiServizioSuccess() {
+            final double prezzo = 10.5;
             when(servizioDAO.save(servizio1)).thenReturn(servizio1);
-            servizioService.aggiungiServizio("Leggins", "lavaggio", "lavaggio a secco", 10.5);
+            servizioService.aggiungiServizio("Leggins", "lavaggio", "lavaggio a secco",prezzo);
             verify(servizioDAO, times(1)).save(servizio1);
         }
 
