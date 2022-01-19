@@ -128,7 +128,7 @@ public class OrdiniController {
         return "ordini/DettaglioOrdine";
     }
 
-    @PostMapping("/ListaOrdini/Modifica")
+    @PostMapping("/ModificaOrdineOperatore")
     public String Modifica(final Model m,
                            final @RequestParam("codiceOrdine3") String id_ordine) {
 

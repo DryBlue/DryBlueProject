@@ -45,11 +45,10 @@ public class ServiziController {
                                        final @RequestParam("costruttore") String costruttore,
                                        final @RequestParam("caratteristiche") String caratteristiche,
                                        final @RequestParam("manutentore") String manutentore,
-                                       final @RequestParam("stato") String stato,
                                        final @RequestParam("numeroMan") String telefonoManutenzione,
                                        final @RequestParam("sede")Sede sede) {
         servizioService.aggiungiMacchinario(denominazione, matricola, costruttore, caratteristiche,
-                                            manutentore, stato, telefonoManutenzione, sede);
+                                            manutentore, telefonoManutenzione, "In funzione", sede);
         model.getAttribute("utente");
         return "/servizi/ListaMacchinari";
     }

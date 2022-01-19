@@ -29,7 +29,7 @@ public class ServizioServiceImpl implements ServizioService {
         macchinario.setCostruttore(costruttore);
         macchinario.setManutentore(manutentore);
         macchinario.setTelefonoManutenzione(telefonoManutenzione);
-        macchinario.setStato("In funzione");
+        macchinario.setStato(stato);
         macchinario.setSede(sede);
         macchinarioDAO.save(macchinario);
         return macchinario;

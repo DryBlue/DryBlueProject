@@ -5,6 +5,9 @@
     <title>DryBlue | Valutazione Proposta</title>
 </head>
 <body>
+
+<div th:replace="navbarOperatore :: navbarOperatore"></div>
+
 <h1 style="text-align: center">Valutazione Proposta</h1>
 <h3>L'utente <span th:text="${cliente.nome} + ' ' + ${cliente.cognome}"></span>
     ha effettuato la seguente proposta di modifica per l'ordine <span th:text="${ordin.id}"></span> </h3>
@@ -61,5 +64,6 @@
     <input type="hidden" id="rifiuta" name="rifiuta" th:value="${ordin.id}">
     <button type="submit" >Rifiuta</button>
 </form>
+</div>
 </body>
 </html>

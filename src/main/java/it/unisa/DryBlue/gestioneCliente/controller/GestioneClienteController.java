@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+
 @Controller
 @RequiredArgsConstructor
 @SessionAttributes("utente")
@@ -24,6 +25,11 @@ public class GestioneClienteController {
         return "/gestioneCliente/ListaClienti";
     }
 
+    @GetMapping(value="/clienti/dettagliCliente")
+    public String dettagliCliente(final Model model){
+        model.getAttribute("utente");
+        return "/gestioneCliente/DettagliCliente";
+    }
     @PostMapping("/clienti/dettagliCliente")
     public String dettagli(@RequestParam("telefono") final String numTel, final Model model) {
         Cliente c = gestioneClienteService.findByTelefono(numTel);

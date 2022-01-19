@@ -10,6 +10,15 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 
+<div th:if="${utente.getRuolo().getName().equals('OPERATORE')}">
+    <div th:replace="navbarOperatore :: navbarOperatore"></div>
+</div>
+
+<div th:if="${utente.getRuolo().getName().equals('CLIENTE')}">
+    <div th:replace="navbarCliente :: navbarCliente"></div>
+</div>
+
+
 <div class="container-sm">
     <div class="row">
         <div class="col-10">
@@ -74,7 +83,7 @@
                             </div>
                     </div>
                     <div th:if="${ordine.stato != 'Concluso'}">
-                        <form method="post" th:action="@{/ordini/ListaOrdini/Modifica}">
+                        <form method="post" th:action="@{/ordini/ModificaOrdineOperatore}">
                             <input type="hidden" id="codiceOrdine3" name="codiceOrdine3" th:value="${ordine.id}">
                             <button type="submit" class="btn btn-light">Modifica</button>
                         </form>
