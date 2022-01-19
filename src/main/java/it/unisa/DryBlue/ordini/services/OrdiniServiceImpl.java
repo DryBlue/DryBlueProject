@@ -31,7 +31,6 @@ public class OrdiniServiceImpl implements OrdiniService {
                                   final String tipologiaRitiro,
                                   final Sede sede,
                                   final LocalDate dataConsegnaDesiderata,
-                                  final Integer sedeDesiderata,
                                   final String note) {
         Ordine ordine = new Ordine();
         ordine.setDataConsegnaDesiderata(dataConsegnaDesiderata);

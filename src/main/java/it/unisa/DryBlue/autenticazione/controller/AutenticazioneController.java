@@ -151,6 +151,13 @@ public class AutenticazioneController {
         }
     }
 
+    @GetMapping(value = "/newPassword")
+    public String reimpostaPassword(final Model model){
+        model.getAttribute("utente");
+        return "autenticazione/newPassword";
+    }
+
+
     @PostMapping(value = "/newPassword")
     public String updatePassword(final Model model, final @RequestParam("newPassword") String newPassword) {
         Utente utente = (Utente) model.getAttribute("utente");
@@ -158,12 +165,15 @@ public class AutenticazioneController {
             Operatore operatore = operatoreDAO.findByUsername(utente.getUsername());
             operatore.setPassword(newPassword);
             operatoreDAO.save(operatore);
+            return "redirect:/";
         } else if (utente.getRuolo().getName().equals("CLIENTE")) {
             Cliente cliente = clienteDAO.findByUsername(utente.getUsername());
             cliente.setPassword(newPassword);
             clienteDAO.save(cliente);
+            return "redirect:/";
         }
-        return "Homepage";
+
+        return "redirect:/";
     }
 
     @GetMapping(value  = "/forgotPassword")
@@ -175,11 +185,11 @@ public class AutenticazioneController {
     @PostMapping(value  = "/ReimpostaPassword")
     public String forgotPassword(final Model model,
                                  final @RequestParam("username") String username) {
-        Utente utente = personaDAO.findByUsername(username);
-         if (utente != null) {
+        Cliente cliente = clienteDAO.findByUsername(username);
+         if (cliente != null) {
             return "autenticazione/newPassword";
            } else {
-            return "Homepage";
+            return "redirect:/";
         }
 
     }
@@ -189,4 +199,10 @@ public class AutenticazioneController {
         model.getAttribute("utente");
         return "autenticazione/newPassword";
     }
+
+    @GetMapping(value= "/Homepage")
+        public String tornaHome(final Model model){
+            model.getAttribute("utente");
+            return "redirect:/";
+        }
 }

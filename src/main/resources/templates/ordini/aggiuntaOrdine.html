@@ -25,27 +25,32 @@
     </select>
 
     <label for="quantity"></label>
-    <input type="number" id="quantity" name="quantity" value="1" min="1" max="10">
+    <input type="number" id="quantity" name="quantity" value="1" min="1">
 
 
     <!-- Aggiunge l'ordine nella riga ordine, da controllare -->
     <button  type="button" name="button" id="addButton" th:text="#{ordine.righeOrdine.add}">+</button>
 
+    <br><br>
     <select name="ritiro">
         <option value="opzione1">Ritiro</option>
         <option value="opzione2">Consegna</option>
     </select><br>
 
+    <h4>Data desiderata</h4>
     <div class="it-datepicker-wrapper">
-            <input class="form-control it-date-datepicker" id="date1" type="date">
-            <label for="date1" name="date">Data consegna desiderata</label>
+            <input class="form-control it-date-datepicker" id="date" type="date">
+            <label for="date" name="date"></label>
     </div>
 
-    <select name="sede">
+    <h4>Sede desiderata</h4>
+    <select name="sedeDesiderata">
         <div th:each="sede : ${sedi}">
             <option th:text="${sede.indirizzo}"></option>
         </div>
     </select><br>
+
+    <!-- if cliente fa l'ordine allora si deve prendere il nome del cliente loggato -->
 
     <div th:if="${utente.getRuolo().getName().equals('OPERATORE')}">
         <select name="cliente">
@@ -59,7 +64,6 @@
     <textarea class="form-control" id="note" name="note" rows="3"></textarea>
 
     <button type="submit">Conferma</button><br>
-    <!-- Possiamo fare che se premi questo bottone torna alla pagina precedente o sbianca le caselle -->
     <button type="reset">Annulla</button><br>
     </div>
 </form>

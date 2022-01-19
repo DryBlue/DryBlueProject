@@ -10,7 +10,7 @@ import java.util.Set;
 
 public interface OrdiniService {
     Ordine creazioneOrdine(Set<RigaOrdine> rigaOrdine, Integer quantita, Cliente cliente, String tipologiaRitiro,
-                           Sede sede, LocalDate dataConsegnaDesiderata, Integer sedeDesiderata, String note);
+                           Sede sede, LocalDate dataConsegnaDesiderata, String note);
 
     void propostaModifica(LocalDate data, String sede, Ordine ordine);
 

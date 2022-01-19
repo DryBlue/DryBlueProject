@@ -62,13 +62,11 @@ public class OrdiniController {
                                   final @RequestParam("rigaOrdine") Set<RigaOrdine> rigaOrdine,
                                   final @RequestParam("quantita") Integer quantita,
                                   final @RequestParam("cliente") Cliente cliente,
-                                  final @RequestParam("tipologiaRitiro") String tipologiaRitiro,
+                                  final @RequestParam("ritiro") String tipologiaRitiro,
                                   final @RequestParam("sede") Sede sede,
-                                  final @RequestParam("dataConsegnaDesiderata") LocalDate dataConsegnaDesiderata,
-                                  final @RequestParam("sedeDesiderata") Integer sedeDesiderata,
+                                  final @RequestParam("date") LocalDate dataConsegnaDesiderata,
                                   final @RequestParam("note") String note) {
-        ordiniService.creazioneOrdine(rigaOrdine, quantita, cliente, tipologiaRitiro,
-                sede, dataConsegnaDesiderata, sedeDesiderata, note);
+        ordiniService.creazioneOrdine(rigaOrdine, quantita, cliente, tipologiaRitiro, sede, dataConsegnaDesiderata, note);
         model.getAttribute("utente");
 
         return "/LoggedHomepage";

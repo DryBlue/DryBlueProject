@@ -41,7 +41,7 @@ public class DryBlueApplication {
             Sede sede2 = new Sede("Ariano Irpino, corso Vittorio Emanuele, 250");
             sedeDAO.saveAll(Arrays.asList(sede1, sede2));
 
-            /*Cliente cliente1 = new Cliente();
+            Cliente cliente1 = new Cliente();
             cliente1.setNumeroTelefono("3456327821");
             cliente1.setUsername(cliente1.generateString());
             cliente1.setPassword(cliente1.generateString());
@@ -73,9 +73,9 @@ public class DryBlueApplication {
             cliente4.setCognome("Bonomelli");
             cliente4.setIndirizzo("Via Polpette al sugo 45");
             cliente4.setEmail("m.ferrara115@studenti.unisa.it");
-            clienteDAO.saveAll(Arrays.asList(cliente1, cliente2, cliente3, cliente4));*/
+            clienteDAO.saveAll(Arrays.asList(cliente1, cliente2, cliente3, cliente4));
 
-            Cliente cliente1 = new Cliente();
+            /*Cliente cliente1 = new Cliente();
             cliente1.setNumeroTelefono("11122334444");
             cliente1.setUsername("user");
             cliente1.setPassword("user");
@@ -90,7 +90,7 @@ public class DryBlueApplication {
             cliente3.setIndirizzo("Nola, P.zza Duomo, 3");
             cliente3.setNome("Felice");
             cliente3.setCognome("Russo");
-            clienteDAO.saveAll(Arrays.asList(cliente1, cliente3));
+            clienteDAO.saveAll(Arrays.asList(cliente1, cliente3)); */
 
             final double prezzo1 = 10.20;
             Servizio servizio = new Servizio();
