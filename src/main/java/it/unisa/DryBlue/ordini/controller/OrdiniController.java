@@ -11,11 +11,11 @@ import it.unisa.DryBlue.ordini.dao.SedeDAO;
 import it.unisa.DryBlue.ordini.domain.Ordine;
 import it.unisa.DryBlue.ordini.domain.PropostaModifica;
 import it.unisa.DryBlue.ordini.domain.RigaOrdine;
-import it.unisa.DryBlue.ordini.domain.Sede;
 import it.unisa.DryBlue.ordini.services.OrdiniService;
 import it.unisa.DryBlue.ordini.util.MailSingletonSender;
 import it.unisa.DryBlue.ordini.util.MailSingletonSenderProposta;
 import it.unisa.DryBlue.ordini.util.PDFExport;
+import it.unisa.DryBlue.servizi.domain.Servizio;
 import it.unisa.DryBlue.servizi.services.ServizioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +47,31 @@ public class OrdiniController {
     private final RigaOrdineDAO rigaOrdineDAO;
     private final PropostaModificaDAO propostaModificaDAO;
     private final ClienteDAO clienteDAO;
+    private final Set<RigaOrdine> righe;
 
     @GetMapping("/form")
     private String form(final Model model) {
+        model.addAttribute("servizi", servizioService.findServizi());
+        model.addAttribute("sedi", ordiniService.visualizzaSedi());
+        model.addAttribute("clienti", gestioneClienteService.findTuttiIClienti());
+        model.getAttribute("utente");
+        model.getAttribute("righe");
+        return "ordini/aggiuntaOrdine";
+    }
+
+    @PostMapping("/aggiuntaRiga")
+    private String aggiuntaRiga(final Model model,
+                                final @RequestParam("idServizio") Integer idServizio,
+                                final @RequestParam("quantity") Integer quantita) {
+        model.getAttribute("utente");
+        Servizio servizio = servizioService.findServizioById(idServizio);
+        System.out.println(servizio.toString());
+        RigaOrdine riga = new RigaOrdine(quantita);
+        riga.setServizio(servizio);
+        riga.setOrdine(null);
+        ordiniService.creaRigaOrdine(riga);
+        righe.add(riga);
+        model.addAttribute("righe", righe);
         model.addAttribute("servizi", servizioService.findServizi());
         model.addAttribute("sedi", ordiniService.visualizzaSedi());
         model.addAttribute("clienti", gestioneClienteService.findTuttiIClienti());
@@ -59,16 +81,15 @@ public class OrdiniController {
 
     @PostMapping("/aggiuntaOrdine")
     private String aggiuntaOrdine(final Model model,
-                                  final @RequestParam("rigaOrdine") Set<RigaOrdine> rigaOrdine,
-                                  final @RequestParam("quantita") Integer quantita,
-                                  final @RequestParam("cliente") Cliente cliente,
+                                  final @RequestParam("cliente") String cliente,
                                   final @RequestParam("ritiro") String tipologiaRitiro,
-                                  final @RequestParam("sede") Sede sede,
-                                  final @RequestParam("date") LocalDate dataConsegnaDesiderata,
+                                  final @RequestParam("sedeDesiderata") String sede,
+                                  final @RequestParam("date") String dataConsegnaDesiderata,
                                   final @RequestParam("note") String note) {
-        ordiniService.creazioneOrdine(rigaOrdine, quantita, cliente, tipologiaRitiro, sede, dataConsegnaDesiderata, note);
+        LocalDate date = LocalDate.parse(dataConsegnaDesiderata);
+        ordiniService.creazioneOrdine(righe, cliente, tipologiaRitiro, sede, date, note);
         model.getAttribute("utente");
-
+        righe.clear();
         return "/LoggedHomepage";
 
     }

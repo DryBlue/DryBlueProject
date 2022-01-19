@@ -18,4 +18,6 @@ public interface ServizioService {
     List<Servizio> findServizi();
 
     List<Macchinario> findMacchinari();
+
+    Servizio findServizioById(int id);
 }

@@ -14,32 +14,41 @@
     <div class="row">
         <div class="col-8">
 <h1 align="center">Aggiungi un nuovo ordine</h1>
+            <form method="post" th:action="@{/ordini/aggiuntaRiga}">
+                <select name="idServizio">
+                    <div th:each="servizio : ${servizi}">
+                        <option th:value="${servizio.id}" th:text="${servizio.nome}"></option>
+                    </div>
+                </select>
 
+                <label for="quantity"></label>
+                <input type="number" id="quantity" name="quantity" value="1" min="1">
 
-<form method="post" th:action="@{/ordine/aggiuntaOrdine}" >
-<div class="form-group">
-    <select name="ordine">
-        <div th:each="servizio : ${servizi}">
-            <option th:text="${servizio.nome}"></option>
+                <button  type="submit" name="button" id="addButton">Aggiungi all'ordine</button>
+            </form>
+
+<form method="post" th:action="@{/ordini/aggiuntaOrdine}" >
+    <input type="hidden" name="cliente" th:value="${utente.username}">
+    <div class="form-group">
+
+    <ul>
+        <div th:if="${righe != null}">
+            <div th:each="riga : ${righe}">
+                <li th:text="${riga.getServizio().getNome() + ', ' + riga.getQuantita()}"></li>
+            </div>
         </div>
-    </select>
+    </ul>
 
-    <label for="quantity"></label>
-    <input type="number" id="quantity" name="quantity" value="1" min="1">
-
-
-    <!-- Aggiunge l'ordine nella riga ordine, da controllare -->
-    <button  type="button" name="button" id="addButton" th:text="#{ordine.righeOrdine.add}">+</button>
 
     <br><br>
     <select name="ritiro">
-        <option value="opzione1">Ritiro</option>
-        <option value="opzione2">Consegna</option>
+        <option value="In sede">Ritiro</option>
+        <option value="Consegna">Consegna</option>
     </select><br>
 
     <h4>Data desiderata</h4>
     <div class="it-datepicker-wrapper">
-            <input class="form-control it-date-datepicker" id="date" type="date">
+            <input class="form-control it-date-datepicker" id="date" name="date" type="date">
             <label for="date" name="date"></label>
     </div>
 

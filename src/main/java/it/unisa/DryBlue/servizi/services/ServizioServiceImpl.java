@@ -36,7 +36,6 @@ public class ServizioServiceImpl implements ServizioService {
     }
 
 
-
     @Override
     public Boolean aggiornaStatoMacchinario(final String matricola, final String stato) {
         Macchinario macchinario;
@@ -51,7 +50,7 @@ public class ServizioServiceImpl implements ServizioService {
 
     @Override
     public Servizio aggiungiServizio(final String nome, final String tipologia, final String caratteristiche,
-                                    final double prezzo) {
+                                     final double prezzo) {
         Servizio servizio = new Servizio();
         servizio.setNome(nome);
         servizio.setTipologia(tipologia);
@@ -69,5 +68,10 @@ public class ServizioServiceImpl implements ServizioService {
     @Override
     public List<Macchinario> findMacchinari() {
         return (List<Macchinario>) macchinarioDAO.findAll();
+    }
+
+    @Override
+    public Servizio findServizioById(final int id) {
+        return servizioDAO.findById(id).get();
     }
 }

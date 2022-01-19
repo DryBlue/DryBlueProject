@@ -52,7 +52,7 @@ public class Ordine implements Serializable {
     @EqualsAndHashCode.Exclude
     private Etichetta etichetta;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.MERGE)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<RigaOrdine> righeOrdine = new HashSet<>();

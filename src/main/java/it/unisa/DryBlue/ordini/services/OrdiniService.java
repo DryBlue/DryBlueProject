@@ -1,6 +1,5 @@
 package it.unisa.DryBlue.ordini.services;
 
-import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import it.unisa.DryBlue.ordini.domain.*;
 
 import java.time.LocalDate;
@@ -9,8 +8,8 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface OrdiniService {
-    Ordine creazioneOrdine(Set<RigaOrdine> rigaOrdine, Integer quantita, Cliente cliente, String tipologiaRitiro,
-                           Sede sede, LocalDate dataConsegnaDesiderata, String note);
+    Ordine creazioneOrdine(Set<RigaOrdine> rigaOrdine, String cliente, String tipologiaRitiro,
+                           String sede, LocalDate dataConsegnaDesiderata, String note);
 
     void propostaModifica(LocalDate data, String sede, Ordine ordine);
 
@@ -27,4 +26,6 @@ public interface OrdiniService {
     List<Sede> visualizzaSedi();
 
     Optional<Ordine> findById(Integer idOrdine);
+
+    void creaRigaOrdine(RigaOrdine riga);
 }

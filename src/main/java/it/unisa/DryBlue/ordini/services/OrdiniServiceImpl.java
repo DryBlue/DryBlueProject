@@ -1,10 +1,8 @@
 package it.unisa.DryBlue.ordini.services;
 
+import it.unisa.DryBlue.gestioneCliente.dao.ClienteDAO;
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
-import it.unisa.DryBlue.ordini.dao.EtichettaDAO;
-import it.unisa.DryBlue.ordini.dao.OrdineDAO;
-import it.unisa.DryBlue.ordini.dao.PropostaModificaDAO;
-import it.unisa.DryBlue.ordini.dao.SedeDAO;
+import it.unisa.DryBlue.ordini.dao.*;
 import it.unisa.DryBlue.ordini.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,25 +21,27 @@ public class OrdiniServiceImpl implements OrdiniService {
     private final PropostaModificaDAO propostaModificaDAO;
     private final EtichettaDAO etichettaDAO;
     private final SedeDAO sedeDAO;
+    private final ClienteDAO clienteDAO;
+    private final RigaOrdineDAO rigaOrdineDAO;
 
     @Override
     public Ordine creazioneOrdine(final Set<RigaOrdine> rigaOrdine,
-                                  final Integer quantita,
-                                  final Cliente cliente,
+                                  final String cliente,
                                   final String tipologiaRitiro,
-                                  final Sede sede,
+                                  final String sede,
                                   final LocalDate dataConsegnaDesiderata,
                                   final String note) {
         Ordine ordine = new Ordine();
+        ordine.setRigheOrdine(rigaOrdine);
         ordine.setDataConsegnaDesiderata(dataConsegnaDesiderata);
         ordine.setTipologiaRitiro(tipologiaRitiro);
         if (note != null) {
             ordine.setNote(note);
         }
         ordine.setStato("Macchiato");
-        ordine.setCliente(cliente);
+        ordine.setCliente(clienteDAO.findByUsername(cliente));
         if (tipologiaRitiro.equals("In sede") && sede != null) {
-            ordine.setSede(sede);
+            ordine.setSede(sedeDAO.findByIndirizzo(sede));
         }
         ordineDAO.save(ordine);
         return ordine;
@@ -148,5 +148,10 @@ public class OrdiniServiceImpl implements OrdiniService {
     @Override
     public Optional<Ordine> findById(final Integer idOrdine) {
         return ordineDAO.findById(idOrdine);
+    }
+
+    @Override
+    public void creaRigaOrdine(final RigaOrdine riga) {
+        rigaOrdineDAO.save(riga);
     }
 }
