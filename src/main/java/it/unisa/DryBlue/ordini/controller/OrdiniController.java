@@ -249,11 +249,20 @@ public class OrdiniController {
         Ordine ordine = ordineDAO.findById(accetta).get();
         String email = ordine.getCliente().getEmail();
 
+        Integer idProp = ordine.getPropostaModifica().getId();
+        PropostaModifica pr = propostaModificaDAO.findById(idProp).get();
+        LocalDate data = pr.getDataProposta();
+       System.out.println("data " +data);
+
+        ordine.setDataConsegnaDesiderata(data);
+        pr.setStato("Conclusa");
+
         String scelta = "ACCETTATA";
         if (email != null) {
             senderProposta.sendEmail(email, scelta);
         }
-        //return "/ordini/ModificaOrdineOperatore";
+        propostaModificaDAO.save(pr);
+        ordineDAO.save(ordine);
         return listaOrdini("Attivi", m);
     }
 
@@ -263,11 +272,16 @@ public class OrdiniController {
         Ordine ordine = ordineDAO.findById(rifiuta).get();
         String email = ordine.getCliente().getEmail();
 
+        Integer idProp = ordine.getPropostaModifica().getId();
+        PropostaModifica pr = propostaModificaDAO.findById(idProp).get();
+
+        pr.setStato("Conclusa");
+
         String scelta = "RIFIUTATA";
         if (email != null) {
             senderProposta.sendEmail(email, scelta);
         }
-
+        propostaModificaDAO.save(pr);
         return listaOrdini("Attivi", m);
 
     }

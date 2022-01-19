@@ -144,7 +144,7 @@ public class DryBlueApplication {
 
             LocalDate tmpdate3 = LocalDate.of(year, month2, day4);
             Ordine ordine4 = new Ordine(tmpdate1, "ritiro", "Imbustato");
-            ordine4.setCliente(cliente3);
+            ordine4.setCliente(cliente4);
             ordine4.setSede(sede1);
 
 

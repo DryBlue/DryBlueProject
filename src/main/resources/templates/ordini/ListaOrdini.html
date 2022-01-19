@@ -63,13 +63,15 @@
                     <button type="submit" class="btn btn-light">Stampa Etichetta</button>
                 </form>
                 <div th:if="${utente.getRuolo().getName().equals('OPERATORE')}">
-                    <div th:if="${ordine.propostaModifica != null}">
                         <div th:if="${ordine.stato != 'Consegnato'}">
+                            <div th:if="${ordine.propostaModifica != null}">
+                                <div th:if="${ordine.propostaModifica.stato != 'Conclusa'}">
                             <form method="post" th:action="@{/ordini/ValutazioneProposta}">
                                 <input type="hidden" id="codiceOrdine2" name="codiceOrdine2" th:value="${ordine.id}">
                                 <button type="submit" class="btn btn-light">Valutazione Proposta</button>
                             </form>
-                        </div>
+                                </div>
+                            </div>
                     </div>
                     <div th:if="${ordine.stato != 'Concluso'}">
                         <form method="post" th:action="@{/ordini/ListaOrdini/Modifica}">
