@@ -28,4 +28,6 @@ public interface OrdiniService {
     Optional<Ordine> findById(Integer idOrdine);
 
     void creaRigaOrdine(RigaOrdine riga);
+
+    Sede findByIndirizzo(String indirizzo);
 }

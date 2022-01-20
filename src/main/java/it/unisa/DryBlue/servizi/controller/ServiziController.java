@@ -1,6 +1,7 @@
 package it.unisa.DryBlue.servizi.controller;
 
 import it.unisa.DryBlue.ordini.domain.Sede;
+import it.unisa.DryBlue.ordini.services.OrdiniService;
 import it.unisa.DryBlue.servizi.services.ServizioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class ServiziController {
 
     private final ServizioService servizioService;
-
+    private final OrdiniService ordineService;
 
 
     @GetMapping("/aggiuntaServizio")
@@ -34,7 +35,9 @@ public class ServiziController {
     }
 
     @GetMapping("/aggiuntaMacchinario")
-    public String aggiuntaMac() {
+    public String aggiuntaMac(final Model model) {
+        model.addAttribute("sedi", ordineService.visualizzaSedi());
+        model.getAttribute("utente");
         return "/servizi/aggiuntaMacchinario";
     }
 
@@ -46,11 +49,11 @@ public class ServiziController {
                                        final @RequestParam("caratteristiche") String caratteristiche,
                                        final @RequestParam("manutentore") String manutentore,
                                        final @RequestParam("numeroMan") String telefonoManutenzione,
-                                       final @RequestParam("sede")Sede sede) {
+                                       final @RequestParam("indirizzoSede")String indirizzoSede) {
         servizioService.aggiungiMacchinario(denominazione, matricola, costruttore, caratteristiche,
-                                            manutentore, telefonoManutenzione, "In funzione", sede);
+                                            manutentore, telefonoManutenzione, "In funzione", ordineService.findByIndirizzo(indirizzoSede));
         model.getAttribute("utente");
-        return "/servizi/ListaMacchinari";
+        return trovaMacchinari(model);
     }
 
     @GetMapping("/ListaServizi")

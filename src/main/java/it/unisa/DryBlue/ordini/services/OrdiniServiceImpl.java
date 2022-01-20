@@ -154,4 +154,9 @@ public class OrdiniServiceImpl implements OrdiniService {
     public void creaRigaOrdine(final RigaOrdine riga) {
         rigaOrdineDAO.save(riga);
     }
+
+    @Override
+    public Sede findByIndirizzo(String indirizzo) {
+        return sedeDAO.findByIndirizzo(indirizzo);
+    }
 }

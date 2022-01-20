@@ -43,12 +43,13 @@
     <input type="text" placeholder="Manutentore" id="manutentore" name="manutentore" required>
     </div>
 
-        <label for="sedeMacchinario">Sede*</label>
-        <select name="sedeMacchinario" id="sedeMacchinario">
-            <div id="sede" th:each="sede : ${sedi}">
-                <option th:text="${sede.indirizzo}"></option>
-            </div>
-        </select>
+        <label for="indirizzoSede">Sede*</label>
+    <select name="indirizzoSede" id="indirizzoSede">
+        <div th:each="sede : ${sedi}">
+
+            <option th:text="${sede.indirizzo}"></option>
+        </div>
+    </select>
     <br>
 
     <div class="form-group">
