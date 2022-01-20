@@ -44,15 +44,15 @@ public class AutenticazioneControllerTest {
     }
 
     @Test
-    public void loginTest(){
+    public void loginTest() {
         String userOperatore = "user3";
-        String pwd ="user32";
+        String pwd = "user32";
         oper = utenteDAO.findByUsername(oper.getUsername());
         assertEquals(utenteDAO.findByPassword(pwd), oper);
         assertEquals(utenteDAO.findByUsername(userOperatore), oper);
 
         String userCliente = "user2";
-        String pwd1 ="user22";
+        String pwd1 = "user22";
         cliente = utenteDAO.findByUsername(cliente.getUsername());
         assertEquals(utenteDAO.findByPassword(pwd1), cliente);
         assertEquals(utenteDAO.findByUsername(userCliente), cliente);

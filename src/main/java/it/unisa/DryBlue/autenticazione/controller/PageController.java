@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
@@ -21,7 +20,7 @@ public class PageController {
     }
 
     @GetMapping("/LoggedHomepage")
-    public String getLoggedHompage(){
+    public String getLoggedHompage() {
         return "LoggedHomepage";
     }
 

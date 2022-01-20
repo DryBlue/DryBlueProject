@@ -50,7 +50,7 @@ public class OrdiniController {
     private final Set<RigaOrdine> righe;
 
 
-    @GetMapping ("/form")
+    @GetMapping("/form")
     private String form(final Model model) {
         model.addAttribute("servizi", servizioService.findServizi());
         model.addAttribute("sedi", ordiniService.visualizzaSedi());
@@ -252,7 +252,7 @@ public class OrdiniController {
         Integer idProp = ordine.getPropostaModifica().getId();
         PropostaModifica pr = propostaModificaDAO.findById(idProp).get();
         LocalDate data = pr.getDataProposta();
-       System.out.println("data " +data);
+        System.out.println("data " + data);
 
         ordine.setDataConsegnaDesiderata(data);
         pr.setStato("Conclusa");

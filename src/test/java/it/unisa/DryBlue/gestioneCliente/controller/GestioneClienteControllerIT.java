@@ -31,13 +31,13 @@ public class GestioneClienteControllerIT {
     @BeforeEach
     public void init() {
         gestioneClienteService = new GestioneClienteServiceImpl(gestioneClienteDAO);
-        final String telefono= "3934447771";
+        final String telefono = "3934447771";
 
-        cliente = new Cliente("userA", "userA", "via Verdi 13" , "Fabio", "Rossi");
+        cliente = new Cliente("userA", "userA", "via Verdi 13", "Fabio", "Rossi");
         cliente.setNumeroTelefono(telefono);
         cliente.setEmail("m@gmail.com");
 
-        cliente1 = new Cliente("userB", "userB", "via Rossi 45" , "Francesca", "Verdi" );
+        cliente1 = new Cliente("userB", "userB", "via Rossi 45", "Francesca", "Verdi");
         cliente1.setNumeroTelefono("395566898");
         cliente1.setEmail("");
 
@@ -53,7 +53,7 @@ public class GestioneClienteControllerIT {
     }
 
     @Test
-    public void dettagliClienteTest(){
+    public void dettagliClienteTest() {
         String telefono = cliente.getNumeroTelefono();
         when(gestioneClienteDAO.findByNumeroTelefono(telefono)).thenReturn(cliente);
         assertEquals(gestioneClienteService.findByTelefono(telefono), cliente);

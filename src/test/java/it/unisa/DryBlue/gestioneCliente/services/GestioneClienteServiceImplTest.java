@@ -43,7 +43,7 @@ public class GestioneClienteServiceImplTest {
     }
 
     @Test
-    public void findByTelefonoTest(){
+    public void findByTelefonoTest() {
         String telefono = "3332233222";
         assertEquals(gestioneClienteService.findByTelefono(telefono), cliente2);
     }

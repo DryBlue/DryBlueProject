@@ -25,11 +25,12 @@ public class GestioneClienteController {
         return "/gestioneCliente/ListaClienti";
     }
 
-    @GetMapping(value="/clienti/dettagliCliente")
-    public String dettagliCliente(final Model model){
+    @GetMapping(value = "/clienti/dettagliCliente")
+    public String dettagliCliente(final Model model) {
         model.getAttribute("utente");
         return "/gestioneCliente/DettagliCliente";
     }
+
     @PostMapping("/clienti/dettagliCliente")
     public String dettagli(@RequestParam("telefono") final String numTel, final Model model) {
         Cliente c = gestioneClienteService.findByTelefono(numTel);
