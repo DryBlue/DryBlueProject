@@ -157,43 +157,35 @@ public class AutenticazioneController {
         return "autenticazione/newPassword";
     }
 
-
     @PostMapping(value = "/newPassword")
     public String updatePassword(final Model model,
-                                 final @RequestParam("newPassword") String newPassword) {
-        Utente utente = (Utente) model.getAttribute("utente");
-        if (utente.getRuolo().getName().equals("OPERATORE")) {
-            Operatore operatore = operatoreDAO.findByUsername(utente.getUsername());
-            operatore.setPassword(newPassword);
-            operatoreDAO.save(operatore);
-            return "redirect:/";
-        } else if (utente.getRuolo().getName().equals("CLIENTE")) {
-            Cliente cliente = clienteDAO.findByUsername(utente.getUsername());
-            cliente.setPassword(newPassword);
-            clienteDAO.save(cliente);
-            return "redirect:/";
+                                 @RequestParam("username") String username,
+                                 @RequestParam("newPassword") String newPassword,
+                                 @RequestParam("oldPassword") String oldPassword,
+                                 @RequestParam("email") String email) {
+
+        Cliente cliente = clienteDAO.findByUsername(username);
+        String password = cliente.getPassword();
+        String ind_email = cliente.getEmail();
+        if((cliente.getUsername().equals(username)) && cliente != null) {
+            if(password.equals(oldPassword)) {
+                cliente.setPassword(newPassword);
+                clienteDAO.save(cliente);
+            }
+            if (ind_email == null){
+                cliente.setEmail(email);
+                clienteDAO.save(cliente);
+            }
+            else {
+                cliente.getEmail();
+            }
         }
+        model.getAttribute("utente");
 
         return "redirect:/";
     }
 
-    @GetMapping(value = "/forgotPassword")
-    public String dimenticatoPassword(final Model model) {
-        model.getAttribute("utente");
-        return "autenticazione/forgotPassword";
-    }
 
-    @PostMapping(value = "/ReimpostaPassword")
-    public String forgotPassword(final Model model,
-                                 final @RequestParam("username") String username) {
-        Cliente cliente = clienteDAO.findByUsername(username);
-        if (cliente != null) {
-            return "autenticazione/newPassword";
-        } else {
-            return "redirect:/";
-        }
-
-    }
 
     @GetMapping(value = "/paginaReset")
     public String paginaReset(final Model model) {
