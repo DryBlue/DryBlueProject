@@ -1,4 +1,4 @@
-package it.unisa.DryBlue.servizi;
+package it.unisa.DryBlue.servizi.services;
 
 /**
  * DA TESTARE METODI rimuoviMacchinario, aggiornaStatoMacchinario, rimuoviServizio, modificaServizio
@@ -9,8 +9,7 @@ import it.unisa.DryBlue.servizi.dao.MacchinarioDAO;
 import it.unisa.DryBlue.servizi.dao.ServizioDAO;
 import it.unisa.DryBlue.servizi.domain.Macchinario;
 import it.unisa.DryBlue.servizi.domain.Servizio;
-import it.unisa.DryBlue.servizi.services.ServizioService;
-import it.unisa.DryBlue.servizi.services.ServizioServiceImpl;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -92,15 +91,15 @@ public class ServizioServiceImplTest {
      *
      * @result Il test è superato se il metodo save del DAO è correttamente invocato
      */
-
+/*
     @Test
-    public void aggiungiMacchinarioTest() {
+    public void aggiungiMacchinarioTest(){
         when(macchinarioDAO.save(macchinario1)).thenReturn(macchinario1);
         servizioService.aggiungiMacchinario("AB1234", "Lavatrice12", "LavatriceIndustriale",
                 "Whirlpool", "Mario Rossi", "333222333222", "In Funzione", sede1);
         verify(macchinarioDAO, times(1)).save(macchinario1);
 
-    }
+    }*/
 
     @Test
     public void findMacchinariTest() {

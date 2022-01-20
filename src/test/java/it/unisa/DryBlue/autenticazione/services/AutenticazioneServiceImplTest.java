@@ -66,7 +66,7 @@ public class AutenticazioneServiceImplTest {
         operatore = new Operatore("user32", "Fabio", "Ricci");
         operatore.setUsername("user3");
     }
-/*
+
     @Test
     public void loginClienteTest() {
         String userCliente = "user2";
@@ -74,7 +74,7 @@ public class AutenticazioneServiceImplTest {
 
         when(clienteDAO.findByUsername(userCliente)).thenReturn(cliente1);
         assertEquals(autenticazioneService.login(userCliente, pwd1), cliente);
-    }*/
+    }
 
     @Test
     public void loginOperatoreTest() {

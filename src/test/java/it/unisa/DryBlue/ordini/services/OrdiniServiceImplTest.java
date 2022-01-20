@@ -2,12 +2,10 @@ package it.unisa.DryBlue.ordini.services;
 
 import it.unisa.DryBlue.gestioneCliente.dao.ClienteDAO;
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
-import it.unisa.DryBlue.gestioneCliente.services.GestioneClienteService;
-import it.unisa.DryBlue.gestioneCliente.services.GestioneClienteServiceImpl;
 import it.unisa.DryBlue.ordini.dao.*;
 import it.unisa.DryBlue.ordini.domain.*;
 import it.unisa.DryBlue.servizi.domain.Servizio;
-import org.aspectj.weaver.ast.Or;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;

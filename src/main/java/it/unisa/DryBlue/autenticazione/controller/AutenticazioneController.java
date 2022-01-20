@@ -158,15 +158,15 @@ public class AutenticazioneController {
 
     @PostMapping(value = "/newPassword")
     public String updatePassword(final Model model,
-                                 @RequestParam("username") String username,
-                                 @RequestParam("newPassword") String newPassword,
-                                 @RequestParam("oldPassword") String oldPassword,
-                                 @RequestParam("email") String email) {
+                                 final @RequestParam("username") String username,
+                                 final @RequestParam("newPassword") String newPassword,
+                                 final @RequestParam("oldPassword") String oldPassword,
+                                 final @RequestParam("email") String email) {
 
         Cliente cliente = clienteDAO.findByUsername(username);
         String password = cliente.getPassword();
         String ind_email = cliente.getEmail();
-        if((cliente.getUsername().equals(username)) && cliente != null) {
+        if((cliente.getUsername().equals(username))&&(cliente != null)) {
             if(password.equals(oldPassword)) {
                 cliente.setPassword(newPassword);
                 clienteDAO.save(cliente);
