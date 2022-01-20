@@ -11,6 +11,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 
+
 <div th:replace="navbarBase :: navbarBase"></div>
         </a>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -28,16 +29,16 @@
 <div class="container-sm">
     <div class="row">
         <div class="col-4">
-<form th:action="@{/autenticazione/login}" method="post" autocomplete="off">
+<form th:action="@{/autenticazione/login}" method="post"  autocomplete="off">
                 <h2 class="text-center">Esegui l'accesso</h2>
                 <div class="form-group">
                     <label>
-                        <input class="form-control" type="text" name="username" placeholder="Username:" required>
+                        <input class="form-control" type="text" name="username" id="username" placeholder="Username:">
                     </label>
                 </div>
                 <div class="form-group">
                     <label>
-                        <input class="form-control" type="password" name="password" placeholder="Password:" required>
+                        <input class="form-control" type="password" name="password" id="password" placeholder="Password:">
                     </label>
                 </div>
                 <div class="form-group">
