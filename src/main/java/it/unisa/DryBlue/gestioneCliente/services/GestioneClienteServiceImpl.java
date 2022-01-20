@@ -23,4 +23,6 @@ public class GestioneClienteServiceImpl implements GestioneClienteService {
         return clienteDAO.findByNumeroTelefono(telefono);
     }
 
+
+
 }

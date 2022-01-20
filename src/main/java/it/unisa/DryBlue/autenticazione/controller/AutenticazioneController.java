@@ -2,7 +2,6 @@ package it.unisa.DryBlue.autenticazione.controller;
 
 import it.unisa.DryBlue.autenticazione.dao.OperatoreDAO;
 import it.unisa.DryBlue.autenticazione.dao.UtenteDAO;
-import it.unisa.DryBlue.autenticazione.domain.Operatore;
 import it.unisa.DryBlue.gestioneCliente.dao.ClienteDAO;
 import it.unisa.DryBlue.autenticazione.domain.Utente;
 import it.unisa.DryBlue.autenticazione.services.AutenticazioneService;
@@ -175,8 +174,7 @@ public class AutenticazioneController {
             if (ind_email == null){
                 cliente.setEmail(email);
                 clienteDAO.save(cliente);
-            }
-            else {
+            } else {
                 cliente.getEmail();
             }
         }

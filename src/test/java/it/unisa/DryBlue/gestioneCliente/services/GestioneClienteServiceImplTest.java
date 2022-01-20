@@ -3,6 +3,8 @@ package it.unisa.DryBlue.gestioneCliente.services;
 import it.unisa.DryBlue.gestioneCliente.dao.ClienteDAO;
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 
+import it.unisa.DryBlue.servizi.domain.Macchinario;
+import it.unisa.DryBlue.servizi.services.ServizioServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,21 +15,26 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class GestioneClienteServiceImplTest {
-/*
-    @Autowired
+
     private GestioneClienteService gestioneClienteService;
+
+    @Mock
+    private ClienteDAO clienteDAO;
 
     private Cliente cliente1, cliente2;
 
     @BeforeEach
     public void init() {
+        gestioneClienteService = new GestioneClienteServiceImpl(clienteDAO);
         cliente1 = new Cliente("user", "user", "Roccarainola, via Roma, 3", "Mario", "Rossi");
         cliente2 = new Cliente("user2", "user2", "Nola, P.zza Duomo, 3", "Felice", "Russo");
         cliente1.setNumeroTelefono("11122334444");
@@ -38,15 +45,16 @@ public class GestioneClienteServiceImplTest {
     public void findTuttiIClientiTest() {
         List<Cliente> list = new ArrayList<>();
         list.add(cliente1);
-        list.add(cliente2);
+        when(clienteDAO.findAll()).thenReturn(list);
         assertEquals(gestioneClienteService.findTuttiIClienti(), list);
     }
 
     @Test
     public void findByTelefonoTest() {
-        String telefono = "3332233222";
-        assertEquals(gestioneClienteService.findByTelefono(telefono), cliente2);
+        String telefono = "11122334444";
+        when(clienteDAO.findByNumeroTelefono(telefono)).thenReturn(cliente1);
+        assertEquals(gestioneClienteService.findByTelefono(telefono), cliente1);
     }
 
- */
+
 }

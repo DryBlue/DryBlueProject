@@ -61,82 +61,28 @@ public class AutenticazioneServiceImplTest {
         oper = new Utente("user3", "user32");
         oper.setNome("Fabio");
         oper.setCognome("Ricci");
-        oper.setIndirizzo("via Rossi 13 Napoli");
-        oper.setCellulare("3334446661");
         oper.setRuolo(ruolo1);
 
         operatore = new Operatore("user32", "Fabio", "Ricci");
         operatore.setUsername("user3");
     }
-
+/*
     @Test
-    public void loginTest() {
-        String userOperatore = "user3";
-        String pwd = "user32";
-        oper = utenteDAO.findByUsername(userOperatore);
-        assertEquals(utenteDAO.findByPassword(pwd), oper);
-        assertEquals(utenteDAO.findByUsername(userOperatore), oper);
-        operatore= operatoreDAO.findByUsername(userOperatore);
-        assertEquals(operatoreDAO.findByUsername(userOperatore),operatore);
-        assertEquals(autenticazioneService.login(userOperatore, pwd), operatore);
-
-        userOperatore = "user3";
-        pwd ="ur3";
-        oper = utenteDAO.findByUsername(userOperatore);
-        assertEquals(utenteDAO.findByPassword(pwd), oper);
-        assertEquals(utenteDAO.findByUsername(userOperatore), oper);
-        operatore= operatoreDAO.findByUsername(userOperatore);
-        assertEquals(operatoreDAO.findByUsername(userOperatore),operatore);
-        assertEquals(autenticazioneService.login(userOperatore, pwd), operatore);
-
-        userOperatore = "ur3";
-        pwd ="user32";
-        oper = utenteDAO.findByUsername(userOperatore);
-        assertEquals(utenteDAO.findByPassword(pwd), oper);
-        assertEquals(utenteDAO.findByUsername(userOperatore), oper);
-        operatore= operatoreDAO.findByUsername(userOperatore);
-        assertEquals(operatoreDAO.findByUsername(userOperatore),operatore);
-        assertEquals(autenticazioneService.login(userOperatore, pwd), operatore);
-
+    public void loginClienteTest() {
         String userCliente = "user2";
         String pwd1 = "user22";
-        cliente = utenteDAO.findByUsername(userCliente);
-        assertEquals(utenteDAO.findByPassword(pwd1), cliente);
-        assertEquals(utenteDAO.findByUsername(userCliente), cliente);
-        cliente1= clienteDAO.findByUsername(userCliente);
-        assertEquals(clienteDAO.findByUsername(userCliente),cliente1);
-        assertEquals(autenticazioneService.login(userCliente, pwd1), cliente);
 
-        userCliente = "us";
-        pwd1 ="user22";
-        cliente = utenteDAO.findByUsername(userCliente);
-        assertEquals(utenteDAO.findByPassword(pwd1), cliente);
-        assertEquals(utenteDAO.findByUsername(userCliente), cliente);
-        cliente1= clienteDAO.findByUsername(userCliente);
-        assertEquals(clienteDAO.findByUsername(userCliente),cliente1);
+        when(clienteDAO.findByUsername(userCliente)).thenReturn(cliente1);
         assertEquals(autenticazioneService.login(userCliente, pwd1), cliente);
+    }*/
 
-        userCliente = "user2";
-        pwd1 ="us2";
-        cliente = utenteDAO.findByUsername(userCliente);
-        assertEquals(utenteDAO.findByPassword(pwd1), cliente);
-        assertEquals(utenteDAO.findByUsername(userCliente), cliente);
-        cliente1= clienteDAO.findByUsername(userCliente);
-        assertEquals(clienteDAO.findByUsername(userCliente),cliente1);
-        assertEquals(autenticazioneService.login(userCliente, pwd1), cliente);
+    @Test
+    public void loginOperatoreTest() {
+        String userOperatore = "user3";
+        String pwd = "user32";
 
-        userCliente = "u2";
-        pwd1 ="us2";
-        cliente = utenteDAO.findByUsername(userCliente);
-        assertEquals(utenteDAO.findByPassword(pwd1), cliente);
-        assertEquals(utenteDAO.findByUsername(userCliente), cliente);
-        cliente1= clienteDAO.findByUsername(userCliente);
-        assertEquals(clienteDAO.findByUsername(userCliente),cliente1);
-        assertEquals(autenticazioneService.login(userCliente, pwd1), cliente);
+        when(operatoreDAO.findByUsername(userOperatore)).thenReturn(operatore);
+        assertEquals(autenticazioneService.login(userOperatore, pwd), oper);
+
     }
-
 }
-
-
-
-
