@@ -60,6 +60,16 @@ public class OrdiniController {
         return "ordini/aggiuntaOrdine";
     }
 
+    /**
+     * Implementa la funzionalità che permette
+     * di aggiungere una nuova riga all'ordine che
+     * si sta effettuando.
+     *
+     * @param model il Model
+     * @param idServizio l'identificativo del Servizio
+     * @param quantita la quantità di capi di abbigliamento dello stesso tipo
+     * @return la pagina dove è visualizzato
+     */
     @PostMapping("/aggiuntaRiga")
     private String aggiuntaRiga(final Model model,
                                 final @RequestParam("idServizio") Integer idServizio,
@@ -80,6 +90,18 @@ public class OrdiniController {
         return "ordini/aggiuntaOrdine";
     }
 
+    /**
+     * Implementa la funzionalità che permette
+     * di creare un nuovo ordine che si è compilato.
+     *
+     * @param model il Model
+     * @param cliente il cliente
+     * @param tipologiaRitiro la tipologia di ritiro
+     * @param sede la sede di ritiro
+     * @param dataConsegnaDesiderata la data di consegna desiderata per l'ordine
+     * @param note eventuali note aggiuntive all'ordine
+     * @return la pagina di homepage
+     */
     @PostMapping("/aggiuntaOrdine")
     private String aggiuntaOrdine(final Model model,
                                   final @RequestParam("cliente") String cliente,
@@ -95,6 +117,16 @@ public class OrdiniController {
 
     }
 
+    /**
+     * Implementa la funzionalità che permette
+     * di visualizzare la lista ordini controllando se
+     * si è un operatore o un cliente
+     * ed implementando di conseguenza i diversi filtri di ricerca.
+     *
+     * @param model il Model
+     * @param filter il filtro di ricerca che si è selezionato
+     * @return la pagina della lista ordini
+     */
     @GetMapping("/ListaOrdini")
     private String listaOrdini(final @RequestParam(value = "filter", defaultValue = "Attivi") String filter,
                                final Model model) {
@@ -121,6 +153,14 @@ public class OrdiniController {
         }
     }
 
+    /**
+     * Implementa la funzionalità che permette
+     * di visualizzare la pagina di dettaglio di un ordine.
+     *
+     * @param model il Model
+     * @param idOrdine l'identificativo dell'ordine
+     * @return la pagina di dettaglio dell'ordine
+     */
     @PostMapping("/dettaglioOrdine")
     private String dettaglioOrdine(final @RequestParam("codiceOrdine") int idOrdine, final Model model) {
         model.getAttribute("utente");
@@ -128,31 +168,47 @@ public class OrdiniController {
         return "ordini/DettaglioOrdine";
     }
 
+    /**
+     * Implementa la funzionalità che permette
+     * di modificare un ordine da parte dell'operatore.
+     *
+     * @param model il Model
+     * @param id_ordine l'identificativo dell'ordine
+     * @return la pagina di modifica da parte dell'operatore di un ordine
+     */
     @PostMapping("/ModificaOrdineOperatore")
-    public String Modifica(final Model m,
+    public String Modifica(final Model model,
                            final @RequestParam("codiceOrdine3") String id_ordine) {
 
-        m.addAttribute("id", id_ordine);
-        m.addAttribute("ordine", ordineDAO.findById(Integer.valueOf(id_ordine)).get());
-        m.getAttribute("utente");
+        model.addAttribute("id", id_ordine);
+        model.addAttribute("ordine", ordineDAO.findById(Integer.valueOf(id_ordine)).get());
+        model.getAttribute("utente");
         return "/ordini/ModificaOrdineOperatore";
 
     }
 
+    /**
+     * Implementa la modifica dell'ordine effettuata dall'operatore.
+     *
+     * @param model il Model
+     * @param id_ordine l'identificativo dell'ordine
+     * @param stato lo stato in cui si trova l'ordine ("Macchiato", "Pronto", "Imbustato")
+     * @return il metodo che reindirizza alla pagina della lista ordini
+     */
     @PostMapping("/ListaOrdini/ModificaOrdine")
-    public String ModificaOrdine(final Model m,
+    public String ModificaOrdine(final Model model,
                                  final @RequestParam("stato") String stato,
                                  final @RequestParam("idOrdine") Integer id_ordine) {
 
         ordiniService.modificaOrdine(null, null, stato, id_ordine);
-        m.getAttribute("utente");
+        model.getAttribute("utente");
         Ordine ordine = ordineDAO.findById(id_ordine).get();
         String email = ordine.getCliente().getEmail();
 
         if (email != null) {
             sender.sendEmail(ordine, email);
         }
-        return listaOrdini("Attivi", m);
+        return listaOrdini("Attivi", model);
     }
 
     @PostMapping("/ListaOrdini/ModificaData")
