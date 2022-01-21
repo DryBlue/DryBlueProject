@@ -79,7 +79,7 @@ public class GestioneClienteControllerTest {
 
     @Test
     public void dettagli() throws Exception {
-        String telefono= cliente.getNumeroTelefono();
+        String telefono = cliente.getNumeroTelefono();
         when(gestioneClienteService.findByTelefono(telefono)).thenReturn(cliente);
         this.mockMvc.perform(post("/gestioneCliente/clienti/dettagliCliente")
                         .param("telefono", telefono)
