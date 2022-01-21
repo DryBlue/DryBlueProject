@@ -6,11 +6,11 @@ import it.unisa.DryBlue.autenticazione.domain.Utente;
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import it.unisa.DryBlue.ordini.domain.*;
 import it.unisa.DryBlue.ordini.services.OrdiniService;
-import it.unisa.DryBlue.servizi.domain.Macchinario;
+//import it.unisa.DryBlue.servizi.domain.Macchinario;
 import it.unisa.DryBlue.servizi.domain.Servizio;
 import it.unisa.DryBlue.servizi.services.ServizioService;
-import it.unisa.DryBlue.servizi.services.ServizioServiceImpl;
-import org.apache.catalina.LifecycleState;
+//import it.unisa.DryBlue.servizi.services.ServizioServiceImpl;
+//import org.apache.catalina.LifecycleState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,14 +66,17 @@ public class OrdiniControllerTest {
 
 
         rigaOrdine = new RigaOrdine(2);
-        final double prezzo= 10.50;
+        final double prezzo = 10.50;
         servizio = new Servizio("Lavaggio", "secco", "veloce", prezzo);
-        servizio.setId(3);
+        final int x = 3;
+        servizio.setId(x);
 
         sede = new Sede();
         sede.setIndirizzo("Ariano Irpino, via Cardito, 52");
-
-        LocalDate data1 = LocalDate.of(2022, 03, 02);
+        final int y = 2022;
+        final int m = 03;
+        final int d = 02;
+        LocalDate data1 = LocalDate.of(y, m, d);
         ordine = new Ordine(data1, "domicilio", "macchiato");
         ordine.getSede().setIndirizzo(sede.getIndirizzo());
         ordine.setNote("");
@@ -82,9 +85,8 @@ public class OrdiniControllerTest {
 
     }
 
-
     @Test
-    public void aggiuntaRiga() throws Exception{
+    public void aggiuntaRiga() throws Exception {
     List<RigaOrdine> list = new ArrayList<>();
     list.add(rigaOrdine);
         when(servizioService.findServizioById(servizio.getId())).thenReturn(servizio);
