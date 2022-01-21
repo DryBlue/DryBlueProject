@@ -139,16 +139,13 @@ public class AutenticazioneController {
     }
 
 
-    @Controller
-    public class LogoutController {
-
-        @RequestMapping(value = "/logout", method = RequestMethod.GET)
+        @GetMapping(value = "/logout")
         public String logout(final HttpServletRequest request) {
+            System.out.println("Im in");
             HttpSession httpSession = request.getSession();
             httpSession.invalidate();
             return "redirect:/";
         }
-    }
 
     @GetMapping(value = "/newPassword")
     public String reimpostaPassword(final Model model) {
