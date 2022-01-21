@@ -162,7 +162,8 @@ public class OrdiniController {
      * @return la pagina di dettaglio dell'ordine
      */
     @PostMapping("/dettaglioOrdine")
-    private String dettaglioOrdine(final @RequestParam("codiceOrdine") int idOrdine, final Model model) {
+    private String dettaglioOrdine(final @RequestParam("codiceOrdine") int idOrdine,
+                                   final Model model) {
         model.getAttribute("utente");
         model.addAttribute("dOrdine", ordiniService.findById(idOrdine).get());
         return "ordini/DettaglioOrdine";
@@ -211,19 +212,37 @@ public class OrdiniController {
         return listaOrdini("Attivi", model);
     }
 
+    /**
+     * Implementa la funzionalità che permette
+     * di modificare la data di consegna di un ordine.
+     *
+     * @param model il Model
+     * @param data la nuova data di consegna
+     * @param id_ordine l'identificativo dell'ordine
+     * @return la pagina di visualizzazione della lista ordini
+     */
     @PostMapping("/ListaOrdini/ModificaData")
-    public String ModificaData(final Model m,
+    public String ModificaData(final Model model,
                                final @RequestParam("data") String data,
                                final @RequestParam("idOrdine") Integer id_ordine) {
         Ordine ordine = ordineDAO.findById(id_ordine).get();
         LocalDate date = LocalDate.parse(data);
         ordine.setDataConsegnaDesiderata(date);
         ordineDAO.save(ordine);
-        return listaOrdini("Attivi", m);
+        return listaOrdini("Attivi", model);
     }
 
+    /**
+     * Implementa la funzionalità che permette
+     * di modificare la sede di consegna di un ordine.
+     *
+     * @param model il Model
+     * @param id_ordine l'identificativo dell'ordine
+     * @return la pagina di visualizzazione della lista ordini
+     */
     @PostMapping("/ListaOrdini/ModificaSede")
-    public String ModificaOrdine(final Model m, final @RequestParam("idOrdine") Integer id_ordine) {
+    public String ModificaOrdine(final Model model,
+                                 final @RequestParam("idOrdine") Integer id_ordine) {
         Ordine ordine = ordineDAO.findById(id_ordine).get();
         if (ordine.getSede().getIndirizzo().equals("Ariano Irpino, via Cardito, 52")) {
             ordine.setSede(sedeDAO.findByIndirizzo("Ariano Irpino, corso Vittorio Emanuele, 250"));
@@ -231,12 +250,22 @@ public class OrdiniController {
             ordine.setSede(sedeDAO.findByIndirizzo("Ariano Irpino, via Cardito, 52"));
         }
         ordineDAO.save(ordine);
-        return listaOrdini("Attivi", m);
+        return listaOrdini("Attivi", model);
     }
 
-
+    /**
+     * Implementa la funzionalità che permette
+     * di stampare l'etichetta di un determinato ordine.
+     *
+     * @param model il Model
+     * @param response parametro utilizzato per spedire una risposta
+     * @param id_ordine l'identificativo dell'ordine
+     * @return la pagina di visualizzazione della lista ordini
+     */
     @PostMapping("/StampaEtichetta")
-    public void exportToPDF(final HttpServletResponse response, final Model m, final @RequestParam("codiceOrdine1") Integer id_ordine) throws Exception {
+    public void exportToPDF(final HttpServletResponse response,
+                            final Model model,
+                            final @RequestParam("codiceOrdine1") Integer id_ordine) throws Exception {
         response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
@@ -245,7 +274,7 @@ public class OrdiniController {
         String headerValue = "attachment; filename=Etichetta_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
 
-        m.addAttribute("id", id_ordine);
+        model.addAttribute("id", id_ordine);
         Ordine ordine = ordineDAO.findById(id_ordine).get();
         String nome = ordine.getCliente().getNome();
         String cognome = ordine.getCliente().getCognome();
@@ -256,6 +285,15 @@ public class OrdiniController {
         e.export(response, nome, cognome, indirizzo, id_ordine);
     }
 
+    /**
+     * Implementa la funzionalità che permette al cliente
+     * di proporre una modifica di un ordine all'operatore .
+     *
+     * @param model il Model
+     * @param data la nuova data di consegna
+     * @param id l'identificativo dell'ordine
+     * @return la pagina di visualizzazione della lista ordini
+     */
     @PostMapping("/propostaModifica")
     public String propostaModifica(final Model model,
                                    final @RequestParam("sedeNuova") String sede,
@@ -271,6 +309,14 @@ public class OrdiniController {
         return listaOrdini("Attivi", model);
     }
 
+    /**
+     * Implementa la funzionalità che reindirizza il cliente
+     * alla pagina di proposta modifica di un ordine.
+     *
+     * @param model il Model
+     * @param id l'identificativo dell'ordine
+     * @return la pagina di proposta modifica dell'ordine
+     */
     @GetMapping("/propostaModifica")
     public String propostaPage(final Model model,
                                final @RequestParam("codiceOrdine4") Integer id) {
@@ -279,10 +325,19 @@ public class OrdiniController {
         return "/ordini/propostaModifica";
     }
 
-
+    /**
+     * Implementa la funzionalità che reindirizza l'operatore
+     * alla pagina di valutazione della proposta di modifica di un ordine
+     * da parte del cliente.
+     *
+     * @param model il Model
+     * @param id_ordine l'identificativo dell'ordine
+     * @return la pagina di valutazione della proposta di modifica
+     */
     @PostMapping("/ValutazioneProposta")
-    public String ValutazioneProposta(final Model m, final @RequestParam("codiceOrdine2") Integer id_ordine) {
-        m.getAttribute("utente");
+    public String ValutazioneProposta(final Model model,
+                                      final @RequestParam("codiceOrdine2") Integer id_ordine) {
+        model.getAttribute("utente");
         Ordine ordine = ordineDAO.findById(id_ordine).get();
         Integer idProp = ordine.getPropostaModifica().getId();
         PropostaModifica pr = propostaModificaDAO.findById(idProp).get();
@@ -290,18 +345,26 @@ public class OrdiniController {
         String telefono = ordine.getCliente().getNumeroTelefono();
         Cliente cliente = clienteDAO.findByNumeroTelefono(telefono);
 
-        m.addAttribute("ordin", ordine);
-        m.addAttribute("cliente", cliente);
-        m.addAttribute("dataP", pr);
+        model.addAttribute("ordin", ordine);
+        model.addAttribute("cliente", cliente);
+        model.addAttribute("dataP", pr);
         return "/ordini/ValutazionePropostaOperatore";
 
     }
 
-
+    /**
+     * Implementa la funzionalità che permette all'operatore
+     * di accettare la proposta di modifica di un ordine
+     * da parte di un cliente.
+     *
+     * @param model il Model
+     * @param accetta l'identificativo dell'ordine
+     * @return la pagina di visualizzazione della lista ordini
+     */
     @PostMapping("/ValutazioneAccetta")
-    public String ValutazioneAccetta(final Model m,
+    public String ValutazioneAccetta(final Model model,
                                      final @RequestParam("accetta") Integer accetta) {
-        m.getAttribute("utente");
+        model.getAttribute("utente");
         Ordine ordine = ordineDAO.findById(accetta).get();
         String email = ordine.getCliente().getEmail();
 
@@ -319,12 +382,22 @@ public class OrdiniController {
         }
         propostaModificaDAO.save(pr);
         ordineDAO.save(ordine);
-        return listaOrdini("Attivi", m);
+        return listaOrdini("Attivi", model);
     }
 
+    /**
+     * Implementa la funzionalità che permette all'operatore
+     * di rifiutare la proposta di modifica di un ordine
+     * da parte di un cliente.
+     *
+     * @param model il Model
+     * @param rifiuta l'identificativo dell'ordine
+     * @return la pagina di visualizzazione della lista ordini
+     */
     @PostMapping("/ValutazioneRifiuta")
-    public String ValutazioneRifiuta(final Model m, final @RequestParam("rifiuta") Integer rifiuta) {
-        m.getAttribute("utente");
+    public String ValutazioneRifiuta(final Model model,
+                                     final @RequestParam("rifiuta") Integer rifiuta) {
+        model.getAttribute("utente");
         Ordine ordine = ordineDAO.findById(rifiuta).get();
         String email = ordine.getCliente().getEmail();
 
@@ -338,7 +411,7 @@ public class OrdiniController {
             senderProposta.sendEmail(email, scelta);
         }
         propostaModificaDAO.save(pr);
-        return listaOrdini("Attivi", m);
+        return listaOrdini("Attivi", model);
 
     }
 

@@ -8,11 +8,10 @@ import it.unisa.DryBlue.autenticazione.domain.Utente;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 import it.unisa.DryBlue.gestioneCliente.dao.ClienteDAO;
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
-import it.unisa.DryBlue.servizi.domain.Servizio;
+//import it.unisa.DryBlue.servizi.domain.Servizio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -48,7 +48,9 @@ public class OrdiniServiceImpl implements OrdiniService {
     }
 
     @Override
-    public void propostaModifica(final LocalDate data, final String sede, final Ordine ordine) {
+    public void propostaModifica(final LocalDate data,
+                                 final String sede,
+                                 final Ordine ordine) {
         Cliente c = ordine.getCliente();
         PropostaModifica propostaModifica = new PropostaModifica();
         propostaModifica.setCliente(c);
@@ -71,8 +73,10 @@ public class OrdiniServiceImpl implements OrdiniService {
     }
 
     @Override
-    public Boolean modificaOrdine(final LocalDate data, final Sede sede,
-                                  final String stato, final Integer idOrdine) {
+    public Boolean modificaOrdine(final LocalDate data,
+                                  final Sede sede,
+                                  final String stato,
+                                  final Integer idOrdine) {
         Ordine ordine = ordineDAO.findById(idOrdine).get();
         if (data != null) {
             ordine.setDataConsegnaDesiderata(data);
@@ -103,7 +107,8 @@ public class OrdiniServiceImpl implements OrdiniService {
     }
 
     @Override
-    public List<Ordine> visualizzaOrdiniFiltroUtente(final String filtro, final String telefono) {
+    public List<Ordine> visualizzaOrdiniFiltroUtente(final String filtro,
+                                                     final String telefono) {
         List<Ordine> prova = new ArrayList<>();
         if (filtro.equals("Consegnato")) {
             List<Ordine> ordini = ordineDAO.findAllByStato(filtro);
@@ -156,7 +161,7 @@ public class OrdiniServiceImpl implements OrdiniService {
     }
 
     @Override
-    public Sede findByIndirizzo(String indirizzo) {
+    public Sede findByIndirizzo(final String indirizzo) {
         return sedeDAO.findByIndirizzo(indirizzo);
     }
 }

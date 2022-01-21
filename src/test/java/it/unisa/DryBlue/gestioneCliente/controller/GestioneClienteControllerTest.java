@@ -56,7 +56,7 @@ public class GestioneClienteControllerTest {
     }
 
     @Test
-    public void trovaTuttiIClienti() throws Exception{
+    public void trovaTuttiIClienti() throws Exception {
         List<Cliente> list = new ArrayList<>();
         list.add(cliente);
         when(gestioneClienteService.findTuttiIClienti()).thenReturn(list);
@@ -70,7 +70,7 @@ public class GestioneClienteControllerTest {
 
 
     @Test
-    public void dettagliCliente() throws Exception{
+    public void dettagliCliente() throws Exception {
         List<Cliente> list = new ArrayList<>();
         list.add(cliente);
         when(gestioneClienteService.findTuttiIClienti()).thenReturn(list);

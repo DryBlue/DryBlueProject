@@ -52,17 +52,22 @@ public class OrdiniServiceImplTest {
 
     @BeforeEach
     public void init() {
-        ordiniService = new OrdiniServiceImpl(ordineDAO, propostaModificaDAO,etichettaDAO,sedeDAO,
-                clienteDAO,rigaOrdineDAO);
-        LocalDate data1= LocalDate.of(2022,03,02);
-        ordine1= new Ordine(data1, "domicilio", "macchiato");
-        ordine1.setId(23);
-        propostaModifica= new PropostaModifica("pronto");
-        servizio= new Servizio("nome","tipo","caratteristica",20.0);
-        etichetta= new Etichetta();
+        ordiniService = new OrdiniServiceImpl(ordineDAO, propostaModificaDAO, etichettaDAO, sedeDAO,
+                clienteDAO, rigaOrdineDAO);
+        final int y = 2022;
+        final int m = 03;
+        final int d = 02;
+        LocalDate data1 = LocalDate.of(y, m, d);
+        ordine1 = new Ordine(data1, "domicilio", "macchiato");
+        final int x = 23;
+        ordine1.setId(x);
+        propostaModifica = new PropostaModifica("pronto");
+        final double p = 20.0;
+        servizio = new Servizio("nome", "tipo", "caratteristica", p);
+        etichetta = new Etichetta();
         etichetta.setOrdine(ordine1);
         etichetta.setSede(sede1);
-        rigaOrdine= new RigaOrdine(2);
+        rigaOrdine = new RigaOrdine(2);
         rigaOrdine.setOrdine(ordine1);
         rigaOrdine.setServizio(servizio);
         sede1 = new Sede("via verdi 12");
@@ -71,8 +76,8 @@ public class OrdiniServiceImplTest {
     }
 
     @Test
-    public void visualizzaSediTest(){
-        List <Sede> list= new ArrayList<>();
+    public void visualizzaSediTest() {
+        List<Sede> list = new ArrayList<>();
         list.add(sede1);
         list.add(sede2);
         when(sedeDAO.findAll()).thenReturn(list);
@@ -80,15 +85,15 @@ public class OrdiniServiceImplTest {
     }
 
     @Test
-    public void findById(){
-        Integer ordine_id= ordine1.getId();
-        Optional <Ordine> list= ordiniService.findById(ordine_id);
+    public void findById() {
+        Integer ordine_id = ordine1.getId();
+        Optional<Ordine> list = ordiniService.findById(ordine_id);
         when(ordineDAO.findById(ordine_id)).thenReturn(Optional.empty());
         assertEquals(ordiniService.findById(ordine_id), list);
     }
 
     @Test
-    public void creaRigaOrdineTest(){
+    public void creaRigaOrdineTest() {
         when(rigaOrdineDAO.save(rigaOrdine)).thenReturn(rigaOrdine);
         ordiniService.creaRigaOrdine(rigaOrdine);
         verify(rigaOrdineDAO, times(1)).save(rigaOrdine);
