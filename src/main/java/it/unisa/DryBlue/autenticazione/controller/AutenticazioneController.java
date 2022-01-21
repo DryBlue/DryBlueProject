@@ -141,7 +141,6 @@ public class AutenticazioneController {
 
         @GetMapping(value = "/logout")
         public String logout(final HttpServletRequest request) {
-            System.out.println("Im in");
             HttpSession httpSession = request.getSession();
             httpSession.invalidate();
             return "redirect:/";
