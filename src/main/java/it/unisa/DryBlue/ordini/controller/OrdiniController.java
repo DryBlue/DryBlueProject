@@ -28,6 +28,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Controller
@@ -47,7 +48,7 @@ public class OrdiniController {
     private final RigaOrdineDAO rigaOrdineDAO;
     private final PropostaModificaDAO propostaModificaDAO;
     private final ClienteDAO clienteDAO;
-    private final Set<RigaOrdine> righe;
+    private Set<RigaOrdine> righe = new HashSet<>();
 
 
     @GetMapping("/form")

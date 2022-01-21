@@ -44,7 +44,8 @@
                         <div class="card-body p-5">
                             <h2 class="text-uppercase text-center mb-5">Registrazione Cliente</h2>
 
-                            <form method="post" th:action="@{/autenticazione/registrazione/registrazioneSuccesso}" th:object="${regUtente}">
+                            <div id="error" class="text-danger"></div>
+                            <form method="post" th:action="@{/autenticazione/registrazione/registrazioneSuccesso}" id="form" th:object="${regUtente}">
 
                                 <div class="form-outline mb-4">
                                     <input type="text" name="nome" id="nome" placeholder="Nome" class="form-control form-control-lg" />
@@ -62,16 +63,88 @@
                                 </div>
 
                                 <div class="form-outline mb-4">
-                                    <input type="password"  name="cellulare" id="cellulare" placeholder="Cellulare" class="form-control form-control-lg" />
+                                    <input type="text"  name="cellulare" id="cellulare" placeholder="Cellulare" class="form-control form-control-lg" />
                                     <label class="form-label" for="cellulare">Cellulare</label>
                                 </div>
 
                                 <div class="d-flex justify-content-center">
-                                    <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Registra l'utente</button>
+                                    <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" onclick="registerCheck()">Registra l'utente</button>
                                 </div>
 
 
                             </form>
+
+                            <script type="text/javascript">
+                                function registerCheck(){
+                                    const nome = document.getElementById('nome');
+                                    const cognome = document.getElementById('cognome');
+                                    const indirizzo = document.getElementById('indirizzo');
+                                    const cellulare = document.getElementById('cellulare');
+                                    const form = document.getElementById('form');
+                                    const errorElement = document.getElementById('error');
+                                    var patternName = /^[a-zA-Z ]+$/;
+                                    //var patternIndirizzo = ;
+                                    var patternCellulare = /^[0-9]+$/;
+
+                                    form.addEventListener('submit', (e) =>{
+                                        let messages = [];
+                                        if (nome.value.length < 2){
+                                            messages.push('Nome troppo corto')
+                                        }
+
+                                        if (nome.value.length > 30){
+                                            messages.push('Nome troppo lungo')
+                                        }
+
+                                        if(!nome.value.match(patternName)){
+                                            messages.push('Formato del nome non valido')
+                                        }
+
+                                        if (cognome.value.length < 2){
+                                            messages.push('Cognome troppo corto')
+                                        }
+
+                                        if (cognome.value.length > 30){
+                                            messages.push('Cognome troppo lungo')
+                                        }
+
+                                        if(!cognome.value.match(patternName)){
+                                            messages.push('Formato del cognome non valido')
+                                        }
+
+                                        if (indirizzo.value.length < 21){
+                                            messages.push('Indirizzo troppo corto')
+                                        }
+
+                                        if (indirizzo.value.length > 75){
+                                            messages.push('Indirizzo troppo lungo')
+                                        }
+
+                                        if(!indirizzo.value.match(patternIndirizzo)){
+                                            messages.push('Formato indirizzo non valido')
+                                        }
+
+                                        if (cellulare.value.length < 9){
+                                            messages.push('Cellulare troppo corto')
+                                        }
+
+                                        if (cellulare.value.length > 10){
+                                            messages.push('Cellulare troppo lungo')
+                                        }
+
+                                        if (!cellulare.value.match(patternCellulare)){
+                                            messages.push('Formato cellulare non valido')
+                                        }
+
+                                        if (messages.length > 0){
+                                            e.preventDefault()
+                                            errorElement.innerText = messages.join(', ')
+
+                                        }
+
+                                    })
+                                }
+                            </script>
 
                         </div>
                     </div>
