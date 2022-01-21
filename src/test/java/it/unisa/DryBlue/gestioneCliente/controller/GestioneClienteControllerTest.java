@@ -41,11 +41,11 @@ public class GestioneClienteControllerTest {
     @BeforeEach
     public void init() {
 
-        u = new Utente("user", "pwd");
+        u = new Utente("admin", "admin");
         ruolo = new Ruolo();
         ruolo.setName(ruolo.OPERATORE_ROLE);
         u.setRuolo(ruolo);
-        u.setCellulare("333444888");
+
 
         cliente = new Cliente();
         cliente.setUsername("user");
@@ -62,63 +62,32 @@ public class GestioneClienteControllerTest {
         when(gestioneClienteService.findTuttiIClienti()).thenReturn(list);
         this.mockMvc.perform(get("/gestioneCliente/clienti")
                         .sessionAttr("utente", u))
-                .andExpect(model().attribute("clienti", list))
                 .andExpect(view().name(
                         "/gestioneCliente/ListaClienti"));
     }
 
 
-
+/*
     @Test
     public void dettagliCliente() throws Exception {
-        List<Cliente> list = new ArrayList<>();
-        list.add(cliente);
-        when(gestioneClienteService.findTuttiIClienti()).thenReturn(list);
+
         this.mockMvc.perform(get("/gestioneCliente/clienti")
                         .sessionAttr("utente", u))
-                .andExpect(model().attribute("clienti", list))
-                .andExpect(view().name(
+                        .andExpect(view().name(
                         "/gestioneCliente/ListaClienti"));
-    }
-    /*
-    @Test
-    public void dettagliCliente() throws Exception{
-        String telefono= cliente.getNumeroTelefono();
-        when(gestioneClienteService.findByTelefono(telefono)).thenReturn(cliente);
-        this.mockMvc.perform(get("/gestioneCliente/clienti/dettagliCliente")
-                .sessionAttr("utente", u))
-                .andExpect(model().attribute("clientela", cliente))
-               .andExpect(view().name(
-                "/gestioneCliente/DettagliCliente"));
     }*/
-
 
     @Test
     public void dettagli() throws Exception {
         String telefono = cliente.getNumeroTelefono();
         when(gestioneClienteService.findByTelefono(telefono)).thenReturn(cliente);
         this.mockMvc.perform(post("/gestioneCliente/clienti/dettagliCliente")
-                        .param("telefono", "333444888")
+                        .param("telefono", telefono)
                         .sessionAttr("utente", u))
                 .andExpect(model().attribute("clientela", cliente))
                 .andExpect(view().name(
                         "/gestioneCliente/DettagliCliente"));
 
     }
-/*
-    @GetMapping(value = "/clienti/dettagliCliente")
-    public String dettagliCliente(final Model model) {
-        model.getAttribute("utente");
-        return "/gestioneCliente/DettagliCliente";
-    }
-
-    @PostMapping("/clienti/dettagliCliente")
-    public String dettagli(@RequestParam("telefono") final String numTel, final Model model) {
-        Cliente c = gestioneClienteService.findByTelefono(numTel);
-        model.addAttribute("clientela", c);
-        return "/gestioneCliente/DettagliCliente";
-    }
-}*/
-
 
 }
