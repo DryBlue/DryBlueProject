@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class OrdiniControllerTest {
 
-    /*@MockBean
+    @MockBean
     private OrdiniService ordiniService;
     @MockBean
     private ServizioService servizioService;
@@ -63,6 +63,7 @@ public class OrdiniControllerTest {
         ruolo = new Ruolo();
         ruolo.setName(ruolo.CLIENTE_ROLE);
         ucliente.setRuolo(ruolo);
+        ucliente.setId(ucliente.getId());
 
         cliente = new Cliente("user", "user", "via verdi ", "Marco", "rossi");
         cliente.setNumeroTelefono("222333666");
@@ -72,6 +73,7 @@ public class OrdiniControllerTest {
         ruolo = new Ruolo();
         ruolo.setName(ruolo.OPERATORE_ROLE);
         u.setRuolo(ruolo);
+        u.setId(u.getId());
 
         operatore = new Operatore("admin", "Marco", "Polo");
         operatore.setUsername("mpolo");
@@ -80,7 +82,7 @@ public class OrdiniControllerTest {
         final double prezzo = 10.50;
         servizio = new Servizio("Lavaggio", "secco", "veloce", prezzo);
         final int x = 3;
-        servizio.setId(x);
+        servizio.setId(servizio.getId());
 
         sede = new Sede();
         sede.setIndirizzo("Ariano Irpino, via Cardito, 52");
@@ -95,7 +97,7 @@ public class OrdiniControllerTest {
 
     }
 
-    @Test
+   /* @Test
     public void listaOrdiniTest() throws Exception{
 
         List <Ordine> list= new ArrayList<>();
@@ -105,25 +107,25 @@ public class OrdiniControllerTest {
                 .param("filter","Totali")
                 .sessionAttr("utente",u))
                 .andExpect(model().attribute("ordini",list))
-                .andExpect(view().name("ordini/ListaOrdini"));
+                .andExpect(view().name("/ordini/ListaOrdini"));
 
        when(ordiniService.visualizzaOrdiniFiltroOperatore("Attivi")).thenReturn(list);
         this.mockMvc.perform(post("/ListaOrdini")
                         .param("filter","Attivi")
                         .sessionAttr("utente",u))
                 .andExpect(model().attribute("ordini",list))
-                .andExpect(view().name("ordini/ListaOrdini"));
+                .andExpect(view().name("/ordini/ListaOrdini"));
 
         when(ordiniService.visualizzaOrdiniFiltroUtente("Attivi",ucliente.getCellulare())).thenReturn(list);
         this.mockMvc.perform(post("/ListaOrdini")
                         .param("filter","Attivi")
                         .sessionAttr("utente",ucliente))
                 .andExpect(model().attribute("ordini",ucliente.getCellulare()))
-                .andExpect(view().name("ordini/ListaOrdini"));
+                .andExpect(view().name("/ordini/ListaOrdini"));
 
-  }
+  }*/
 
-    @Test
+    /*@Test
     public void modificaStatoTest(){
         final int y = 2022;
         final int m = 03;
@@ -147,9 +149,9 @@ public class OrdiniControllerTest {
         list.add(ordine);
         Integer id_ordine = ordine.getId();
         when(ordiniService.findById(id_ordine)).thenReturn();
-    }*/
+    }
 
-
+*/
 
 }
 

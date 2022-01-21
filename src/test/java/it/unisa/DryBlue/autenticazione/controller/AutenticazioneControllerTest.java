@@ -102,7 +102,7 @@ public class AutenticazioneControllerTest {
                 .andExpect(view().name("/autenticazione/Login"));
     }
 
-    @Test
+    /*@Test
     public void updatePassword() throws Exception {
         this.mockMvc.perform(post("/autenticazione/newPassword")
                 .param("username", "user2")
@@ -112,6 +112,6 @@ public class AutenticazioneControllerTest {
                         .sessionAttr("utente", utente))
                 .andExpect(view().name("redirect:/"));
 
-    }
+    }*/
 
 }
