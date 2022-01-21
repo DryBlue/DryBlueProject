@@ -83,11 +83,30 @@
                                     const form = document.getElementById('form');
                                     const errorElement = document.getElementById('error');
                                     var patternName = /^[a-zA-Z ]+$/;
-                                    //var patternIndirizzo = ;
-                                    var patternCellulare = /^[0-9]+$/;
+                                    var patternIndirizzo = /^([a-zA-Z0-9\xE0\xE8\xE9\xF9\xF2\xEC\x27\,]\s?)+$/;
+                                    //Solo uno spazio tra le parole e una virgola tra di loro
+                                    var patternCellulare = /^[0-9]*$/;
 
                                     form.addEventListener('submit', (e) =>{
                                         let messages = [];
+
+                                        if (nome.value === '' || nome.value === null){
+                                            messages.push('Inserisci nome')
+                                        }
+
+                                        if (cognome.value === '' || cognome.value === null){
+                                            messages.push('Inserisci cognome')
+                                        }
+
+                                        if (indirizzo.value === '' || indirizzo.value === null){
+                                            messages.push('Inserisci indirizzo')
+                                        }
+
+                                        if (cellulare.value === '' || cellulare.value === null){
+                                            messages.push('Inserisci cellulare')
+                                        }
+
+
                                         if (nome.value.length < 2){
                                             messages.push('Nome troppo corto')
                                         }

@@ -17,15 +17,17 @@
         <div class="col-6">
 <h3>Aggiunta di un Macchinario</h3><br>
 
-<form method="post" th:action="@{/servizio/aggiuntaMacchinario}">
+            <div id="error" class="text-danger"></div>
+
+<form method="post" id="form" th:action="@{/servizio/aggiuntaMacchinario}">
     <div class="form-group">
         <label for="denomination">Denominazione*</label><br>
-     <input type="text" placeholder="Denominazione" id="denomination" name="denomination" required>
+     <input type="text" placeholder="Denominazione" id="denomination" name="denomination">
     </div>
 
     <div class="form-group">
         <label for="matricola">Matricola*</label><br>
-    <input type="text" placeholder="Matricola" id="matricola" name="matricola" required>
+    <input type="text" placeholder="Matricola" id="matricola" name="matricola">
     </div>
 
     <div class="form-group">
@@ -40,7 +42,7 @@
 
     <div class="form-group">
         <label for="manutentore">Manutentore*</label><br>
-    <input type="text" placeholder="Manutentore" id="manutentore" name="manutentore" required>
+    <input type="text" placeholder="Manutentore" id="manutentore" name="manutentore">
     </div>
 
         <label for="indirizzoSede">Sede*</label>
@@ -60,7 +62,7 @@
     <small id="riempimentoHelp" class="form-text text-muted">I campi con * sono obbligatori</small>
     <br>
 
-    <button button type="submit" class="btn btn-primary">Aggiungi</button>
+    <button button type="submit" class="btn btn-primary" onclick="macchinarioCheck()">Aggiungi</button>
     <button button type="reset" class="btn btn-primary">Annulla</button>
 
 </form>
@@ -68,6 +70,86 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    function macchinarioCheck(){
+        const denomination = document.getElementById('denomination');
+        const matricola = document.getElementById('matricola');
+        const costruttore = document.getElementById('costruttore');
+        const caratteristiche = document.getElementById('caratteristiche');
+        const manutentore = document.getElementById('manutentore');
+        const form = document.getElementById('form');
+        const errorElement = document.getElementById('error');
+        var patternName = /^[a-zA-Z ]+$/;
+        var patternMatricola = /^[a-zA-Z0-9 ]+$/;
+        var patternCaratteristiche = /^([a-zA-Z0-9\,]\s?)+$/;
+
+        form.addEventListener('submit', (e) =>{
+            let messages = [];
+
+            if (denomination.value === '' || denomination.value === null){
+                messages.push('Inserisci denominazione')
+            }
+
+            if (matricola.value === '' || matricola.value === null){
+                messages.push('Inserisci matricola')
+            }
+
+            if (manutentore.value === '' || manutentore.value === null){
+                messages.push('Inserisci manutentore')
+            }
+
+
+            if (denomination.value.length < 2){
+                messages.push('Denominazione troppo corta')
+            }
+
+            if (denomination.value.length > 15){
+                messages.push('Denominazione troppo lunga')
+            }
+
+            if(!denomination.value.match(patternName)){
+                messages.push('Formato della denominazione non valido')
+            }
+
+            if (matricola.value.length < 4){
+                messages.push('Matricola troppo corta')
+            }
+
+            if (matricola.value.length > 21){
+                messages.push('Matricola troppo lunga')
+            }
+
+            if(!matricola.value.match(patternMatricola)){
+                messages.push('Formato della matricola non valido')
+            }
+
+            if (caratteristiche.value.length > 80){
+                messages.push('Caratteristiche troppo lunghe')
+            }
+
+
+            if (costruttore.value.length > 20){
+                messages.push('Costruttore troppo lungo')
+            }
+
+            if(!costruttore.value.match(patternName)){
+                messages.push('Formato indirizzo non valido')
+            }
+
+            if (!caratteristiche.value.match(patternCaratteristiche)){
+                messages.push('Formato caratteristiche non valido')
+            }
+
+            if (messages.length > 0){
+                e.preventDefault()
+                errorElement.innerText = messages.join(', ')
+
+            }
+
+        })
+    }
+</script>
 
 </body>
 </html>

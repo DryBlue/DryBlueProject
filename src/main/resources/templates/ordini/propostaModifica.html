@@ -33,7 +33,7 @@
 
     <h2>Modifica data</h2><br>
     <label>Data attuale: </label><label id="dataAttuale" name="dataAttuale" th:text="${ordine.dataConsegnaDesiderata}"></label><br>
-    <label>Data desiderata: </label><input type="date" id="dataProposta" name="dataProposta"><br>
+    <label>Data desiderata: </label><input type="date" id="dataProposta" name="dataProposta" onchange="dateCheck()"><br>
     <input type="hidden" id="Ordine" name="Ordine" th:value="${ordine.id}">
     <button type="submit" class="btn btn-primary">Proponi Modifica</button>
     <button type="reset" class="btn btn-primary">Annulla</button>
@@ -42,5 +42,23 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    function dateCheck(){
+        const UserDate = document.getElementById("dataProposta").value;
+        const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000;
+        const timeDiffInMs = new Date(UserDate).getTime() - Date.now();
+
+        if (new Date(UserDate).getTime() <= Date.now()){
+            alert("Data non valida")
+        }
+
+        if(new Date(timeDiffInMs).getTime() >= new Date(thirtyDaysInMs).getTime()) {
+            alert('Data non valida')
+        }
+
+    }
+</script>
+
 </body>
 </html>

@@ -20,31 +20,33 @@
         <div class=".col-6">
 <h3>Aggiunta di un servizio al listino prezzi</h3>
 
-<form method="post" th:action="@{/servizio/aggiuntaServizio}">
+            <div id="error" class="text-danger"></div>
+
+<form id="form" method="post" th:action="@{/servizio/aggiuntaServizio}">
 
     <div class="form-group">
         <label for="name">Nome Servizio:</label><br>
-        <input type="text" placeholder="Lavaggio t-shirt" id="name" name="name" required>
+        <input type="text" placeholder="Lavaggio t-shirt" id="name" name="name">
     </div>
 
     <div class="form-group">
         <label for="tipologia">Tipologia Servizio:</label><br>
-        <input type="text" placeholder="A secco" id="tipologia" name="tipologia" required>
+        <input type="text" placeholder="A secco" id="tipologia" name="tipologia">
     </div>
 
     <div class="form-group">
         <label for="caratteristiche">Caratteristiche Servizio:</label><br>
-        <input type="text" placeholder="Rapido" id="caratteristiche" name="caratteristiche" required>
+        <input type="text" placeholder="Rapido" id="caratteristiche" name="caratteristiche">
     </div>
 
     <div class="form-group">
         <label for="prezzo">Prezzo Servizio:</label><br>
-        <input type="text" placeholder="€9,00" id="prezzo" name="prezzo" required>
+        <input type="text" placeholder="€9,00" id="prezzo" name="prezzo">
     </div>
 
     <br>
 
-        <button button type="submit" class="btn btn-primary">Aggiungi</button>
+        <button button type="submit" class="btn btn-primary" onclick="servizioCheck()">Aggiungi</button>
 
         <button button type="reset" class="btn btn-primary">Annulla</button>
 
@@ -54,6 +56,95 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    function servizioCheck(){
+        const name = document.getElementById('name');
+        const tipologia = document.getElementById('tipologia');
+        const caratteristiche = document.getElementById('caratteristiche');
+        const prezzo = document.getElementById('prezzo');
+        const form = document.getElementById('form');
+        const errorElement = document.getElementById('error');
+        var patternServizio = /^[a-zA-Z0-9 ]+$/;
+        var patternPrezzo = /^[0-9\,\.]*$/;
+
+        form.addEventListener('submit', (e) =>{
+            let messages = [];
+
+            if (name.value === '' || name.value === null){
+                messages.push('Inserisci nome')
+            }
+
+            if (tipologia.value === '' || tipologia.value === null){
+                messages.push('Inserisci tipologia')
+            }
+
+            if (caratteristiche.value === '' || caratteristiche.value === null){
+                messages.push('Inserisci caratteristiche')
+            }
+
+            if (prezzo.value === '' || prezzo.value === null){
+                messages.push('Inserisci prezzo')
+            }
+
+            if (name.value.length < 2){
+                messages.push('Nome troppo corto')
+            }
+
+            if (name.value.length > 20){
+                messages.push('Nome troppo lungo')
+            }
+
+            if(!name.value.match(patternServizio)){
+                messages.push('Formato della nome non valido')
+            }
+
+            if (tipologia.value.length < 2){
+                messages.push('Tipologia troppo corta')
+            }
+
+            if (tipologia.value.length > 50){
+                messages.push('Tipologia troppo lunga')
+            }
+
+            if(!tipologia.value.match(patternServizio)){
+                messages.push('Formato della tipologia non valido')
+            }
+
+            if (caratteristiche.value.length < 2){
+                messages.push('Caratteristiche troppo corte')
+            }
+
+            if (caratteristiche.value.length > 50){
+                messages.push('Caratteristiche troppo lunghe')
+            }
+
+            if(!caratteristiche.value.match(patternServizio)){
+                messages.push('Formato della tipologia non valido')
+            }
+
+
+            if (prezzo.value.length < 1){
+                messages.push('Servizio troppo economico')
+            }
+
+            if(prezzo.value.length > 50){
+                messages.push('Servizio troppo caro')
+            }
+
+            if (!prezzo.value.match(patternPrezzo)){
+                messages.push('Formato caratteristiche non valido')
+            }
+
+            if (messages.length > 0){
+                e.preventDefault()
+                errorElement.innerText = messages.join(', ')
+
+            }
+
+        })
+    }
+</script>
 
 </body>
 </html>

@@ -66,7 +66,7 @@
     </table>
     <form th:action="@{/ordini/ListaOrdini/ModificaData}" method="post">
         <p>Nuova data:</p>
-        <input type="date" name="data">
+        <input type="date" name="data" id="date" onchange="dateCheck()">
         <input type="hidden" name="idOrdine" th:value="${id}">
         <br><br>
         <button type="submit" class="btn btn-light">Modifica</button>
@@ -75,5 +75,23 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    function dateCheck(){
+        const UserDate = document.getElementById("date").value;
+        const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000;
+        const timeDiffInMs = new Date(UserDate).getTime() - Date.now();
+
+        if (new Date(UserDate).getTime() <= Date.now()){
+            alert("Data non valida")
+        }
+
+        if(new Date(timeDiffInMs).getTime() >= new Date(thirtyDaysInMs).getTime()) {
+            alert('Data non valida')
+        }
+
+    }
+</script>
+
 </body>
 </html>
