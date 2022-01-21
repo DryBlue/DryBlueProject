@@ -78,6 +78,14 @@ public class AutenticazioneServiceImpl implements AutenticazioneService {
                 }
             }
 
+            if ((clienteDAO.findByUsername(username)) == null && (operatoreDAO.findByUsername(username)) == null) {
+                u.setUsername("x");
+                u.setPassword("x");
+                Ruolo x = new Ruolo("x");
+                u.setRuolo(x);
+                return u;
+            }
+
 
 
         } catch (NoSuchAlgorithmException e) {

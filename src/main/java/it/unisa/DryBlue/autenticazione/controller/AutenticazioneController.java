@@ -69,7 +69,9 @@ public class AutenticazioneController {
      * @return rimanda alla pagina di home.
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@RequestParam final String username, @RequestParam final String password, final Model model) {
+    public String login(@RequestParam("username") final String username,
+                        @RequestParam("password") final String password,
+                        final Model model) {
         Utente utente = autenticazioneService.login(username, password);
         if (utente.getRuolo().getName().equals("OPERATORE")) {
             model.addAttribute("utente", utente);
@@ -78,10 +80,8 @@ public class AutenticazioneController {
             model.addAttribute("utente", utente);
             return "redirect:/LoggedHomepage";
         }
-
         model.addAttribute("error", true);
-        return "autenticazione/Login";
-
+        return "/autenticazione/Login";
     }
 
     /**
