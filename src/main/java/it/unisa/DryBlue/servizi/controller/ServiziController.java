@@ -53,7 +53,7 @@ public class ServiziController {
         servizioService.aggiungiMacchinario(denominazione, matricola, costruttore, caratteristiche,
                                             manutentore, telefonoManutenzione, "In funzione", ordineService.findByIndirizzo(indirizzoSede));
         model.getAttribute("utente");
-        return "/servizi/ListaMacchinari";
+        return trovaMacchinari(model);
     }
 
     @GetMapping("/ListaServizi")
