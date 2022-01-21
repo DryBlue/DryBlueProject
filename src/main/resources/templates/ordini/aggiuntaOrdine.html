@@ -77,9 +77,11 @@
         <option value="Consegna" grouping="Consegna">Consegna</option>
     </select><br>
 
+        <div id="error" class="text-danger">
+        </div>
     <h4>Data desiderata</h4>
     <div class="it-datepicker-wrapper">
-            <input class="form-control it-date-datepicker" id="date" name="date" type="date">
+            <input class="form-control it-date-datepicker" id="date" name="date" type="date" onchange="dateCheck()">
             <label for="date" name="date"></label>
     </div>
 
@@ -118,6 +120,16 @@
     </div>
 </div>
 
+<script type="text/javascript">
+    function dateCheck(){
+        const UserDate = document.getElementById("date").value;
+
+            if (new Date(UserDate).getTime() <= Date.now()){
+                alert("Data non valida")
+            }
+
+    }
+</script>
 
 </body>
 </html>
