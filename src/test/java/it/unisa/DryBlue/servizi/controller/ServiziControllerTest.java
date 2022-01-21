@@ -41,8 +41,9 @@ public class ServiziControllerTest {
 
     @BeforeEach
     public void init() {
+        final int x = 3;
         sede1 = new Sede("Ariano Irpino, via Cardito, 52");
-        sede1.setId(3);
+        sede1.setId(x);
         m1 = new Macchinario("Lavatrice12", "LavatriceIndustriale", "Whirlpool", "Mario Rossi",
                 "333222333222", "In funzione");
         m1.setMatricola("AB1234");
@@ -102,12 +103,13 @@ public class ServiziControllerTest {
     @Test
     public void aggiuntaServizioPost() throws Exception {
         //Utente op = aut.login("admin", "admin");
-        when(servizioService.aggiungiServizio("Leggins", "lavaggio", "lavaggio a secco", 10.5)).thenReturn(s1);
+        final double p = 10.5;
+        when(servizioService.aggiungiServizio("Leggins", "lavaggio", "lavaggio a secco", p)).thenReturn(s1);
         this.mockMvc.perform(post("/servizio/aggiuntaServizio")
                         .param("name", "Leggins")
                         .param("tipologia", "lavaggio")
                         .param("caratteristiche", "lavaggio a secco")
-                        .param("prezzo", String.valueOf(10.5))
+                        .param("prezzo", String.valueOf(p))
                         .sessionAttr("utente", u))
                 .andExpect(view().name("/servizi/ListaServizi"));
     }

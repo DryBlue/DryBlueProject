@@ -53,7 +53,7 @@ public class AutenticazioneServiceImplTest {
         cliente.setCellulare("395566777");
         cliente.setRuolo(ruolo);
 
-        cliente1 = new Cliente("user2", "user22", "via Roma 12 Salerno","Carla", "Ricci");
+        cliente1 = new Cliente("user2", "user22", "via Roma 12 Salerno", "Carla", "Ricci");
         cliente1.setNumeroTelefono("395566777");
 
 

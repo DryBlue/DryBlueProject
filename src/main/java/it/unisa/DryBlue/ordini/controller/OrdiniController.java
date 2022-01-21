@@ -162,7 +162,8 @@ public class OrdiniController {
      * @return la pagina di dettaglio dell'ordine
      */
     @PostMapping("/dettaglioOrdine")
-    private String dettaglioOrdine(final @RequestParam("codiceOrdine") int idOrdine, final Model model) {
+    private String dettaglioOrdine(final @RequestParam("codiceOrdine") int idOrdine,
+                                   final Model model) {
         model.getAttribute("utente");
         model.addAttribute("dOrdine", ordiniService.findById(idOrdine).get());
         return "ordini/DettaglioOrdine";
@@ -240,7 +241,8 @@ public class OrdiniController {
      * @return la pagina di visualizzazione della lista ordini
      */
     @PostMapping("/ListaOrdini/ModificaSede")
-    public String ModificaOrdine(final Model model, final @RequestParam("idOrdine") Integer id_ordine) {
+    public String ModificaOrdine(final Model model,
+                                 final @RequestParam("idOrdine") Integer id_ordine) {
         Ordine ordine = ordineDAO.findById(id_ordine).get();
         if (ordine.getSede().getIndirizzo().equals("Ariano Irpino, via Cardito, 52")) {
             ordine.setSede(sedeDAO.findByIndirizzo("Ariano Irpino, corso Vittorio Emanuele, 250"));
@@ -261,7 +263,9 @@ public class OrdiniController {
      * @return la pagina di visualizzazione della lista ordini
      */
     @PostMapping("/StampaEtichetta")
-    public void exportToPDF(final HttpServletResponse response, final Model model, final @RequestParam("codiceOrdine1") Integer id_ordine) throws Exception {
+    public void exportToPDF(final HttpServletResponse response,
+                            final Model model,
+                            final @RequestParam("codiceOrdine1") Integer id_ordine) throws Exception {
         response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
@@ -331,7 +335,8 @@ public class OrdiniController {
      * @return la pagina di valutazione della proposta di modifica
      */
     @PostMapping("/ValutazioneProposta")
-    public String ValutazioneProposta(final Model model, final @RequestParam("codiceOrdine2") Integer id_ordine) {
+    public String ValutazioneProposta(final Model model,
+                                      final @RequestParam("codiceOrdine2") Integer id_ordine) {
         model.getAttribute("utente");
         Ordine ordine = ordineDAO.findById(id_ordine).get();
         Integer idProp = ordine.getPropostaModifica().getId();
@@ -390,7 +395,8 @@ public class OrdiniController {
      * @return la pagina di visualizzazione della lista ordini
      */
     @PostMapping("/ValutazioneRifiuta")
-    public String ValutazioneRifiuta(final Model model, final @RequestParam("rifiuta") Integer rifiuta) {
+    public String ValutazioneRifiuta(final Model model,
+                                     final @RequestParam("rifiuta") Integer rifiuta) {
         model.getAttribute("utente");
         Ordine ordine = ordineDAO.findById(rifiuta).get();
         String email = ordine.getCliente().getEmail();

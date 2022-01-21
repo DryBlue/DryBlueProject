@@ -163,12 +163,12 @@ public class AutenticazioneController {
         Cliente cliente = clienteDAO.findByUsername(username);
         String password = cliente.getPassword();
         String ind_email = cliente.getEmail();
-        if((cliente.getUsername().equals(username))&&(cliente != null)) {
-            if(password.equals(oldPassword)) {
+        if ((cliente.getUsername().equals(username)) && (cliente != null)) {
+            if (password.equals(oldPassword)) {
                 cliente.setPassword(newPassword);
                 clienteDAO.save(cliente);
             }
-            if (ind_email == null){
+            if (ind_email == null) {
                 cliente.setEmail(email);
                 clienteDAO.save(cliente);
             } else {
