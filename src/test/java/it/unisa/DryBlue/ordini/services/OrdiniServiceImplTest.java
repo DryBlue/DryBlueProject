@@ -100,5 +100,35 @@ public class OrdiniServiceImplTest {
 
     }
 
+    @Test
+    public void visualizzaOrdiniFiltroOperatoreTest() {
+        List<Ordine> list1 = new ArrayList<>();
+        List<Ordine> list2 = new ArrayList<>();
+        when(ordineDAO.findAllByStato("Consegnato")).thenReturn(list1);
+        assertEquals(ordiniService.visualizzaOrdiniFiltroOperatore("Consegnato"), list1);
+        when(ordineDAO.findAllByStato("Macchiato")).thenReturn(list2);
+        assertEquals(ordiniService.visualizzaOrdiniFiltroOperatore("Macchiato"), list2);
+    }
+
+
+    @Test
+    public void visualizzaOrdiniFiltroUtenteTest() {
+        List<Ordine> list1 = new ArrayList<>();
+        Cliente c = new Cliente("user", "user", "Roccarainola, via Roma, 3", "Mario", "Rossi");
+        c.setNumeroTelefono("2222222");
+        ordine1.setCliente(c);
+        list1.add(ordine1);
+
+        List<Ordine> list2 = new ArrayList<>();
+        list2.add(ordine1);
+
+        when(ordineDAO.findAllByStato("Consegnato")).thenReturn(list1);
+        assertEquals(ordiniService.visualizzaOrdiniFiltroUtente("Consegnato", "2222222"), list1);
+
+
+        when(ordineDAO.findAllByStato("Macchiato")).thenReturn(list2);
+        assertEquals(ordiniService.visualizzaOrdiniFiltroUtente("Macchiato", "2222222"), list2);
+    }
+
 
 }

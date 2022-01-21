@@ -198,7 +198,7 @@ public class OrdiniController {
      * @return il metodo che reindirizza alla pagina della lista ordini
      */
     @PostMapping("/ListaOrdini/ModificaOrdine")
-    public String ModificaOrdine(final Model model,
+    public String ModificaStato(final Model model,
                                  final @RequestParam("stato") String stato,
                                  final @RequestParam("idOrdine") Integer id_ordine) {
 
