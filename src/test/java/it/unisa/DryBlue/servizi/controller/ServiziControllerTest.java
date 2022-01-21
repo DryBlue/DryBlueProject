@@ -77,7 +77,6 @@ public class ServiziControllerTest {
 
     @Test
     public void aggiuntaMacchinario() throws Exception {
-        String indirizzo = sede1.getIndirizzo();
         when(servizioService.aggiungiMacchinario("AB1", "MacchinarioNuovo", "Grande", "Francesco", "Giacomo", "3345698541", "In funzione", sede1)).thenReturn(m2);
         this.mockMvc.perform(post("/servizio/aggiuntaMacchinario")
                         .param("denomination", "MacchinarioNuovo")
@@ -86,7 +85,7 @@ public class ServiziControllerTest {
                         .param("caratteristiche", "Grande")
                         .param("manutentore", "Giacomo")
                         .param("numeroMan", "3345698541")
-                        .param("indirizzoSede", indirizzo)
+                        .param("indirizzoSede", sede1.getIndirizzo())
                         .sessionAttr("utente", u)).andExpect(view().name("/servizi/ListaMacchinari"));
 
     }
