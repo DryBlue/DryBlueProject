@@ -86,7 +86,8 @@ public class ServiziControllerTest {
                         .param("manutentore", "Giacomo")
                         .param("numeroMan", "3345698541")
                         .param("indirizzoSede", sede1.getIndirizzo())
-                        .sessionAttr("utente", u)).andExpect(view().name("/servizi/ListaMacchinari"));
+                        .sessionAttr("utente", u))
+                .andExpect(view().name("/servizi/ListaMacchinari"));
 
     }
 
