@@ -58,6 +58,9 @@
 
 
 <label>Modifica data <br>
+
+    <div id="error" class="text-danger"></div>
+
     <table class="table table-bordered">
         <tr>
             <td>Data attuale:</td>
@@ -69,7 +72,7 @@
         <input type="date" name="data" id="date" onchange="dateCheck()">
         <input type="hidden" name="idOrdine" th:value="${id}">
         <br><br>
-        <button type="submit" class="btn btn-light">Modifica</button>
+        <button type="submit" class="btn btn-light" onclick="dateNull()">Modifica</button>
     </form>
 </label><br>
         </div>
@@ -90,6 +93,27 @@
             alert('Data non valida')
         }
 
+    }
+</script>
+
+<script type="text/javascript">
+    function dateNull() {
+        const UserDate = document.getElementById("date").value;
+        const form = document.getElementById("modifica");
+        const errorElement = document.getElementById('error');
+
+        form.addEventListener('submit', (e) => {
+            let messages = [];
+
+            if (!new Date(UserDate).getTime()) {
+                messages.push('Inserisci una data')
+            }
+
+            if (messages.length > 0) {
+                e.preventDefault()
+                errorElement.innerText = messages.join(', ')
+            }
+        })
     }
 </script>
 

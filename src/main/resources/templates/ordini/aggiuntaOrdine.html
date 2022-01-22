@@ -54,7 +54,7 @@
                 <button  type="submit" name="button" id="addButton">Aggiungi all'ordine</button>
             </form>
 
-<form method="post" th:action="@{/ordini/aggiuntaOrdine}" >
+<form method="post" id="form" th:action="@{/ordini/aggiuntaOrdine}" >
 
     <div th:if="${utente.getRuolo().getName().equals('CLIENTE')}">
     <input type="hidden" name="cliente" th:value="${utente.username}">
@@ -109,7 +109,7 @@
     <label for="note" class="form-label"></label>
     <textarea class="form-control" id="note" name="note" rows="3"></textarea>
 
-    <button type="submit">Conferma</button><br>
+    <button type="submit" onclick="dateNull()">Conferma</button><br>
     <button type="reset">Annulla</button><br>
     </div>
 </form>
@@ -135,6 +135,28 @@
             }
 
     }
+</script>
+
+
+    <script type="text/javascript">
+        function dateNull() {
+            const UserDate = document.getElementById("date").value;
+            const form = document.getElementById("form");
+            const errorElement = document.getElementById('error');
+
+            form.addEventListener('submit', (e) => {
+                let messages = [];
+
+                if (!new Date(UserDate).getTime()) {
+                    messages.push('Inserisci una data')
+                }
+
+                if (messages.length > 0) {
+                    e.preventDefault()
+                    errorElement.innerText = messages.join(', ')
+                }
+            })
+        }
 </script>
 
 </body>

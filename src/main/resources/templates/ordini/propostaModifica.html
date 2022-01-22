@@ -19,7 +19,7 @@
         <div class="col-6">
 <h1 align="center">Proposta modifica</h1>
 
-<form method="post" th:action="@{/ordini/propostaModifica}">
+<form method="post" id="form" th:action="@{/ordini/propostaModifica}">
 
     <h2>Modifica sede</h2><br>
     <!-- inserire due label con le sedi/indirizzi delle sedi -->
@@ -32,10 +32,11 @@
     </select>
 
     <h2>Modifica data</h2><br>
+    <div id="error" class="text-danger"></div>
     <label>Data attuale: </label><label id="dataAttuale" name="dataAttuale" th:text="${ordine.dataConsegnaDesiderata}"></label><br>
     <label>Data desiderata: </label><input type="date" id="dataProposta" name="dataProposta" onchange="dateCheck()"><br>
     <input type="hidden" id="Ordine" name="Ordine" th:value="${ordine.id}">
-    <button type="submit" class="btn btn-primary">Proponi Modifica</button>
+    <button type="submit" class="btn btn-primary" onclick="dateNull()">Proponi Modifica</button>
     <button type="reset" class="btn btn-primary">Annulla</button>
 
 </form>
@@ -59,6 +60,28 @@
 
     }
 </script>
+
+<script type="text/javascript">
+    function dateNull() {
+        const UserDate = document.getElementById("date").value;
+        const form = document.getElementById("modifica");
+        const errorElement = document.getElementById('error');
+
+        form.addEventListener('submit', (e) => {
+            let messages = [];
+
+            if (!new Date(UserDate).getTime()) {
+                messages.push('Inserisci una data')
+            }
+
+            if (messages.length > 0) {
+                e.preventDefault()
+                errorElement.innerText = messages.join(', ')
+            }
+        })
+    }
+</script>
+
 
 </body>
 </html>
