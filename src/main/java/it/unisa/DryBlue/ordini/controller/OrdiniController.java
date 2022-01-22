@@ -307,7 +307,7 @@ public class OrdiniController {
                                    final @RequestParam("dataProposta") String data,
                                    final @RequestParam("Ordine") Integer id) {
         LocalDate date = LocalDate.parse(data);
-        Ordine ordine = ordineDAO.findById(id).get();
+        Ordine ordine = ordiniService.findById(id);
         ordiniService.propostaModifica(date, sede, ordine);
 
         PropostaModifica proposta = ordine.getPropostaModifica();

@@ -112,7 +112,7 @@ public class ServiziControllerTest {
                         .param("caratteristiche", "lavaggio a secco")
                         .param("prezzo", String.valueOf(p))
                         .sessionAttr("utente", u))
-                .andExpect(view().name("/servizi/ListaServizi"));
+                .andExpect(view().name("/LoggedHomepage"));
     }
 
     @Test

@@ -54,15 +54,11 @@ public class OrdiniServiceImplTest {
         ordiniService = new OrdiniServiceImpl(ordineDAO, propostaModificaDAO, etichettaDAO, sedeDAO,
                 clienteDAO, rigaOrdineDAO);
 
-        final int yP = 2022;
-        final int mP = 11;
-        final int dP = 02;
-        propostaModifica = new PropostaModifica("Pronto");
-        propostaModifica.setId(33);
+        propostaModifica = new PropostaModifica("In attesa");
         propostaModifica.setCliente(cliente1);
         propostaModifica.setOrdine(ordine1);
-        propostaModifica.setDataProposta(LocalDate.of(yP, mP, dP));
         propostaModifica.setSede(sede1);
+        propostaModifica.setDataProposta(LocalDate.of(2022, 03,02));
 
 
         final double p = 20.0;
@@ -70,12 +66,15 @@ public class OrdiniServiceImplTest {
 
         sede1 = new Sede("Ariano Irpino, via Cardito, 52");
 
+
         cliente = new Cliente("user", "user", "via Rossi 12", "Maria", "Rossi");
         cliente.setNumeroTelefono("333444555");
 
         cliente1 = new Cliente("user", "user", "via Rossi 12", "Maria", "Rossi");
         cliente1.setNumeroTelefono("333444777");
         cliente1.setPropostaModifica(propostaModifica);
+
+
 
         rigaOrdine = new HashSet<>();
         riga = new RigaOrdine(2);
@@ -87,10 +86,9 @@ public class OrdiniServiceImplTest {
         final int y = 2022;
         final int m = 03;
         final int d = 02;
-        //final int v=7;
+
         LocalDate data1 = LocalDate.of(y, m, d);
         ordine1 = new Ordine(data1, "In sede", "Macchiato");
-
         ordine1.setCliente(cliente);
         ordine1.setSede(sede1);
         ordine1.setPropostaModifica(propostaModifica);
@@ -117,26 +115,15 @@ public class OrdiniServiceImplTest {
 
     }
 
-/*
     @Test
-    public void propostaModifica(){
-        LocalDate data =LocalDate.of(2022,11,11);
-        ordine1 = new Ordine(data, "In sede", "macchiato");
-        final int x = 33;
-        ordine1.setId(x);
-        ordine1.setCliente(cliente);
-        ordine1.setSede(sede1);
-        ordine1.setPropostaModifica(propostaModifica);
-        ordine1.setRigheOrdine(rigaOrdine);
-        ordine1.setNote("blue");
-
-
+    public void propostaModificaVerifica(){
         when(sedeDAO.findByIndirizzo(sede1.getIndirizzo())).thenReturn(sede1);
         when(propostaModificaDAO.save(propostaModifica)).thenReturn(propostaModifica);
-        ordiniService.propostaModifica(data, "Ariano Irpino, via Cardito, 52", ordine1.getPropostaModifica().getOrdine());
+        ordiniService.propostaModifica(ordine1.getDataConsegnaDesiderata(), ordine1.getSede().getIndirizzo(), ordine1);
         verify(propostaModificaDAO, times(1)).save(propostaModifica);
     }
-*/
+
+
     @Test
     public void visualizzaSediTest() {
         List<Sede> list = new ArrayList<>();

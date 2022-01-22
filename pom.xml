@@ -188,9 +188,9 @@
 				<configuration>
 					<excludes>
                     	<exclude>it/unisa/DryBlue/autenticazione/domain/*</exclude>
-						<exclude>it/unisa/DryBlue/autenticazione/util/*</exclude>
 						<exclude>it/unisa/DryBlue/gestioneCliente/domain/*</exclude>
 						<exclude>it/unisa/DryBlue/ordini/domain/*</exclude>
+						<exclude>it/unisa/DryBlue/ordini/util/*</exclude>
 						<exclude>it/unisa/DryBlue/servizi/domain/*</exclude>
 						<exclude>it/unisa/DryBlue/autenticazione/configuration/*</exclude>
 						<exclude>**/exceptions/*</exclude>
