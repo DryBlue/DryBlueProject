@@ -14,9 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,12 +40,13 @@ public class OrdiniServiceImplTest {
     @Mock
     private RigaOrdineDAO rigaOrdineDAO;
 
-    private Sede sede1,sede2;
+    private Sede sede1, sede2;
     private Ordine ordine1;
     private PropostaModifica propostaModifica;
     private Etichetta etichetta;
-    private Cliente cliente;
-    private RigaOrdine rigaOrdine;
+    private Cliente cliente, cliente1;
+    private Set<RigaOrdine> rigaOrdine;
+    private RigaOrdine riga;
     private Servizio servizio;
 
     @BeforeEach
@@ -55,26 +54,15 @@ public class OrdiniServiceImplTest {
         ordiniService = new OrdiniServiceImpl(ordineDAO, propostaModificaDAO, etichettaDAO, sedeDAO,
                 clienteDAO, rigaOrdineDAO);
 
-        final int y = 2022;
-        final int m = 03;
-        final int d = 02;
         final int yP = 2022;
         final int mP = 11;
         final int dP = 02;
-        LocalDate data1 = LocalDate.of(y, m, d);
-        ordine1 = new Ordine(data1, "domicilio", "macchiato");
-        final int x = 23;
-        ordine1.setId(23);
-        ordine1.setCliente(cliente);
-        ordine1.setSede(sede1);
-        ordine1.setPropostaModifica(propostaModifica);
-
-
-        propostaModifica = new PropostaModifica("pronto");
+        propostaModifica = new PropostaModifica("Pronto");
         propostaModifica.setId(33);
-        propostaModifica.setCliente(cliente);
+        propostaModifica.setCliente(cliente1);
         propostaModifica.setOrdine(ordine1);
         propostaModifica.setDataProposta(LocalDate.of(yP, mP, dP));
+        propostaModifica.setSede(sede1);
 
 
         final double p = 20.0;
@@ -84,22 +72,80 @@ public class OrdiniServiceImplTest {
         etichetta.setOrdine(ordine1);
         etichetta.setSede(sede1);
 
+
         sede1 = new Sede("Ariano Irpino, via Cardito, 52");
-
-
 
         cliente = new Cliente("user", "user", "via Rossi 12", "Maria", "Rossi");
         cliente.setNumeroTelefono("333444555");
-        rigaOrdine = new RigaOrdine(2);
-        rigaOrdine.setId(22);
-        rigaOrdine.setOrdine(ordine1);
-        rigaOrdine.setServizio(servizio);
 
+        cliente1 = new Cliente("user", "user", "via Rossi 12", "Maria", "Rossi");
+        cliente1.setNumeroTelefono("333444777");
+        cliente1.setPropostaModifica(propostaModifica);
 
+        rigaOrdine = new HashSet<>();
+        riga =new RigaOrdine(2);
+        rigaOrdine.add(riga);
+        riga.setId(23);
+        riga.setOrdine(ordine1);
+        riga.setServizio(servizio);
 
+        final int y = 2022;
+        final int m = 03;
+        final int d = 02;
+        LocalDate data1 = LocalDate.of(y, m, d);
+        ordine1 = new Ordine(data1, "In sede", "macchiato");
+
+        final int x = 23;
+        ordine1.setId(x);
+        ordine1.setCliente(cliente);
+        ordine1.setSede(sede1);
+        ordine1.setPropostaModifica(propostaModifica);
+        ordine1.setRigheOrdine(rigaOrdine);
+        ordine1.setNote("blue");
 
     }
 
+/*
+    @Test
+    public void creazioneOrdine() {
+        List<Ordine> listOrdini = new ArrayList<>();
+        listOrdini.add(ordine1);
+
+        Set<RigaOrdine> rigaOrdine = new HashSet<>();
+        riga =new RigaOrdine(2);
+        riga.setId(23);
+        riga.setOrdine(ordine1);
+        riga.setServizio(servizio);
+        rigaOrdine.add(riga);
+
+        when(clienteDAO.findByUsername(cliente.getUsername())).thenReturn(cliente);
+        when(sedeDAO.findByIndirizzo(sede1.getIndirizzo())).thenReturn(sede1);
+        when(ordineDAO.save(ordine1)).thenReturn(ordine1);
+        ordiniService.creazioneOrdine(rigaOrdine, "user", "In sede", "Ariano Irpino, via Cardito, 52", ordine1.getDataConsegnaDesiderata(), "blue");
+        verify(ordineDAO, times(1)).save(ordine1);
+
+    }
+*/
+/*
+    @Test
+    public void propostaModifica(){
+        LocalDate data =LocalDate.of(2022,11,11);
+        ordine1 = new Ordine(data, "In sede", "macchiato");
+        final int x = 33;
+        ordine1.setId(x);
+        ordine1.setCliente(cliente);
+        ordine1.setSede(sede1);
+        ordine1.setPropostaModifica(propostaModifica);
+        ordine1.setRigheOrdine(rigaOrdine);
+        ordine1.setNote("blue");
+
+
+        when(sedeDAO.findByIndirizzo(sede1.getIndirizzo())).thenReturn(sede1);
+        when(propostaModificaDAO.save(propostaModifica)).thenReturn(propostaModifica);
+        ordiniService.propostaModifica(data, "Ariano Irpino, via Cardito, 52", ordine1.getPropostaModifica().getOrdine());
+        verify(propostaModificaDAO, times(1)).save(propostaModifica);
+    }
+*/
     @Test
     public void visualizzaSediTest() {
         List<Sede> list = new ArrayList<>();
@@ -119,9 +165,9 @@ public class OrdiniServiceImplTest {
 
     @Test
     public void creaRigaOrdineTest() {
-        when(rigaOrdineDAO.save(rigaOrdine)).thenReturn(rigaOrdine);
-        ordiniService.creaRigaOrdine(rigaOrdine);
-        verify(rigaOrdineDAO, times(1)).save(rigaOrdine);
+        when(rigaOrdineDAO.save(riga)).thenReturn(riga);
+        ordiniService.creaRigaOrdine(riga);
+        verify(rigaOrdineDAO, times(1)).save(riga);
 
     }
 
@@ -161,7 +207,6 @@ public class OrdiniServiceImplTest {
         assertEquals(ordiniService.visualizzaOrdiniFiltroOperatore("Macchiato"), list2);
     }
 
-
     @Test
     public void visualizzaOrdiniFiltroUtenteTest() {
         List<Ordine> list1 = new ArrayList<>();
@@ -180,6 +225,4 @@ public class OrdiniServiceImplTest {
         when(ordineDAO.findAllByStato("Macchiato")).thenReturn(list2);
         assertEquals(ordiniService.visualizzaOrdiniFiltroUtente("Macchiato", "2222222"), list2);
     }
-
-
 }

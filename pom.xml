@@ -188,11 +188,12 @@
 				<configuration>
 					<excludes>
                     	<exclude>it/unisa/DryBlue/autenticazione/domain/*</exclude>
+						<exclude>it/unisa/DryBlue/autenticazione/util/*</exclude>
 						<exclude>it/unisa/DryBlue/gestioneCliente/domain/*</exclude>
 						<exclude>it/unisa/DryBlue/ordini/domain/*</exclude>
 						<exclude>it/unisa/DryBlue/servizi/domain/*</exclude>
 						<exclude>it/unisa/DryBlue/autenticazione/configuration/*</exclude>
-                    	<exclude>**/exceptions/*</exclude>
+						<exclude>**/exceptions/*</exclude>
                     	<exclude>it/unisa/DryBlue/DryBlueApplication.java</exclude>
                     </excludes>
 				</configuration>
@@ -210,7 +211,7 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
+		<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.1.0</version>
@@ -235,7 +236,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
 
