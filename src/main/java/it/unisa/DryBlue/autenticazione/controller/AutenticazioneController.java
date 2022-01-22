@@ -80,8 +80,8 @@ public class AutenticazioneController {
             model.addAttribute("utente", utente);
             return "redirect:/LoggedHomepage";
         }
-        model.addAttribute("error", true);
-        return "/autenticazione/Login";
+        model.addAttribute("error", "login");
+        return "error/500";
     }
 
     /**

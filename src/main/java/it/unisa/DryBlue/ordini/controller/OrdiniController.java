@@ -110,11 +110,16 @@ public class OrdiniController {
                                   final @RequestParam("sedeDesiderata") String sede,
                                   final @RequestParam("date") String dataConsegnaDesiderata,
                                   final @RequestParam("note") String note) {
-        LocalDate date = LocalDate.parse(dataConsegnaDesiderata);
-        ordiniService.creazioneOrdine(righe, cliente, tipologiaRitiro, sede, date, note);
-        model.getAttribute("utente");
-        righe.clear();
-        return "/LoggedHomepage";
+        if (righe.size() > 0) {
+            LocalDate date = LocalDate.parse(dataConsegnaDesiderata);
+            ordiniService.creazioneOrdine(righe, cliente, tipologiaRitiro, sede, date, note);
+            model.getAttribute("utente");
+            righe.clear();
+            return "/LoggedHomepage";
+        } else {
+            model.addAttribute("error", "ordinevuoto");
+            return "error/500";
+        }
 
     }
 
