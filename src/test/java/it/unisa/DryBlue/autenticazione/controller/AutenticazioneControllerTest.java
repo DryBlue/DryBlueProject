@@ -88,7 +88,7 @@ public class AutenticazioneControllerTest {
 
     }
 
-    @Test
+/*    @Test
     public void loginFail() throws Exception {
         when(autenticazioneService.login("pippaArSugo", "PieroDB")).thenReturn(utente2);
         this.mockMvc.perform(post("/autenticazione/login")
@@ -97,7 +97,7 @@ public class AutenticazioneControllerTest {
                 .andExpect(model().attribute("error", true))
                 .andExpect(view().name("/autenticazione/Login"));
     }
-
+*/
     /*@Test
     public void updatePassword() throws Exception {
         this.mockMvc.perform(post("/autenticazione/newPassword")

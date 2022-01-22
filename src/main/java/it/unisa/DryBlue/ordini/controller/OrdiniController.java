@@ -250,12 +250,11 @@ public class OrdiniController {
     @PostMapping("/ListaOrdini/ModificaSede")
     public String ModificaOrdine(final Model model,
                                  final @RequestParam("idOrdine") Integer id_ordine) {
-        Ordine ordine = ordineDAO.findById(id_ordine).get();
-      //modifica miriam
+        Ordine ordine = ordiniService.findById(id_ordine);
         if (ordiniService.findByIndirizzo(ordine.getSede().getIndirizzo()).equals("Ariano Irpino, via Cardito, 52")) {
-            ordine.setSede(sedeDAO.findByIndirizzo("Ariano Irpino, corso Vittorio Emanuele, 250"));
+            ordine.setSede(ordiniService.findByIndirizzo("Ariano Irpino, corso Vittorio Emanuele, 250"));
         } else if (ordine.getSede().getIndirizzo().equals("Ariano Irpino, corso Vittorio Emanuele, 250")) {
-            ordine.setSede(sedeDAO.findByIndirizzo("Ariano Irpino, via Cardito, 52"));
+            ordine.setSede(ordiniService.findByIndirizzo("Ariano Irpino, via Cardito, 52"));
         }
         ordineDAO.save(ordine);
         return listaOrdini("Attivi", model);
@@ -373,11 +372,11 @@ public class OrdiniController {
     public String ValutazioneAccetta(final Model model,
                                      final @RequestParam("accetta") Integer accetta) {
         model.getAttribute("utente");
-        Ordine ordine = ordineDAO.findById(accetta).get();
+        Ordine ordine = ordiniService.findById(accetta);
         String email = ordine.getCliente().getEmail();
 
         Integer idProp = ordine.getPropostaModifica().getId();
-        PropostaModifica pr = propostaModificaDAO.findById(idProp).get();
+        PropostaModifica pr = ordiniService.findByIdProposta(idProp);
         LocalDate data = pr.getDataProposta();
         System.out.println("data " + data);
 

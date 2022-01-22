@@ -42,12 +42,12 @@ public class OrdiniServiceImplTest {
 
     private Sede sede1, sede2;
     private Ordine ordine1;
-    private PropostaModifica propostaModifica;
-    private Etichetta etichetta;
     private Cliente cliente, cliente1;
     private Set<RigaOrdine> rigaOrdine;
     private RigaOrdine riga;
     private Servizio servizio;
+    private PropostaModifica propostaModifica;
+
 
     @BeforeEach
     public void init() {
@@ -68,11 +68,6 @@ public class OrdiniServiceImplTest {
         final double p = 20.0;
         servizio = new Servizio("nome", "tipo", "caratteristica", p);
 
-        etichetta = new Etichetta();
-        etichetta.setOrdine(ordine1);
-        etichetta.setSede(sede1);
-
-
         sede1 = new Sede("Ariano Irpino, via Cardito, 52");
 
         cliente = new Cliente("user", "user", "via Rossi 12", "Maria", "Rossi");
@@ -92,6 +87,7 @@ public class OrdiniServiceImplTest {
         final int y = 2022;
         final int m = 03;
         final int d = 02;
+        //final int v=7;
         LocalDate data1 = LocalDate.of(y, m, d);
         ordine1 = new Ordine(data1, "In sede", "Macchiato");
 
@@ -103,23 +99,23 @@ public class OrdiniServiceImplTest {
 
     }
 
-        @Test
-        public void creazioneOrdine() {
-            List<Ordine> listOrdini = new ArrayList<>();
-            listOrdini.add(ordine1);
-            Set<RigaOrdine> rigaOrdine = new HashSet<>();
-            riga =new RigaOrdine(2);
-            riga.setOrdine(ordine1);
-            riga.setServizio(servizio);
-            riga.setId(ordine1.getId());
-            rigaOrdine.add(riga);
-            when(clienteDAO.findByUsername(cliente.getUsername())).thenReturn(cliente);
-            when(sedeDAO.findByIndirizzo(sede1.getIndirizzo())).thenReturn(sede1);
-            when(ordineDAO.save(ordine1)).thenReturn(ordine1);
-            ordiniService.creazioneOrdine(rigaOrdine, "user", "In sede", "Ariano Irpino, via Cardito, 52", ordine1.getDataConsegnaDesiderata(), "blue");
-            verify(ordineDAO, times(1)).save(ordine1);
+    @Test
+    public void creazioneOrdine() {
+        List<Ordine> listOrdini = new ArrayList<>();
+        listOrdini.add(ordine1);
+        Set<RigaOrdine> rigaOrdine = new HashSet<>();
+        riga =new RigaOrdine(2);
+        riga.setOrdine(ordine1);
+        riga.setServizio(servizio);
+        riga.setId(ordine1.getId());
+        rigaOrdine.add(riga);
+        when(clienteDAO.findByUsername(cliente.getUsername())).thenReturn(cliente);
+        when(sedeDAO.findByIndirizzo(sede1.getIndirizzo())).thenReturn(sede1);
+        when(ordineDAO.save(ordine1)).thenReturn(ordine1);
+        ordiniService.creazioneOrdine(rigaOrdine, "user", "In sede", "Ariano Irpino, via Cardito, 52", ordine1.getDataConsegnaDesiderata(), "blue");
+        verify(ordineDAO, times(1)).save(ordine1);
 
-        }
+    }
 
 /*
     @Test
@@ -149,15 +145,15 @@ public class OrdiniServiceImplTest {
         when(sedeDAO.findAll()).thenReturn(list);
         assertEquals(ordiniService.visualizzaSedi(), list);
     }
-    /*
+/*
         @Test
         public void findById() {
             Integer ordine_id = ordine1.getId();
-            Ordine list = ordiniService.findById(ordine_id);
+            Ordine list = ordiniDAO.findById(ordine_id);
             when(ordineDAO.findById(ordine_id)).thenReturn(Optional.empty());
             assertEquals(ordiniService.findById(ordine_id), list);
-        }
-    */
+        }*/
+
     @Test
     public void creaRigaOrdineTest() {
         when(rigaOrdineDAO.save(riga)).thenReturn(riga);
@@ -165,21 +161,22 @@ public class OrdiniServiceImplTest {
         verify(rigaOrdineDAO, times(1)).save(riga);
 
     }
-/*
+
     @Test
     public void modificaOrdine() {
         LocalDate data = LocalDate.of(2022, 11, 11);
-        Sede sede2 = new Sede("Ariano Irpino, AV, via Cardito, 52");
+        sede2 = new Sede("Ariano Irpino, AV, via Cardito, 52");
         String stato = "Imbustato";
-        when(ordiniService.findById(ordine1.getId())).thenReturn(ordine1);
+
+        when(ordineDAO.findById(ordine1.getId())).thenReturn(Optional.ofNullable(ordine1));
         when(ordineDAO.save(ordine1)).thenReturn(ordine1);
         assertEquals(ordiniService.modificaOrdine(data, null, null, ordine1.getId()), true);
 
-        when(ordiniService.findById(ordine1.getId())).thenReturn(ordine1);
+        when(ordineDAO.findById(ordine1.getId())).thenReturn(Optional.ofNullable(ordine1));
         when(ordineDAO.save(ordine1)).thenReturn(ordine1);
         assertEquals(ordiniService.modificaOrdine(null, sede2, null, ordine1.getId()), true);
 
-        when(ordiniService.findById(ordine1.getId())).thenReturn(ordine1);
+        when(ordineDAO.findById(ordine1.getId())).thenReturn(Optional.ofNullable(ordine1));
         when(ordineDAO.save(ordine1)).thenReturn(ordine1);
         assertEquals(ordiniService.modificaOrdine(null, null, stato, ordine1.getId()), true);
 
@@ -187,10 +184,9 @@ public class OrdiniServiceImplTest {
 
     @Test
     public void modificaOrdineFailure() {
-        when(ordiniService.findById(ordine1.getId())).thenReturn(ordine1);
-        when(ordiniService.findById(ordine1.getId())).thenReturn(ordine1);
+        when(ordineDAO.findById(ordine1.getId())).thenReturn(Optional.ofNullable(ordine1));
         assertEquals(ordiniService.modificaOrdine(null, null, null, ordine1.getId()), false);
-    }*/
+    }
 
     @Test
     public void visualizzaOrdiniFiltroOperatoreTest() {
