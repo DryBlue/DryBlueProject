@@ -45,12 +45,12 @@
 
                                 <form method="post" id="form" th:action="@{/servizio/aggiuntaMacchinario}">
                                     <div class="form-group">
-                                        <label class="form-label" for="denomination">Denominazione*</label><br>
+                                        <label class="form-label" for="denomination">Denominazione</label><br>
                                         <input type="text" class="form-control form-control-lg" placeholder="Denominazione" id="denomination" name="denomination">
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="form-label" for="matricola">Matricola*</label><br>
+                                        <label class="form-label" for="matricola">Matricola</label><br>
                                         <input type="text" class="form-control form-control-lg" placeholder="Matricola" id="matricola" name="matricola">
                                     </div>
 
@@ -65,13 +65,13 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="form-label" for="manutentore">Manutentore*</label><br>
+                                        <label class="form-label" for="manutentore">Manutentore</label><br>
                                         <input type="text" class="form-control form-control-lg" placeholder="Manutentore" id="manutentore" name="manutentore">
                                     </div>
 
                                     <br>
                                     <div class="form-group">
-                                    <label class="form-label" for="indirizzoSede">Sede*</label>
+                                    <label class="form-label" for="indirizzoSede">Sede</label>
                                     <select name="indirizzoSede" id="indirizzoSede">
                                         <div th:each="sede : ${sedi}">
 
@@ -85,8 +85,7 @@
                                         <input type="text" class="form-control form-control-lg" placeholder="Numero Manutenzione" id="numeroMan" name="numeroMan">
                                     </div>
                                     <br>
-                                    <small id="riempimentoHelp" class="form-text text-muted">I campi con * sono obbligatori</small>
-                                    <br>
+
 
                                     <button  type="submit" class="btn btn-primary" onclick="macchinarioCheck()">Aggiungi</button>
                                     <button  type="reset" class="btn btn-primary">Annulla</button>
