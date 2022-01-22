@@ -22,6 +22,18 @@
 
         });
     </script>
+
+    <style>
+        .card-registration .select-input.form-control[readonly]:not([disabled]) {
+            font-size: 1rem;
+            line-height: 2.15;
+            padding-left: .75em;
+            padding-right: .75em;
+        }
+        .card-registration .select-arrow {
+            top: 13px;
+        }
+    </style>
 </head>
 <body>
 
@@ -36,6 +48,110 @@
     <div th:replace="navbarCliente :: navbarCliente"></div>
 </div>
 
+<section class="h-100 bg-dark">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+                <div class="card card-registration my-4">
+                    <div class="row g-0">
+                        <div class="col-xl-6 d-none d-xl-block">
+                            <img
+                                    src="https://banner2.cleanpng.com/20180325/edq/kisspng-clipboard-computer-icons-clip-art-paper-sheet-5ab7d8a430d7e9.4744950715219979882001.jpg"
+                                    alt="Sample photo"
+                                    class="img-fluid"
+                                    style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;"
+                            />
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="card-body p-md-5 text-black">
+                                <h3 class="mb-5 text-uppercase">Aggiungi un nuovo ordine</h3>
+
+                                <form method="post" th:action="@{/ordini/aggiuntaRiga}">
+                                    <select name="idServizio">
+                                        <div th:each="servizio : ${servizi}">
+                                            <option th:value="${servizio.id}" th:text="${servizio.nome}"></option>
+                                        </div>
+                                    </select>
+
+                                    <label for="quantity"></label>
+                                    <input type="number" id="quantity" name="quantity" value="1" min="1" max="255">
+
+                                    <button  type="submit" name="button" id="addButton" class="btn btn-primary">Aggiungi all'ordine</button>
+                                </form>
+
+
+                                <form method="post" th:action="@{/ordini/aggiuntaOrdine}" >
+
+                                    <div th:if="${utente.getRuolo().getName().equals('CLIENTE')}">
+                                        <input type="hidden" name="cliente" th:value="${utente.username}">
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <ul>
+                                            <div th:if="${righe != null}">
+                                                <div th:each="riga : ${righe}">
+                                                    <li th:text="${riga.getServizio().getNome() + ', ' + riga.getQuantita()}"></li>
+                                                </div>
+                                            </div>
+                                        </ul>
+
+
+                                        <br><br>
+                                        <select name="ritiro" id="ritiro">
+                                            <option value="In sede" grouping="In sede">Ritiro</option>
+                                            <option value="Consegna" grouping="Consegna">Consegna</option>
+                                        </select><br>
+
+                                        <div id="error" class="text-danger">
+                                        </div>
+                                        <h4>Data desiderata</h4>
+                                        <div class="it-datepicker-wrapper">
+                                            <input class="form-control it-date-datepicker" id="date" name="date" type="date" onchange="dateCheck()">
+                                            <label for="date" name="date"></label>
+                                        </div>
+
+                                        <div name="sedeScelta" id="sedeScelta">
+                                            <h4>Sede desiderata</h4>
+                                            <select name="sedeDesiderata" id="sedeDesiderata">
+                                                <div id="sede" th:each="sede : ${sedi}">
+
+                                                    <option th:text="${sede.indirizzo}"></option>
+                                                </div>
+                                            </select>
+                                        </div>
+
+                                        <br><br>
+
+                                        <div th:if="${utente.getRuolo().getName().equals('OPERATORE')}">
+                                            <h6>Cliente che effettua l'ordine:</h6>
+                                            <select name="cliente">
+                                                <div th:each="cliente : ${clienti}">
+                                                    <option th:text="${cliente.username}"></option>
+                                                </div>
+                                            </select>
+                                        </div>
+
+                                        <label for="note" class="form-label"></label>
+                                        <textarea class="form-control" id="note" name="note" rows="3"></textarea>
+
+                                        <div class="text-center text-lg-start mt-4 pt-2">
+                                        <button type="submit" class="btn btn-primary">Conferma</button><br>
+                                        <button type="reset" class="btn btn-primary"  style="margin-top: 1rem">Annulla</button><br>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+<!--
 
 <div class="container-sm">
     <div class="row">
@@ -118,7 +234,7 @@
 
         </div>
     </div>
-</div>
+</div> -->
 
 <script type="text/javascript">
     function dateCheck(){
