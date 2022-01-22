@@ -151,8 +151,8 @@ public class OrdiniServiceImpl implements OrdiniService {
     }
 
     @Override
-    public Optional<Ordine> findById(final Integer idOrdine) {
-        return ordineDAO.findById(idOrdine);
+    public Ordine findById(final Integer idOrdine) {
+        return ordineDAO.findById(idOrdine).get();
     }
 
     @Override

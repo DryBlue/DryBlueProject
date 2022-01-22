@@ -25,7 +25,7 @@ public interface OrdiniService {
 
     List<Sede> visualizzaSedi();
 
-    Optional<Ordine> findById(Integer idOrdine);
+    Ordine findById(Integer idOrdine);
 
     void creaRigaOrdine(RigaOrdine riga);
 

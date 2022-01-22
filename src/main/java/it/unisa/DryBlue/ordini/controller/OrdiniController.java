@@ -171,7 +171,7 @@ public class OrdiniController {
     private String dettaglioOrdine(final @RequestParam("codiceOrdine") int idOrdine,
                                    final Model model) {
         model.getAttribute("utente");
-        model.addAttribute("dOrdine", ordiniService.findById(idOrdine).get());
+        model.addAttribute("dOrdine", ordiniService.findById(idOrdine));
         return "ordini/DettaglioOrdine";
     }
 
@@ -209,7 +209,8 @@ public class OrdiniController {
 
         ordiniService.modificaOrdine(null, null, stato, id_ordine);
         model.getAttribute("utente");
-        Ordine ordine = ordineDAO.findById(id_ordine).get();
+        Ordine ordine = ordiniService.findById(id_ordine);
+        System.out.println("ordine "+ ordine);
         String email = ordine.getCliente().getEmail();
 
         if (email != null) {
@@ -250,7 +251,8 @@ public class OrdiniController {
     public String ModificaOrdine(final Model model,
                                  final @RequestParam("idOrdine") Integer id_ordine) {
         Ordine ordine = ordineDAO.findById(id_ordine).get();
-        if (ordine.getSede().getIndirizzo().equals("Ariano Irpino, via Cardito, 52")) {
+      //modifica miriam
+        if (ordiniService.findByIndirizzo(ordine.getSede().getIndirizzo()).equals("Ariano Irpino, via Cardito, 52")) {
             ordine.setSede(sedeDAO.findByIndirizzo("Ariano Irpino, corso Vittorio Emanuele, 250"));
         } else if (ordine.getSede().getIndirizzo().equals("Ariano Irpino, corso Vittorio Emanuele, 250")) {
             ordine.setSede(sedeDAO.findByIndirizzo("Ariano Irpino, via Cardito, 52"));
@@ -326,7 +328,7 @@ public class OrdiniController {
     @GetMapping("/propostaModifica")
     public String propostaPage(final Model model,
                                final @RequestParam("codiceOrdine4") Integer id) {
-        model.addAttribute("ordine", ordiniService.findById(id).get());
+        model.addAttribute("ordine", ordiniService.findById(id));
         model.addAttribute("sedi", ordiniService.visualizzaSedi());
         return "/ordini/propostaModifica";
     }

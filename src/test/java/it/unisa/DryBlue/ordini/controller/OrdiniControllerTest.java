@@ -4,11 +4,13 @@ import it.unisa.DryBlue.autenticazione.domain.Operatore;
 import it.unisa.DryBlue.autenticazione.domain.Ruolo;
 import it.unisa.DryBlue.autenticazione.domain.Utente;
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
+import it.unisa.DryBlue.ordini.dao.OrdineDAO;
 import it.unisa.DryBlue.ordini.domain.*;
 import it.unisa.DryBlue.ordini.services.OrdiniService;
 import it.unisa.DryBlue.servizi.domain.Servizio;
 import it.unisa.DryBlue.servizi.services.ServizioService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,8 +19,14 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 
-import java.util.Set;
+import java.util.*;
 
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -30,12 +38,13 @@ public class OrdiniControllerTest {
     private ServizioService servizioService;
 
 
+
     @Autowired
     private MockMvc mockMvc;
 
     private Ordine ordine;
     private Sede sede;
-    private RigaOrdine rigaOrdine;
+    private Set<RigaOrdine> rigaOrdine;
     private PropostaModifica propostaModifica;
     private Cliente cliente;
     private Utente u;
@@ -56,63 +65,81 @@ public class OrdiniControllerTest {
 
         cliente = new Cliente("user", "user", "via verdi ", "Marco", "rossi");
         cliente.setNumeroTelefono("222333666");
+        cliente.setEmail("marco@gmail.com");
 
 
         u = new Utente("admin", "admin");
         ruolo = new Ruolo();
         ruolo.setName(ruolo.OPERATORE_ROLE);
         u.setRuolo(ruolo);
-        u.setId(3);
+        u.setId(5);
 
         operatore = new Operatore("admin", "Marco", "Polo");
         operatore.setUsername("admin");
 
 
-        rigaOrdine = new RigaOrdine(2);
+        rigaOrdine = new HashSet<>();
         final double prezzo = 10.50;
         servizio = new Servizio("Lavaggio", "secco", "veloce", prezzo);
         final int x = 3;
         servizio.setId(servizio.getId());
 
-        sede = new Sede();
-        sede.setIndirizzo("Ariano Irpino, via Cardito, 52");
+        final int z = 6;
+        sede = new Sede("Ariano Irpino, via Cardito, 52");
+        sede.setId(z);
+
         final int y = 2022;
         final int m = 03;
         final int d = 02;
         LocalDate data1 = LocalDate.of(y, m, d);
-        ordine = new Ordine(data1, "domicilio", "macchiato");
+        ordine = new Ordine(data1, "domicilio", "Pronto");
         ordine.setSede(sede);
-        ordine.setNote("");
+        ordine.setNote("blue");
         ordine.setCliente(cliente);
         ordine.setId(3);
+        ordine.getCliente().setEmail(cliente.getEmail());
+        ordine.getCliente().setNumeroTelefono(cliente.getNumeroTelefono());
+        ordine.setRigheOrdine( rigaOrdine);
+
 
     }
 
-   /* @Test
+    @Test
     public void listaOrdiniTest() throws Exception{
-
-        List <Ordine> list= new ArrayList<>();
+//sessione cliente e operatore
+        List<Ordine> list= new ArrayList<>();
         list.add(ordine);
         when(ordiniService.visualizzaOrdiniTotali()).thenReturn(list);
-        this.mockMvc.perform(post("/ListaOrdini")
+        this.mockMvc.perform(get("/ordini/ListaOrdini")
                 .param("filter","Totali")
                 .sessionAttr("utente",u))
-                .andExpect(model().attribute("ordini",list))
-                .andExpect(view().name("/ordini/ListaOrdini"));
+                .andExpect(model().attribute("ordini", list))
+                .andExpect(view().name("ordini/ListaOrdini"));
 
        when(ordiniService.visualizzaOrdiniFiltroOperatore("Attivi")).thenReturn(list);
-        this.mockMvc.perform(post("/ListaOrdini")
+        this.mockMvc.perform(get("/ordini/ListaOrdini")
                         .param("filter","Attivi")
                         .sessionAttr("utente",u))
                 .andExpect(model().attribute("ordini",list))
-                .andExpect(view().name("/ordini/ListaOrdini"));
+                .andExpect(view().name("ordini/ListaOrdini"));
 
+
+        // aggiungi
         when(ordiniService.visualizzaOrdiniFiltroUtente("Attivi",ucliente.getCellulare())).thenReturn(list);
-        this.mockMvc.perform(post("/ListaOrdini")
+        this.mockMvc.perform(get("/ordini/ListaOrdini")
                         .param("filter","Attivi")
-                        .sessionAttr("utente",ucliente))
-                .andExpect(model().attribute("ordini",ucliente.getCellulare()))
-                .andExpect(view().name("/ordini/ListaOrdini"));
+                        .sessionAttr("utente", ucliente))
+                .andExpect(model().attribute("ordini",list))
+               .andExpect(view().name("ordini/ListaOrdini"));
+
+
+        when(ordiniService.visualizzaOrdiniFiltroUtente("Totali",ucliente.getCellulare())).thenReturn(list);
+        this.mockMvc.perform(get("/ordini/ListaOrdini")
+                        .param("filter","Totali")
+                        .sessionAttr("utente", ucliente))
+                .andExpect(model().attribute("ordini",list))
+                .andExpect(view().name("ordini/ListaOrdini"));
+
 
   }
 
@@ -120,19 +147,17 @@ public class OrdiniControllerTest {
     public void modificaStatoTest() throws Exception{
         List <Ordine> list= new ArrayList<>();
         list.add(ordine);
-        final int y = 2022;
-        final int m = 03;
-        final int d = 02;
-        Sede sede2= new Sede("Ariano Irpino, AV, via Cardito, 52");
-        Integer id_ordine = ordine.getId();
-        LocalDate data = LocalDate.of(y, m, d);
+       // ordiniService.creazioneOrdine(rigaOrdine, "Marco", "domicilio",  sede.getIndirizzo(),  LocalDate.of(2022, 03, 02), "blue");
 
-        when(ordiniService.modificaOrdine(data, sede2,"Pronto", 3)).thenReturn(true);
-        this.mockMvc.perform(post("/ListaOrdini/ModificaOrdine")
+       when(ordiniService.findById(ordine.getId())).thenReturn(ordine);
+        when(ordiniService.modificaOrdine(null, null,"Pronto", ordine.getId())).thenReturn(true);
+        this.mockMvc.perform(post("/ordini/ListaOrdini/ModificaOrdine")
                 .param("stato","Pronto")
-                .param("idOrdine", "3")
+                .param("idOrdine", String.valueOf(ordine.getId()))
                 .sessionAttr("utente",u))
-                .andExpect(view().name("/ordini/ListaOrdini"));
+                 .andExpect(view().name("ordini/ListaOrdini"));
+        System.out.println(" id " + ordine.getId() + " email " +ordine.getCliente().getEmail());
+
 
     }
 
@@ -140,34 +165,37 @@ public class OrdiniControllerTest {
     public void modificaOrdine() throws Exception{
         List <Ordine> list= new ArrayList<>();
         list.add(ordine);
-        Integer id_ordine = ordine.getId();
         Sede sede2= new Sede("Ariano Irpino, AV, via Cardito, 52");
-        final int yP = 2022;
-        final int mP = 11;
-        final int dP = 02;
-        LocalDate data = LocalDate.of(yP,mP,dP);
+        sede2.setId(6);
+         ordine.getSede().setIndirizzo(sede2.getIndirizzo());
+        System.out.println("id " + ordine.getId() + "sede2 "+ sede2 + "\nsede "  +sede);
 
-        when(ordiniService.modificaOrdine(data, sede2,"Macchiato", id_ordine)).thenReturn(true);
-        this.mockMvc.perform(post("/ordini/ListaOrdini/ModificaSede")
-                        .param("idOrdine", "3")
-                        .sessionAttr("utente", u)
-                .sessionAttr("utente", ucliente))
-                .andExpect(view().name("/ordini/ListaOrdini?filter=Attivi"));
+        when(ordiniService.findById(ordine.getId())).thenReturn(ordine);
+        when(ordiniService.findByIndirizzo(ordine.getSede().getIndirizzo())).thenReturn(sede);
+        when(ordiniService.modificaOrdine(null, sede2 ,null, ordine.getId())).thenReturn(true);
+
+        this.mockMvc.perform(post("/ListaOrdini/ModificaOrdine")
+                .param("idOrdine", ordine.getId().toString())
+                .sessionAttr("utente",u));
+              //  .andExpect(view().name("/ordini/ListaOrdini" + ordiniService.visualizzaOrdiniTotali() ));
     }
+
+/*
 
     @Test
     public void ValutazioneAccetta() throws Exception{
-
-        when(ordiniService.findById(ordine.getId())).thenReturn(Optional.ofNullable(ordine));
+        List <Ordine> list= new ArrayList<>();
+        list.add(ordine);
+        when(ordiniService.findById(ordine.getId())).thenReturn(ordine);
         this.mockMvc.perform(post("/ordini/ValutazioneAccetta")
-                        .param("idOrdine", "3")
-                        .sessionAttr("utente", u))
-                .andExpect(view().name("/ordini/ListaOrdini"));
+                        .param("accetta", ordine.getId().toString())
+                        .sessionAttr("utente", u));
+               // .andExpect(view().name("ordini/ListaOrdini"));
 
-    }
+    }*/
 
     @Test
     public void ValutazioneRifiuta() throws Exception{
 
-    }*/
+    }
 }
