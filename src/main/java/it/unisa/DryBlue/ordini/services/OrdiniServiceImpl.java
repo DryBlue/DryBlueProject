@@ -156,6 +156,11 @@ public class OrdiniServiceImpl implements OrdiniService {
     }
 
     @Override
+    public PropostaModifica findByIdProposta(final Integer idProposta){
+        return propostaModificaDAO.findById(idProposta).get();
+    }
+
+    @Override
     public void creaRigaOrdine(final RigaOrdine riga) {
         rigaOrdineDAO.save(riga);
     }
