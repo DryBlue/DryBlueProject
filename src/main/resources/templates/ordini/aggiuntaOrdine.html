@@ -80,7 +80,7 @@
                                 </form>
 
 
-                                <form method="post" th:action="@{/ordini/aggiuntaOrdine}" >
+                                <form method="post" id="form" th:action="@{/ordini/aggiuntaOrdine}" >
 
                                     <div th:if="${utente.getRuolo().getName().equals('CLIENTE')}">
                                         <input type="hidden" name="cliente" th:value="${utente.username}">
@@ -136,7 +136,7 @@
                                         <textarea class="form-control" id="note" name="note" rows="3"></textarea>
 
                                         <div class="text-center text-lg-start mt-4 pt-2">
-                                        <button type="submit" class="btn btn-primary">Conferma</button><br>
+                                        <button type="submit" class="btn btn-primary" onclick="dateNull()">Conferma</button><br>
                                         <button type="reset" class="btn btn-primary"  style="margin-top: 1rem">Annulla</button><br>
                                         </div>
                                     </div>

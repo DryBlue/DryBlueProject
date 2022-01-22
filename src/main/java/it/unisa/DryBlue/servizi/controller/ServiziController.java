@@ -31,7 +31,7 @@ public class ServiziController {
                                     final @RequestParam("prezzo") double prezzo) {
         servizioService.aggiungiServizio(nome, tipologia, caratteristiche, prezzo);
         model.getAttribute("utente");
-        return "/servizi/ListaServizi";
+        return "/LoggedHomepage";
     }
 
     @GetMapping("/aggiuntaMacchinario")
