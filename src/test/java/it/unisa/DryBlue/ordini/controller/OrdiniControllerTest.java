@@ -58,7 +58,6 @@ public class OrdiniControllerTest {
         cliente.setNumeroTelefono("222333666");
 
 
-
         u = new Utente("admin", "admin");
         ruolo = new Ruolo();
         ruolo.setName(ruolo.OPERATORE_ROLE);

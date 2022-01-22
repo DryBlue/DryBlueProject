@@ -83,7 +83,7 @@ public class OrdiniServiceImplTest {
         cliente1.setPropostaModifica(propostaModifica);
 
         rigaOrdine = new HashSet<>();
-        riga =new RigaOrdine(2);
+        riga = new RigaOrdine(2);
         rigaOrdine.add(riga);
         riga.setId(23);
         riga.setOrdine(ordine1);
@@ -105,27 +105,27 @@ public class OrdiniServiceImplTest {
 
     }
 
-/*
-    @Test
-    public void creazioneOrdine() {
-        List<Ordine> listOrdini = new ArrayList<>();
-        listOrdini.add(ordine1);
+    /*
+        @Test
+        public void creazioneOrdine() {
+            List<Ordine> listOrdini = new ArrayList<>();
+            listOrdini.add(ordine1);
 
-        Set<RigaOrdine> rigaOrdine = new HashSet<>();
-        riga =new RigaOrdine(2);
-        riga.setId(23);
-        riga.setOrdine(ordine1);
-        riga.setServizio(servizio);
-        rigaOrdine.add(riga);
+            Set<RigaOrdine> rigaOrdine = new HashSet<>();
+            riga =new RigaOrdine(2);
+            riga.setId(23);
+            riga.setOrdine(ordine1);
+            riga.setServizio(servizio);
+            rigaOrdine.add(riga);
 
-        when(clienteDAO.findByUsername(cliente.getUsername())).thenReturn(cliente);
-        when(sedeDAO.findByIndirizzo(sede1.getIndirizzo())).thenReturn(sede1);
-        when(ordineDAO.save(ordine1)).thenReturn(ordine1);
-        ordiniService.creazioneOrdine(rigaOrdine, "user", "In sede", "Ariano Irpino, via Cardito, 52", ordine1.getDataConsegnaDesiderata(), "blue");
-        verify(ordineDAO, times(1)).save(ordine1);
+            when(clienteDAO.findByUsername(cliente.getUsername())).thenReturn(cliente);
+            when(sedeDAO.findByIndirizzo(sede1.getIndirizzo())).thenReturn(sede1);
+            when(ordineDAO.save(ordine1)).thenReturn(ordine1);
+            ordiniService.creazioneOrdine(rigaOrdine, "user", "In sede", "Ariano Irpino, via Cardito, 52", ordine1.getDataConsegnaDesiderata(), "blue");
+            verify(ordineDAO, times(1)).save(ordine1);
 
-    }
-*/
+        }
+    */
 /*
     @Test
     public void propostaModifica(){
@@ -172,29 +172,29 @@ public class OrdiniServiceImplTest {
     }
 
     @Test
-    public void modificaOrdine(){
-        LocalDate data =LocalDate.of(2022,11,11);
-        Sede sede2= new Sede("Ariano Irpino, AV, via Cardito, 52");
-        String stato="Imbustato";
+    public void modificaOrdine() {
+        LocalDate data = LocalDate.of(2022, 11, 11);
+        Sede sede2 = new Sede("Ariano Irpino, AV, via Cardito, 52");
+        String stato = "Imbustato";
         when(ordiniService.findById(ordine1.getId())).thenReturn(Optional.ofNullable(ordine1));
         when(ordineDAO.save(ordine1)).thenReturn(ordine1);
-        assertEquals(ordiniService.modificaOrdine(data, null,null, ordine1.getId()), true);
+        assertEquals(ordiniService.modificaOrdine(data, null, null, ordine1.getId()), true);
 
         when(ordiniService.findById(ordine1.getId())).thenReturn(Optional.ofNullable(ordine1));
         when(ordineDAO.save(ordine1)).thenReturn(ordine1);
-        assertEquals(ordiniService.modificaOrdine(null, sede2,null, ordine1.getId()), true);
+        assertEquals(ordiniService.modificaOrdine(null, sede2, null, ordine1.getId()), true);
 
         when(ordiniService.findById(ordine1.getId())).thenReturn(Optional.ofNullable(ordine1));
         when(ordineDAO.save(ordine1)).thenReturn(ordine1);
-        assertEquals(ordiniService.modificaOrdine(null, null,stato, ordine1.getId()), true);
+        assertEquals(ordiniService.modificaOrdine(null, null, stato, ordine1.getId()), true);
 
     }
 
     @Test
-    public void modificaOrdineFailure(){
+    public void modificaOrdineFailure() {
         when(ordiniService.findById(ordine1.getId())).thenReturn(Optional.ofNullable(ordine1));
         when(ordiniService.findById(ordine1.getId())).thenReturn(Optional.ofNullable(ordine1));
-        assertEquals(ordiniService.modificaOrdine(null, null,null, ordine1.getId()), false);
+        assertEquals(ordiniService.modificaOrdine(null, null, null, ordine1.getId()), false);
     }
 
     @Test
