@@ -96,7 +96,7 @@
             }
 
             if(!name.value.match(patternServizio)){
-                messages.push('Formato della nome non valido')
+                messages.push('Formato del nome non valido')
             }
 
             if (tipologia.value.length < 2){
@@ -120,20 +120,20 @@
             }
 
             if(!caratteristiche.value.match(patternServizio)){
-                messages.push('Formato della tipologia non valido')
+                messages.push('Formato delle caratteristiche non valido')
             }
 
 
-            if (prezzo.value.length < 1){
+            if (prezzo.value < 1){
                 messages.push('Servizio troppo economico')
             }
 
-            if(prezzo.value.length > 50){
+            if(prezzo.value > 50){
                 messages.push('Servizio troppo caro')
             }
 
             if (!prezzo.value.match(patternPrezzo)){
-                messages.push('Formato caratteristiche non valido')
+                messages.push('Formato prezzo non valido')
             }
 
             if (messages.length > 0){
