@@ -47,23 +47,23 @@ public class DryBlueApplication {
             cliente1.setPassword(cliente1.generateString());
             cliente1.setNome("Mario");
             cliente1.setCognome("Rossi");
-            cliente1.setIndirizzo("Via Polpette al sugo 14");
+            cliente1.setIndirizzo("Salerno, SA, Via Roma, 15");
 
             Cliente cliente2 = new Cliente();
             cliente2.setNumeroTelefono("34563275671");
             cliente2.setUsername(cliente2.generateString());
             cliente2.setPassword(cliente2.generateString());
-            cliente2.setNome("Paolo");
-            cliente2.setCognome("Brosio");
-            cliente2.setIndirizzo("Via Mazzini 4");
+            cliente2.setNome("Felice");
+            cliente2.setCognome("Russo");
+            cliente2.setIndirizzo("Nola, NA, P.zza Duomo, 13");
 
             Cliente cliente3 = new Cliente();
             cliente3.setNumeroTelefono("34733275671");
             cliente3.setUsername("user");
             cliente3.setPassword("user");
-            cliente3.setNome("Gianfranco");
-            cliente3.setCognome("Bonromeo");
-            cliente3.setIndirizzo("Via Polpette al sugo 45");
+            cliente3.setNome("Maria");
+            cliente3.setCognome("Ruocco");
+            cliente3.setIndirizzo("Ariano Irpino, AV, Via Cardito, 10");
 
             Cliente cliente4 = new Cliente();
             cliente4.setNumeroTelefono("3332994445");
@@ -71,7 +71,7 @@ public class DryBlueApplication {
             cliente4.setPassword("user1");
             cliente4.setNome("Camilla");
             cliente4.setCognome("Bonomelli");
-            cliente4.setIndirizzo("Via Polpette al sugo 45");
+            cliente4.setIndirizzo("Fisciano, SA, Via Giovanni Paolo II, 21");
             cliente4.setEmail("m.ferrara115@studenti.unisa.it");
             clienteDAO.saveAll(Arrays.asList(cliente1, cliente2, cliente3, cliente4));
 
@@ -92,27 +92,41 @@ public class DryBlueApplication {
             cliente3.setCognome("Russo");
             clienteDAO.saveAll(Arrays.asList(cliente1, cliente3)); */
 
-            final double prezzo1 = 10.20;
+            final double prezzo1 = 2.20;
             Servizio servizio = new Servizio();
-            servizio.setNome("Lavaggio maglia blu");
+            servizio.setNome("Lavaggio maglietta");
             servizio.setTipologia("Lavaggio");
-            servizio.setCaratteristiche("Maglia blu");
+            servizio.setCaratteristiche("Maglietta di cotone");
             servizio.setPrezzo(prezzo1);
 
-            final double prezzo2 = 5.20;
+            final double prezzo2 = 3.20;
             Servizio servizio2 = new Servizio();
-            servizio2.setNome("Stiratura maglia blu");
+            servizio2.setNome("Stiratura maglietta");
             servizio2.setTipologia("Stiratura");
-            servizio2.setCaratteristiche("Maglia blu");
+            servizio2.setCaratteristiche("Maglietta di cotone");
             servizio2.setPrezzo(prezzo2);
 
-            final double prezzo3 = 10.40;
+            final double prezzo3 = 4.20;
             Servizio servizio3 = new Servizio();
             servizio3.setNome("Lavaggio jeans");
             servizio3.setTipologia("Lavaggio");
             servizio3.setCaratteristiche("Jeans");
             servizio3.setPrezzo(prezzo3);
-            servizioDAO.saveAll(Arrays.asList(servizio, servizio2, servizio3));
+
+            final double prezzo4 = 12.00;
+            Servizio servizio4 = new Servizio();
+            servizio4.setNome("Lavaggio Piumone");
+            servizio4.setTipologia("Lavaggio");
+            servizio4.setCaratteristiche("Piumone");
+            servizio4.setPrezzo(prezzo3);
+
+            final double prezzo5 = 5.40;
+            Servizio servizio5 = new Servizio();
+            servizio5.setNome("Stiratura Maglione");
+            servizio5.setTipologia("Stiratura");
+            servizio5.setCaratteristiche("Maglione");
+            servizio5.setPrezzo(prezzo3);
+            servizioDAO.saveAll(Arrays.asList(servizio, servizio2, servizio3, servizio4, servizio5));
 
             RigaOrdine rigaOrdine = new RigaOrdine();
             rigaOrdine.setQuantita(1);
