@@ -49,10 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity security) throws Exception {
-        security.httpBasic().disable();
         security.csrf().disable();
     }
-
-
 
 }

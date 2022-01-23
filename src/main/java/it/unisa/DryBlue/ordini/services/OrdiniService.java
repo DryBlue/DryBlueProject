@@ -26,6 +26,8 @@ public interface OrdiniService {
 
     Ordine findById(Integer idOrdine);
 
+    PropostaModifica findByIdProposta(final Integer idProposta);
+
     void creaRigaOrdine(RigaOrdine riga);
 
     Sede findByIndirizzo(String indirizzo);

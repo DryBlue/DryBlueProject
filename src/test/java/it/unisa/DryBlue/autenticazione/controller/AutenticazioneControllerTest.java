@@ -85,6 +85,17 @@ public class AutenticazioneControllerTest {
                         .param("password", "user22")
                         .sessionAttr("utente", utente))
                 .andExpect(view().name("redirect:/LoggedHomepage"));
+    }
+
+    @Test
+    public void loginSuccess2() throws Exception {
+
+        when(autenticazioneService.login("user3", "user32")).thenReturn(utente1);
+        this.mockMvc.perform(post("/autenticazione/login")
+                        .param("username", "user3")
+                        .param("password", "user32")
+                        .sessionAttr("utente", utente1))
+                .andExpect(view().name("redirect:/LoggedHomepage"));
 
     }
 
@@ -94,20 +105,8 @@ public class AutenticazioneControllerTest {
         this.mockMvc.perform(post("/autenticazione/login")
                         .param("username", "pippaArSugo")
                         .param("password", "PieroDB"))
-                .andExpect(model().attribute("error", true))
-                .andExpect(view().name("/autenticazione/Login"));
+                .andExpect(model().attribute("error", "login"))
+                .andExpect(view().name("error/500"));
     }
-
-    /*@Test
-    public void updatePassword() throws Exception {
-        this.mockMvc.perform(post("/autenticazione/newPassword")
-                .param("username", "user2")
-                .param("newPassword", "ciaone")
-                .param("oldPassword", "utente22")
-                .param("email", "ciao@gmail.com")
-                        .sessionAttr("utente", utente))
-                .andExpect(view().name("redirect:/"));
-
-    }*/
 
 }
