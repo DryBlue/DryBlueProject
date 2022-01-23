@@ -77,6 +77,17 @@ public class AutenticazioneControllerTest {
     }
 
     @Test
+    public void loginSuccess() throws Exception {
+
+        when(autenticazioneService.login("user2", "user22")).thenReturn(utente);
+        this.mockMvc.perform(post("/autenticazione/login")
+                        .param("username", "user2")
+                        .param("password", "user22")
+                        .sessionAttr("utente", utente))
+                .andExpect(view().name("redirect:/LoggedHomepage"));
+    }
+
+    @Test
     public void loginSuccess2() throws Exception {
 
         when(autenticazioneService.login("user3", "user32")).thenReturn(utente1);
