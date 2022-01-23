@@ -57,8 +57,10 @@ public class OrdiniServiceImplTest {
         final int yP = 2022;
         final int mP = 11;
         final int dP = 02;
+        final int idNew = 33;
+        final int idNew1 = 23;
         propostaModifica = new PropostaModifica("Pronto");
-        propostaModifica.setId(33);
+        propostaModifica.setId(idNew);
         propostaModifica.setCliente(cliente1);
         propostaModifica.setOrdine(ordine1);
         propostaModifica.setDataProposta(LocalDate.of(yP, mP, dP));
@@ -85,7 +87,7 @@ public class OrdiniServiceImplTest {
         rigaOrdine = new HashSet<>();
         riga = new RigaOrdine(2);
         rigaOrdine.add(riga);
-        riga.setId(23);
+        riga.setId(idNew1);
         riga.setOrdine(ordine1);
         riga.setServizio(servizio);
 
@@ -107,16 +109,16 @@ public class OrdiniServiceImplTest {
         public void creazioneOrdine() {
             List<Ordine> listOrdini = new ArrayList<>();
             listOrdini.add(ordine1);
-            Set<RigaOrdine> rigaOrdine = new HashSet<>();
-            riga =new RigaOrdine(2);
+            Set<RigaOrdine> rigaOrdine1 = new HashSet<>();
+            riga = new RigaOrdine(2);
             riga.setOrdine(ordine1);
             riga.setServizio(servizio);
             riga.setId(ordine1.getId());
-            rigaOrdine.add(riga);
+            rigaOrdine1.add(riga);
             when(clienteDAO.findByUsername(cliente.getUsername())).thenReturn(cliente);
             when(sedeDAO.findByIndirizzo(sede1.getIndirizzo())).thenReturn(sede1);
             when(ordineDAO.save(ordine1)).thenReturn(ordine1);
-            ordiniService.creazioneOrdine(rigaOrdine, "user", "In sede", "Ariano Irpino, via Cardito, 52", ordine1.getDataConsegnaDesiderata(), "blue");
+            ordiniService.creazioneOrdine(rigaOrdine1, "user", "In sede", "Ariano Irpino, via Cardito, 52", ordine1.getDataConsegnaDesiderata(), "blue");
             verify(ordineDAO, times(1)).save(ordine1);
 
         }

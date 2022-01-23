@@ -4,7 +4,6 @@ import it.unisa.DryBlue.autenticazione.domain.Operatore;
 import it.unisa.DryBlue.autenticazione.domain.Ruolo;
 import it.unisa.DryBlue.autenticazione.domain.Utente;
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
-import it.unisa.DryBlue.ordini.dao.OrdineDAO;
 import it.unisa.DryBlue.ordini.domain.*;
 import it.unisa.DryBlue.ordini.services.OrdiniService;
 import it.unisa.DryBlue.servizi.domain.Servizio;
@@ -71,8 +70,9 @@ public class OrdiniControllerTest {
         u = new Utente("admin", "admin");
         ruolo = new Ruolo();
         ruolo.setName(ruolo.OPERATORE_ROLE);
+        final int id = 5;
         u.setRuolo(ruolo);
-        u.setId(5);
+        u.setId(id);
 
         operatore = new Operatore("admin", "Marco", "Polo");
         operatore.setUsername("admin");
@@ -91,92 +91,95 @@ public class OrdiniControllerTest {
         final int y = 2022;
         final int m = 03;
         final int d = 02;
+        final int idSet = 3;
         LocalDate data1 = LocalDate.of(y, m, d);
         ordine = new Ordine(data1, "domicilio", "Pronto");
         ordine.setSede(sede);
         ordine.setNote("blue");
         ordine.setCliente(cliente);
-        ordine.setId(3);
+        ordine.setId(idSet);
         ordine.getCliente().setEmail(cliente.getEmail());
         ordine.getCliente().setNumeroTelefono(cliente.getNumeroTelefono());
-        ordine.setRigheOrdine( rigaOrdine);
+        ordine.setRigheOrdine(rigaOrdine);
 
 
     }
 
+
     @Test
-    public void listaOrdiniTest() throws Exception{
+    public void listaOrdiniTest() throws Exception {
 //sessione cliente e operatore
-        List<Ordine> list= new ArrayList<>();
+        List<Ordine> list = new ArrayList<>();
         list.add(ordine);
         when(ordiniService.visualizzaOrdiniTotali()).thenReturn(list);
         this.mockMvc.perform(get("/ordini/ListaOrdini")
-                .param("filter","Totali")
-                .sessionAttr("utente",u))
+                .param("filter", "Totali")
+                .sessionAttr("utente", u))
                 .andExpect(model().attribute("ordini", list))
                 .andExpect(view().name("ordini/ListaOrdini"));
 
        when(ordiniService.visualizzaOrdiniFiltroOperatore("Attivi")).thenReturn(list);
         this.mockMvc.perform(get("/ordini/ListaOrdini")
-                        .param("filter","Attivi")
-                        .sessionAttr("utente",u))
-                .andExpect(model().attribute("ordini",list))
+                        .param("filter", "Attivi")
+                        .sessionAttr("utente", u))
+                .andExpect(model().attribute("ordini", list))
                 .andExpect(view().name("ordini/ListaOrdini"));
 
 
         // aggiungi
-        when(ordiniService.visualizzaOrdiniFiltroUtente("Attivi",ucliente.getCellulare())).thenReturn(list);
+        when(ordiniService.visualizzaOrdiniFiltroUtente("Attivi", ucliente.getCellulare())).thenReturn(list);
         this.mockMvc.perform(get("/ordini/ListaOrdini")
-                        .param("filter","Attivi")
+                        .param("filter", "Attivi")
                         .sessionAttr("utente", ucliente))
-                .andExpect(model().attribute("ordini",list))
+                .andExpect(model().attribute("ordini", list))
                .andExpect(view().name("ordini/ListaOrdini"));
 
 
-        when(ordiniService.visualizzaOrdiniFiltroUtente("Totali",ucliente.getCellulare())).thenReturn(list);
+        when(ordiniService.visualizzaOrdiniFiltroUtente("Totali", ucliente.getCellulare())).thenReturn(list);
         this.mockMvc.perform(get("/ordini/ListaOrdini")
-                        .param("filter","Totali")
+                        .param("filter", "Totali")
                         .sessionAttr("utente", ucliente))
-                .andExpect(model().attribute("ordini",list))
+                .andExpect(model().attribute("ordini", list))
                 .andExpect(view().name("ordini/ListaOrdini"));
 
 
   }
 
     @Test
-    public void modificaStatoTest() throws Exception{
-        List <Ordine> list= new ArrayList<>();
+    public void modificaStatoTest() throws Exception {
+        List<Ordine> list = new ArrayList<>();
         list.add(ordine);
        // ordiniService.creazioneOrdine(rigaOrdine, "Marco", "domicilio",  sede.getIndirizzo(),  LocalDate.of(2022, 03, 02), "blue");
 
        when(ordiniService.findById(ordine.getId())).thenReturn(ordine);
-        when(ordiniService.modificaOrdine(null, null,"Pronto", ordine.getId())).thenReturn(true);
+        when(ordiniService.modificaOrdine(null, null, "Pronto", ordine.getId())).thenReturn(true);
         this.mockMvc.perform(post("/ordini/ListaOrdini/ModificaOrdine")
-                .param("stato","Pronto")
+                .param("stato", "Pronto")
                 .param("idOrdine", String.valueOf(ordine.getId()))
-                .sessionAttr("utente",u))
+                .sessionAttr("utente", u))
                  .andExpect(view().name("ordini/ListaOrdini"));
-        System.out.println(" id " + ordine.getId() + " email " +ordine.getCliente().getEmail());
+        System.out.println(" id " + ordine.getId() + " email " + ordine.getCliente().getEmail());
 
 
-    }
+     }
 
     @Test
-    public void modificaOrdine() throws Exception{
-        List <Ordine> list= new ArrayList<>();
+    public void modificaOrdine() throws Exception {
+        List<Ordine> list = new ArrayList<>();
         list.add(ordine);
-        Sede sede2= new Sede("Ariano Irpino, AV, via Cardito, 52");
-        sede2.setId(6);
+        Sede sede2 = new Sede("Ariano Irpino, AV, via Cardito, 52");
+        final int newId = 6;
+        sede2.setId(newId);
          ordine.getSede().setIndirizzo(sede2.getIndirizzo());
-        System.out.println("id " + ordine.getId() + "sede2 "+ sede2 + "\nsede "  +sede);
+        System.out.println("id " + ordine.getId() + "sede2 " + sede2 + "\nsede "  + sede);
 
         when(ordiniService.findById(ordine.getId())).thenReturn(ordine);
         when(ordiniService.findByIndirizzo(ordine.getSede().getIndirizzo())).thenReturn(sede);
-        when(ordiniService.modificaOrdine(null, sede2 ,null, ordine.getId())).thenReturn(true);
+        when(ordiniService.modificaOrdine(null, sede2, null, ordine.getId())).thenReturn(true);
 
         this.mockMvc.perform(post("/ListaOrdini/ModificaOrdine")
                 .param("idOrdine", ordine.getId().toString())
-                .sessionAttr("utente",u));
+                .sessionAttr("utente", u));
               //  .andExpect(view().name("/ordini/ListaOrdini" + ordiniService.visualizzaOrdiniTotali() ));
     }
 
@@ -195,7 +198,8 @@ public class OrdiniControllerTest {
     }*/
 
     @Test
-    public void ValutazioneRifiuta() throws Exception{
+    public void ValutazioneRifiuta() throws Exception {
 
     }
-}
+  }
+

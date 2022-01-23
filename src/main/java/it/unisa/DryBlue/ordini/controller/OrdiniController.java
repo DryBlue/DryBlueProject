@@ -210,7 +210,7 @@ public class OrdiniController {
         ordiniService.modificaOrdine(null, null, stato, id_ordine);
         model.getAttribute("utente");
         Ordine ordine = ordiniService.findById(id_ordine);
-        System.out.println("ordine "+ ordine);
+        System.out.println("ordine " + ordine);
         String email = ordine.getCliente().getEmail();
 
         if (email != null) {
