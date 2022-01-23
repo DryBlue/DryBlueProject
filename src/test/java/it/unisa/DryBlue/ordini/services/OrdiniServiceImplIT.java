@@ -7,10 +7,8 @@ import it.unisa.DryBlue.ordini.domain.Ordine;
 import it.unisa.DryBlue.ordini.domain.PropostaModifica;
 import it.unisa.DryBlue.ordini.domain.RigaOrdine;
 import it.unisa.DryBlue.ordini.domain.Sede;
-import it.unisa.DryBlue.servizi.domain.Macchinario;
 import it.unisa.DryBlue.servizi.domain.Servizio;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -19,8 +17,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @SpringBootTest
@@ -55,11 +51,14 @@ public class OrdiniServiceImplIT {
         ordiniService = new OrdiniServiceImpl(ordineDAO, propostaModificaDAO, etichettaDAO, sedeDAO,
                 clienteDAO, rigaOrdineDAO);
 
+        final int y1 = 2022;
+        final int m1 = 03;
+        final int d1 = 02;
         propostaModifica = new PropostaModifica("In attesa");
         propostaModifica.setCliente(cliente1);
         propostaModifica.setOrdine(ordine1);
         propostaModifica.setSede(sede1);
-        propostaModifica.setDataProposta(LocalDate.of(2022, 03, 02));
+        propostaModifica.setDataProposta(LocalDate.of(y1, m1, d1));
 
 
         final double p = 20.0;

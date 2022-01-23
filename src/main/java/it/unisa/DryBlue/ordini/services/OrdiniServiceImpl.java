@@ -155,7 +155,7 @@ public class OrdiniServiceImpl implements OrdiniService {
     }
 
     @Override
-    public PropostaModifica findByIdProposta(final Integer idProposta){
+    public PropostaModifica findByIdProposta(final Integer idProposta) {
         return propostaModificaDAO.findById(idProposta).get();
     }
 

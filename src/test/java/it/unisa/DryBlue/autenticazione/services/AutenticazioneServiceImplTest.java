@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class AutenticazioneServiceImplTest {
 
-    private Utente cliente, oper,user;
+    private Utente cliente, oper, user;
     private Cliente cliente1;
     private Operatore operatore;
     private Ruolo ruolo, ruolo1, ruolo2;
@@ -80,8 +80,8 @@ public class AutenticazioneServiceImplTest {
         cliente.setCellulare("395566777");
         cliente.setUsername(cliente1.getUsername());
         cliente.setPassword(cliente1.getPassword());
-        String username_c="user2";
-        String pwdcliente="user22";
+        String username_c = "user2";
+        String pwdcliente = "user22";
         when(clienteDAO.findByUsername(username_c)).thenReturn(cliente1);
         assertEquals(autenticazioneService.login(username_c, pwdcliente), cliente);
 
@@ -116,7 +116,7 @@ public class AutenticazioneServiceImplTest {
         cliente.setCellulare("395566777");
         cliente.setUsername(cliente1.getUsername());
         cliente.setPassword(cliente1.getPassword());
-        String username_c="user2";
+        String username_c = "user2";
         when(clienteDAO.findByUsername(username_c)).thenReturn(cliente1);
         assertEquals(autenticazioneService.login(username_c, "fail"), null);
     }

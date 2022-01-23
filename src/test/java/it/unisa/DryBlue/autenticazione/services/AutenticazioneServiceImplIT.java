@@ -7,23 +7,16 @@ import it.unisa.DryBlue.autenticazione.domain.Ruolo;
 import it.unisa.DryBlue.autenticazione.domain.Utente;
 import it.unisa.DryBlue.gestioneCliente.dao.ClienteDAO;
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AutenticazioneServiceImplIT {
 
-    private Utente cliente, oper;
+    private Utente cliente;
+    private Utente oper;
     private Cliente cliente1;
     private Operatore operatore;
     private Ruolo ruolo, ruolo1;
@@ -77,10 +70,10 @@ public class AutenticazioneServiceImplIT {
     }*/
 
     @Test
-    void loginClienteTest(){
-        String clienteuser= "user2";
-        Utente utenteInserito= autenticazioneService.login(clienteuser,"user22");
-        List<Utente> utenti= (List<Utente>) utenteDAO.findAll();
+    void loginClienteTest() {
+        String clienteuser = "user2";
+        Utente utenteInserito = autenticazioneService.login(clienteuser, "user22");
+        List<Utente> utenti = (List<Utente>) utenteDAO.findAll();
         assertTrue(utenti.contains(utenteInserito));
 
     }

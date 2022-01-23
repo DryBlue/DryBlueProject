@@ -1,32 +1,21 @@
 package it.unisa.DryBlue.servizi.services;
 
-import it.unisa.DryBlue.DryBlueApplication;
-import it.unisa.DryBlue.autenticazione.domain.Operatore;
-import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 import it.unisa.DryBlue.ordini.dao.RigaOrdineDAO;
 import it.unisa.DryBlue.ordini.dao.SedeDAO;
-import it.unisa.DryBlue.ordini.domain.Etichetta;
-import it.unisa.DryBlue.ordini.domain.Ordine;
 import it.unisa.DryBlue.ordini.domain.RigaOrdine;
 import it.unisa.DryBlue.ordini.domain.Sede;
 import it.unisa.DryBlue.servizi.dao.MacchinarioDAO;
 import it.unisa.DryBlue.servizi.dao.ServizioDAO;
 import it.unisa.DryBlue.servizi.domain.Macchinario;
 import it.unisa.DryBlue.servizi.domain.Servizio;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import static org.mockito.Mockito.*;
 
 
 @SpringBootTest
@@ -69,7 +58,7 @@ public class ServizioServiceImplIT {
         //servizio1.setId(200);
 
 
-        System.out.println("id "+ servizio1.getId());
+        System.out.println("id " + servizio1.getId());
 
         sede1 = new Sede("Ariano Irpino, via Cardito, 52");
         sedeDAO.save(sede1);
@@ -81,9 +70,9 @@ public class ServizioServiceImplIT {
 
 
 
-        List<Servizio> s =(List<Servizio>) servizioDAO.findAll();
+        List<Servizio> s = (List<Servizio>) servizioDAO.findAll();
 
-        for ( Servizio e: s) {
+        for (Servizio e: s) {
             System.out.println(e);
         }
     }
@@ -102,9 +91,9 @@ public class ServizioServiceImplIT {
     public void aggiungiServizioSuccess() {
         final double prezzo = 10.5;
 
-        Servizio inserito =servizioService.aggiungiServizio("Leggins", "lavaggio", "lavaggio a secco", prezzo);
+        Servizio inserito = servizioService.aggiungiServizio("Leggins", "lavaggio", "lavaggio a secco", prezzo);
 
-        List<Servizio> servizios = (List<Servizio>)servizioDAO.findAll();
+        List<Servizio> servizios = (List<Servizio>) servizioDAO.findAll();
         assertTrue(servizios.contains(inserito));
     }
 
@@ -116,7 +105,7 @@ public class ServizioServiceImplIT {
         servizioDAO.save(servizio1);
 
 
-        list=(List<Servizio>)servizioDAO.findAll();
+        list = (List<Servizio>) servizioDAO.findAll();
         assertEquals(servizioService.findServizi(), list);
     }
 
@@ -124,8 +113,8 @@ public class ServizioServiceImplIT {
     public void aggiornaStatoMacchinarioSuccess() {
 
 
-        Macchinario added =macchinarioDAO.save(macchinario1);
-        servizioService.aggiornaStatoMacchinario(macchinario1.getMatricola(),"Inattivo");
+        Macchinario added = macchinarioDAO.save(macchinario1);
+        servizioService.aggiornaStatoMacchinario(macchinario1.getMatricola(), "Inattivo");
 
         assertEquals(macchinarioDAO.findById(added.getMatricola()).get().getStato(), macchinarioDAO.findById(macchinario1.getMatricola()).get().getStato());
 
@@ -134,7 +123,7 @@ public class ServizioServiceImplIT {
     @Test
     public void aggiornaStatoMacchinarioFail() {
 
-        assertEquals(servizioService.aggiornaStatoMacchinario(macchinario1.getMatricola(),"Inattivo"), false);
+        assertEquals(servizioService.aggiornaStatoMacchinario(macchinario1.getMatricola(), "Inattivo"), false);
     }
 
 
