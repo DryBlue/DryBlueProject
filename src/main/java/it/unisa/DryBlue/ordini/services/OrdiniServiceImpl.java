@@ -46,6 +46,7 @@ public class OrdiniServiceImpl implements OrdiniService {
         return ordine;
     }
 
+
     @Override
     public void propostaModifica(final LocalDate data,
                                  final String sede,
@@ -155,7 +156,7 @@ public class OrdiniServiceImpl implements OrdiniService {
     }
 
     @Override
-    public PropostaModifica findByIdProposta(final Integer idProposta) {
+    public PropostaModifica findByIdProposta(final Integer idProposta){
         return propostaModificaDAO.findById(idProposta).get();
     }
 

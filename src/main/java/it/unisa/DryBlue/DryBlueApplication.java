@@ -133,6 +133,18 @@ public class DryBlueApplication {
             rigaOrdine.setServizio(servizio);
 
             RigaOrdine rigaOrdine1 = new RigaOrdine();
+            rigaOrdine.setQuantita(1);
+            rigaOrdine.setServizio(servizio2);
+
+            RigaOrdine rigaOrdine2 = new RigaOrdine();
+            rigaOrdine.setQuantita(3);
+            rigaOrdine.setServizio(servizio3);
+
+            RigaOrdine rigaOrdine3 = new RigaOrdine();
+            rigaOrdine.setQuantita(2);
+            rigaOrdine.setServizio(servizio5);
+
+            RigaOrdine rigaOrdine4 = new RigaOrdine();
             rigaOrdine1.setQuantita(1);
             rigaOrdine1.setServizio(servizio2);
 
@@ -157,22 +169,43 @@ public class DryBlueApplication {
             ordine3.setCliente(cliente1);
 
             LocalDate tmpdate3 = LocalDate.of(year, month2, day4);
-            Ordine ordine4 = new Ordine(tmpdate1, "ritiro", "Imbustato");
+            Ordine ordine4 = new Ordine(tmpdate1, "In sede", "Imbustato");
             ordine4.setCliente(cliente4);
             ordine4.setSede(sede1);
 
 
             rigaOrdine.setOrdine(ordine1);
             rigaOrdine1.setOrdine(ordine1);
+            rigaOrdine2.setOrdine(ordine2);
+            rigaOrdine3.setOrdine(ordine3);
+            rigaOrdine4.setOrdine(ordine4);
 
             ordineDAO.saveAll(Arrays.asList(ordine1, ordine2, ordine3, ordine4));
-            rigaOrdineDAO.saveAll(Arrays.asList(rigaOrdine, rigaOrdine1));
+            rigaOrdineDAO.saveAll(Arrays.asList(rigaOrdine, rigaOrdine1, rigaOrdine2, rigaOrdine3, rigaOrdine4));
 
             ArrayList<RigaOrdine> righe = (ArrayList<RigaOrdine>) rigaOrdineDAO.findAllByOrdine(ordine1);
             for (RigaOrdine r : righe) {
                 ordine1.getRigheOrdine().add(r);
             }
             ordineDAO.save(ordine1);
+
+            righe = (ArrayList<RigaOrdine>) rigaOrdineDAO.findAllByOrdine(ordine2);
+            for (RigaOrdine r : righe) {
+                ordine1.getRigheOrdine().add(r);
+            }
+            ordineDAO.save(ordine2);
+
+            righe = (ArrayList<RigaOrdine>) rigaOrdineDAO.findAllByOrdine(ordine3);
+            for (RigaOrdine r : righe) {
+                ordine1.getRigheOrdine().add(r);
+            }
+            ordineDAO.save(ordine3);
+
+            righe = (ArrayList<RigaOrdine>) rigaOrdineDAO.findAllByOrdine(ordine4);
+            for (RigaOrdine r : righe) {
+                ordine1.getRigheOrdine().add(r);
+            }
+            ordineDAO.save(ordine4);
 
             Macchinario macchinario = new Macchinario();
             macchinario.setMatricola("AB1234");

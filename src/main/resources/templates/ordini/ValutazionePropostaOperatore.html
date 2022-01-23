@@ -63,8 +63,12 @@
 
 <p>Proposta: <br>
  Data desiderata:<p th:text="${dataP.dataProposta}">
-</p>
 </p><br>
+
+            <p>
+                Sede desiderata:<p th:text="${ordin.getPropostaModifica().getSede().getIndirizzo()}"></p>
+            </p>
+            <br>
 
 <form th:action="@{/ordini/ValutazioneAccetta}" method="post">
     <input type="hidden" id="accetta" name="accetta" value="accetta" th:value="${ordin.id}">

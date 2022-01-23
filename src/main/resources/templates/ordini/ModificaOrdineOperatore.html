@@ -19,62 +19,62 @@
     <div class="row">
         <div class="col-6">
 
-<form id="modifica" th:action="@{/ordini/ListaOrdini/ModificaOrdine}" method="post">
-    <legend>Modifica Stato <br></legend>
-    <select name="stato">
-        <option value="Macchiato">Macchiato</option>
-        <option value="Pronto">Pronto</option>
-        <option value="Imbustato">Imbustato</option>
-        <option value="Consegnato">Consegnato</option>
-    </select><br><br>
-    <input type="hidden" name="idOrdine" th:value="${id}">
-<button type="submit" class="btn btn-light" form="modifica">Modifica</button>
-   <br><br>
-</form>
+            <form id="modifica" th:action="@{/ordini/ListaOrdini/ModificaOrdine}" method="post">
+                <legend>Modifica Stato <br></legend>
+                <select name="stato">
+                    <option value="Macchiato">Macchiato</option>
+                    <option value="Pronto">Pronto</option>
+                    <option value="Imbustato">Imbustato</option>
+                    <option value="Consegnato">Consegnato</option>
+                </select><br><br>
+                <input type="hidden" name="idOrdine" th:value="${id}">
+                <button type="submit" class="btn btn-light" form="modifica">Modifica</button>
+                <br><br>
+            </form>
+
+            <div th:if="${ordine.getTipologiaRitiro().equals('In sede')}">
+            <label>Modifica sede </label><br>
+            <table class="table table-bordered">
+                <tr>
+                    <td>Sede attuale:</td>
+                    <td th:text="${ordine.getSede().getIndirizzo()}"></td>
+                </tr>
+                <tr>
+                    <td>Sede alternativa:</td>
+                    <div th:if="${ordine.getSede().getIndirizzo().equals('Ariano Irpino, via Cardito, 52')}">
+                        <td>Ariano Irpino, corso Vittorio Emanuele, 250</td>
+                    </div>
+                    <div th:if="${ordine.getSede().getIndirizzo().equals('Ariano Irpino, corso Vittorio Emanuele, 250')}">
+                        <td>Ariano Irpino, via Cardito, 52</td>
+                    </div>
+                </tr>
+            </table>
+            <form th:action="@{/ordini/ListaOrdini/ModificaSede}" method="post">
+                <input type="hidden" name="idOrdine" th:value="${id}">
+                <button type="submit" class="btn btn-light">Modifica</button>
+            </form>
+            <br><br>
+            </div>
 
 
-<label>Modifica sede </label><br>
-<table class="table table-bordered">
-    <tr>
-        <td>Sede attuale:</td>
-        <td th:text="${ordine.getSede().getIndirizzo()}"></td>
-    </tr>
-    <tr>
-        <td>Sede alternativa:</td>
-        <div th:if="${ordine.getSede().getIndirizzo().equals('Ariano Irpino, via Cardito, 52')}">
-            <td>Ariano Irpino, corso Vittorio Emanuele, 250</td>
-        </div>
-        <div th:if="${ordine.getSede().getIndirizzo().equals('Ariano Irpino, corso Vittorio Emanuele, 250')}">
-            <td>Ariano Irpino, via Cardito, 52</td>
-        </div>
-    </tr>
-</table>
-<form th:action="@{/ordini/ListaOrdini/ModificaSede}" method="post">
-    <input type="hidden" name="idOrdine" th:value="${id}">
-    <button type="submit" class="btn btn-light">Modifica</button>
-</form>
-<br><br>
+            <label>Modifica data <br>
 
+                <div id="error" class="text-danger"></div>
 
-
-<label>Modifica data <br>
-
-    <div id="error" class="text-danger"></div>
-
-    <table class="table table-bordered">
-        <tr>
-            <td>Data attuale:</td>
-            <td th:text="${ordine.getDataConsegnaDesiderata()}"></td>
-        </tr>
-    </table>
-    <form th:action="@{/ordini/ListaOrdini/ModificaData}" method="post">
-        <p>Nuova data:</p>
-        <input type="date" name="data" id="date" onchange="dateCheck()">
-        <input type="hidden" name="idOrdine" th:value="${id}">
-        <br><br>
-        <button type="submit" class="btn btn-light" onclick="dateNull()">Modifica</button>
-    </form>
-</label><br>
+                <table class="table table-bordered">
+                    <tr>
+                        <td>Data attuale:</td>
+                        <td th:text="${ordine.getDataConsegnaDesiderata()}"></td>
+                    </tr>
+                </table>
+                <form th:action="@{/ordini/ListaOrdini/ModificaData}" method="post">
+                    <p>Nuova data:</p>
+                    <input type="date" name="data" id="date" onchange="dateCheck()">
+                    <input type="hidden" name="idOrdine" th:value="${id}">
+                    <br><br>
+                    <button type="submit" class="btn btn-light" onclick="dateNull()">Modifica</button>
+                </form>
+            </label><br>
         </div>
     </div>
 </div>

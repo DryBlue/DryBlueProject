@@ -44,7 +44,7 @@
             <td>
                 <form method="post" th:action="@{/gestioneCliente/clienti/dettagliCliente}">
                     <input type="hidden" id="telefono" name="telefono" th:value="${cliente.numeroTelefono}">
-                    <button type="submit">Dettagli Cliente</button>
+                    <button type="submit" class="btn btn-light">Dettagli Cliente</button>
                 </form>
             </td>
          </tr>
@@ -52,9 +52,11 @@
     </tbody>
 </table>
 
-            <button type="submit" class="btn btn-light">
-                <a th:href="@{/autenticazione/registrazione}">Aggiungi Cliente</a>
+            <a th:href="@{/autenticazione/registrazione}">
+                <button type="submit" class="btn btn-primary btn-lg">
+                Aggiungi Cliente
             </button>
+            </a>
 
         </div>
     </div>

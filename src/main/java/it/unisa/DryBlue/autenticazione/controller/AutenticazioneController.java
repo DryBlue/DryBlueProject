@@ -162,21 +162,24 @@ public class AutenticazioneController {
         Cliente cliente = clienteDAO.findByUsername(username);
         String password = cliente.getPassword();
         String ind_email = cliente.getEmail();
-        if ((cliente.getUsername().equals(username)) && (cliente != null)) {
+        System.out.println("So bello 1");
+        System.out.println(password + newPassword + oldPassword);
+        if (cliente != null) {
+            System.out.println("So bello 2");
             if (password.equals(oldPassword)) {
                 cliente.setPassword(newPassword);
-                clienteDAO.save(cliente);
-            }
-            if (ind_email == null) {
-                cliente.setEmail(email);
-                clienteDAO.save(cliente);
-            } else {
-                cliente.getEmail();
-            }
-        }
-        model.getAttribute("utente");
+                System.out.println("So bello 3");
+                if (ind_email == null) {
+                    cliente.setEmail(email);
+                }
 
-        return "redirect:/";
+                clienteDAO.save(cliente);
+                return "redirect:/";
+            }
+
+        }
+        model.addAttribute("error", "errPassword");
+                return "error/500";
     }
 
 

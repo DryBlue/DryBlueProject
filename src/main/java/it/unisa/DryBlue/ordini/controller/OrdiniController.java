@@ -11,6 +11,7 @@ import it.unisa.DryBlue.ordini.dao.SedeDAO;
 import it.unisa.DryBlue.ordini.domain.Ordine;
 import it.unisa.DryBlue.ordini.domain.PropostaModifica;
 import it.unisa.DryBlue.ordini.domain.RigaOrdine;
+import it.unisa.DryBlue.ordini.domain.Sede;
 import it.unisa.DryBlue.ordini.services.OrdiniService;
 import it.unisa.DryBlue.ordini.util.MailSingletonSender;
 import it.unisa.DryBlue.ordini.util.MailSingletonSenderProposta;
@@ -251,7 +252,7 @@ public class OrdiniController {
     public String ModificaOrdine(final Model model,
                                  final @RequestParam("idOrdine") Integer id_ordine) {
         Ordine ordine = ordiniService.findById(id_ordine);
-        if (ordiniService.findByIndirizzo(ordine.getSede().getIndirizzo()).equals("Ariano Irpino, via Cardito, 52")) {
+        if (ordine.getSede().getIndirizzo().equals("Ariano Irpino, via Cardito, 52")) {
             ordine.setSede(ordiniService.findByIndirizzo("Ariano Irpino, corso Vittorio Emanuele, 250"));
         } else if (ordine.getSede().getIndirizzo().equals("Ariano Irpino, corso Vittorio Emanuele, 250")) {
             ordine.setSede(ordiniService.findByIndirizzo("Ariano Irpino, via Cardito, 52"));
@@ -309,9 +310,11 @@ public class OrdiniController {
         LocalDate date = LocalDate.parse(data);
         Ordine ordine = ordiniService.findById(id);
         ordiniService.propostaModifica(date, sede, ordine);
+        Sede s = ordiniService.findByIndirizzo(sede);
 
         PropostaModifica proposta = ordine.getPropostaModifica();
         proposta.setDataProposta(date);
+        proposta.setSede(s);
         propostaModificaDAO.save(proposta);
         return listaOrdini("Attivi", model);
     }
@@ -378,9 +381,11 @@ public class OrdiniController {
         Integer idProp = ordine.getPropostaModifica().getId();
         PropostaModifica pr = ordiniService.findByIdProposta(idProp);
         LocalDate data = pr.getDataProposta();
+        Sede sede = pr.getSede();
         System.out.println("data " + data);
 
         ordine.setDataConsegnaDesiderata(data);
+        ordine.setSede(sede);
         pr.setStato("Conclusa");
 
         String scelta = "ACCETTATA";
