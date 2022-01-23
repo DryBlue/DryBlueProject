@@ -77,37 +77,25 @@ public class AutenticazioneControllerTest {
     }
 
     @Test
-    public void loginSuccess() throws Exception {
+    public void loginSuccess2() throws Exception {
 
-        when(autenticazioneService.login("user2", "user22")).thenReturn(utente);
+        when(autenticazioneService.login("user3", "user32")).thenReturn(utente1);
         this.mockMvc.perform(post("/autenticazione/login")
-                        .param("username", "user2")
-                        .param("password", "user22")
-                        .sessionAttr("utente", utente))
+                        .param("username", "user3")
+                        .param("password", "user32")
+                        .sessionAttr("utente", utente1))
                 .andExpect(view().name("redirect:/LoggedHomepage"));
 
     }
 
-/*    @Test
+    @Test
     public void loginFail() throws Exception {
         when(autenticazioneService.login("pippaArSugo", "PieroDB")).thenReturn(utente2);
         this.mockMvc.perform(post("/autenticazione/login")
                         .param("username", "pippaArSugo")
                         .param("password", "PieroDB"))
-                .andExpect(model().attribute("error", true))
-                .andExpect(view().name("/autenticazione/Login"));
+                .andExpect(model().attribute("error", "login"))
+                .andExpect(view().name("error/500"));
     }
-*/
-    /*@Test
-    public void updatePassword() throws Exception {
-        this.mockMvc.perform(post("/autenticazione/newPassword")
-                .param("username", "user2")
-                .param("newPassword", "ciaone")
-                .param("oldPassword", "utente22")
-                .param("email", "ciao@gmail.com")
-                        .sessionAttr("utente", utente))
-                .andExpect(view().name("redirect:/"));
-
-    }*/
 
 }

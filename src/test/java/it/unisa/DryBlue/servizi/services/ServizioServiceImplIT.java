@@ -60,6 +60,8 @@ public class ServizioServiceImplIT {
     @BeforeEach
     public  void init() {
 
+
+
         servizioService = new ServizioServiceImpl(servizioDAO, macchinarioDAO);
         final double prezzo1 = 10.5;
         final double prezzo2 = 6.5;
@@ -125,8 +127,7 @@ public class ServizioServiceImplIT {
         Macchinario added =macchinarioDAO.save(macchinario1);
         servizioService.aggiornaStatoMacchinario(macchinario1.getMatricola(),"Inattivo");
 
-        assertEquals(macchinarioDAO.findById(added.getMatricola()).get().getStato(), macchinarioDAO.
-                findById(macchinario1.getMatricola()).get().getStato());
+        assertEquals(macchinarioDAO.findById(added.getMatricola()).get().getStato(), macchinarioDAO.findById(macchinario1.getMatricola()).get().getStato());
 
     }
 

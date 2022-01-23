@@ -170,6 +170,19 @@ public class OrdiniControllerTest {
                         .sessionAttr("utente",u))
                         .andExpect(view().name("ordini/ListaOrdini"));
     }
+
+    @Test
+    public void modificaStatoFail() throws Exception{
+        Cliente c = new Cliente();
+        ordine.setCliente(c);
+        when(ordiniService.findById(ordine.getId())).thenReturn(ordine);
+        when(ordiniService.modificaOrdine(null, null,"Pronto", ordine.getId())).thenReturn(true);
+        this.mockMvc.perform(post("/ordini/ListaOrdini/ModificaOrdine")
+                        .param("stato","Pronto")
+                        .param("idOrdine", String.valueOf(ordine.getId()))
+                        .sessionAttr("utente",u))
+                .andExpect(view().name("ordini/ListaOrdini"));
+    }
   /*
     @Test
     public void modificaOrdine() throws Exception{
@@ -202,38 +215,16 @@ public class OrdiniControllerTest {
         System.out.println("id Proposta " +ordine.getPropostaModifica().getId() + "\nid ordine " + ordine.getId()
                 + "\n Cliente " + ordine.getCliente().getNumeroTelefono() + "\nData "+ propostaModifica.getDataProposta());
 
-        this.mockMvc.perform(post("/ordini/ValutazioneAccetta")
-                        .param("accetta", String.valueOf(ordine.getId()))
-                        .sessionAttr("utente", u))
-                        .andExpect(view().name("ordini/ListaOrdini"));
+
         }
 */
-    /*  @PostMapping("/ValutazioneAccetta")
-    public String ValutazioneAccetta(final Model model,
-                                     final @RequestParam("accetta") Integer accetta) {
-        model.getAttribute("utente");
-        Ordine ordine = ordiniService.findById(accetta);
-        String email = ordine.getCliente().getEmail();
 
-        Integer idProp = ordine.getPropostaModifica().getId();
-        PropostaModifica pr = ordiniService.findByIdProposta(idProp);
-        LocalDate data = pr.getDataProposta();
-        System.out.println("data " + data);
 
-        ordine.setDataConsegnaDesiderata(data);
-        pr.setStato("Conclusa");
-
-        String scelta = "ACCETTATA";
-        if (email != null) {
-            senderProposta.sendEmail(email, scelta);
-        }
-        propostaModificaDAO.save(pr);
-        ordineDAO.save(ordine);
-        return listaOrdini("Attivi", model);
-    }*/
-
-    @Test
+    /*@Test
     public void ValutazioneRifiuta() throws Exception{
-
-    }
+        this.mockMvc.perform(post("/ordini/ValutazioneRifiuta")
+                        .param("rifiuta", String.valueOf(ordine.getId()))
+                        .sessionAttr("utente", u))
+                .andExpect(view().name("ordini/ListaOrdini"));
+    }*/
 }

@@ -24,10 +24,10 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class AutenticazioneServiceImplTest {
 
-    private Utente cliente, oper;
+    private Utente cliente, oper,user;
     private Cliente cliente1;
     private Operatore operatore;
-    private Ruolo ruolo, ruolo1;
+    private Ruolo ruolo, ruolo1,ruolo2;
 
     @Mock
     private UtenteDAO utenteDAO;
@@ -53,36 +53,58 @@ public class AutenticazioneServiceImplTest {
         cliente.setCellulare("395566777");
         cliente.setRuolo(ruolo);
 
-        cliente1 = new Cliente("user2", "user22", "via Roma 12 Salerno", "Carla", "Ricci");
-        cliente1.setNumeroTelefono("395566777");
+        ruolo2 = new Ruolo();
+        user = new Utente("x", "x");
+        user.setRuolo(ruolo2);
+
 
 
         ruolo1 = new Ruolo("OPERATORE");
-        oper = new Utente("user3", "user32");
+        oper = new Utente("user32", "user32");
+        oper.setUsername("user32");
+        oper.setPassword("user32");
         oper.setNome("Fabio");
         oper.setCognome("Ricci");
+        oper.setUsername("user32");
         oper.setRuolo(ruolo1);
 
+
+    }
+
+
+    @Test
+    public void loginClienteTestSuccess() {
+        //cliente ok
+        cliente1 = new Cliente("user2", "user22", "via Roma 12 Salerno", "Carla", "Ricci");
+        cliente1.setNumeroTelefono("395566777");
+        cliente.setCellulare("395566777");
+        cliente.setUsername(cliente1.getUsername());
+        cliente.setPassword(cliente1.getPassword());
+        String username_c="user2";
+        String pwdcliente="user22";
+        when(clienteDAO.findByUsername(username_c)).thenReturn(cliente1);
+        assertEquals(autenticazioneService.login(username_c, pwdcliente), cliente);
+
+        //operatore ok
         operatore = new Operatore("user32", "Fabio", "Ricci");
-        operatore.setUsername("user3");
-    }
-
-    @Test
-    public void loginClienteTest() {
-        String userCliente = "user2";
-        String pwd1 = "user22";
-
-        when(clienteDAO.findByUsername(userCliente)).thenReturn(cliente1);
-        assertEquals(autenticazioneService.login(userCliente, pwd1), cliente);
-    }
-
-    @Test
-    public void loginOperatoreTest() {
-        String userOperatore = "user3";
+        operatore.setUsername("user32");
+        operatore.setPassword("user32");
+        oper.setUsername(operatore.getUsername());
+        oper.setPassword(operatore.getPassword());
+        String userOperatore = "user32";
         String pwd = "user32";
-
         when(operatoreDAO.findByUsername(userOperatore)).thenReturn(operatore);
         assertEquals(autenticazioneService.login(userOperatore, pwd), oper);
 
     }
+
+    @Test
+    public void loginFail() {
+        String userUser = "x";
+        String pwd = "x";
+
+        when(operatoreDAO.findByUsername(userUser)).thenReturn(null);
+        assertEquals(autenticazioneService.login(userUser, pwd), user);
+    }
+
 }

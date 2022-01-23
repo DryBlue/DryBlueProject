@@ -101,7 +101,7 @@ public class ServiziControllerTest {
                 .andExpect(view().name("/servizi/ListaMacchinari"));
     }
 
-    @Test
+    /*@Test
     public void aggiuntaServizioPost() throws Exception {
         //Utente op = aut.login("admin", "admin");
         final double p = 10.5;
@@ -113,7 +113,7 @@ public class ServiziControllerTest {
                         .param("prezzo", String.valueOf(p))
                         .sessionAttr("utente", u))
                 .andExpect(view().name("/LoggedHomepage"));
-    }
+    }*/
 
     @Test
     public void aggiuntaServizioGet() throws Exception {
