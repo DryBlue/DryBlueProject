@@ -7,16 +7,22 @@ import it.unisa.DryBlue.ordini.domain.Ordine;
 import it.unisa.DryBlue.ordini.domain.PropostaModifica;
 import it.unisa.DryBlue.ordini.domain.RigaOrdine;
 import it.unisa.DryBlue.ordini.domain.Sede;
+import it.unisa.DryBlue.ordini.services.OrdiniService;
+import it.unisa.DryBlue.ordini.services.OrdiniServiceImpl;
 import it.unisa.DryBlue.servizi.domain.Servizio;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
@@ -51,24 +57,26 @@ public class OrdiniServiceImplIT {
         ordiniService = new OrdiniServiceImpl(ordineDAO, propostaModificaDAO, etichettaDAO, sedeDAO,
                 clienteDAO, rigaOrdineDAO);
 
-        final int y1 = 2022;
+        /*final int y1 = 2022;
         final int m1 = 03;
         final int d1 = 02;
         propostaModifica = new PropostaModifica("In attesa");
         propostaModifica.setCliente(cliente1);
         propostaModifica.setOrdine(ordine1);
         propostaModifica.setSede(sede1);
-        propostaModifica.setDataProposta(LocalDate.of(y1, m1, d1));
+        propostaModifica.setDataProposta(LocalDate.of(y1, m1, d1));*/
 
 
         final double p = 20.0;
         servizio = new Servizio("nome", "tipo", "caratteristica", p);
 
         sede1 = new Sede("Ariano Irpino, via Cardito, 52");
+        sedeDAO.save(sede1);
 
 
         cliente = new Cliente("user", "user", "via Rossi 12", "Maria", "Rossi");
         cliente.setNumeroTelefono("333444555");
+        clienteDAO.save(cliente);
 
         cliente1 = new Cliente("user", "user", "via Rossi 12", "Maria", "Rossi");
         cliente1.setNumeroTelefono("333444777");
@@ -76,7 +84,7 @@ public class OrdiniServiceImplIT {
 
         rigaOrdine = new HashSet<>();
         riga = new RigaOrdine(2);
-        riga.setServizio(servizio);
+        //riga.setServizio(servizio);
 
 
         final int y = 2022;
@@ -84,15 +92,18 @@ public class OrdiniServiceImplIT {
         final int d = 02;
 
         LocalDate data1 = LocalDate.of(y, m, d);
-        ordine1 = new Ordine(data1, "In sede", "Macchiato");
+
+        //riga.setId(ordine1.getId());
+        riga.setOrdine(ordine1);
+        rigaOrdine.add(riga);
+        rigaOrdineDAO.save(riga);
+
+        ordine1 = new Ordine(data1, "In sede", "Consegnato");
         ordine1.setCliente(cliente);
         ordine1.setSede(sede1);
         ordine1.setPropostaModifica(propostaModifica);
         ordine1.setRigheOrdine(rigaOrdine);
-
-        riga.setId(ordine1.getId());
-        riga.setOrdine(ordine1);
-        rigaOrdine.add(riga);
+        ordineDAO.save(ordine1);
 
         List<Ordine> s = (List<Ordine>) ordineDAO.findAll();
 
@@ -100,6 +111,16 @@ public class OrdiniServiceImplIT {
             System.out.println(e);
         }
     }
+/*
+    @AfterEach
+    void afterEach() {
+        ordineDAO.deleteAll();
+        clienteDAO.deleteAll();
+        sedeDAO.deleteAll();
+        rigaOrdineDAO.deleteAll();
+
+    }
+*/
 /*
     @Test
     public void creazioneOrdine() {
@@ -114,7 +135,14 @@ public class OrdiniServiceImplIT {
 
 
         assertEquals(ordineDAO.findById(ordine1.getId()), ordineDAO.findById(crea.getId()));
+        }
 */
 
+    @Test
+    public void visualizzaOrdiniOperatoreSuccess() {
+        List<Ordine> list = new ArrayList<>();
 
+        list = ordineDAO.findAllByStato("Consegnato");
+        assertEquals(ordiniService.visualizzaOrdiniFiltroOperatore("Consegnato"), list);
+    }
 }
