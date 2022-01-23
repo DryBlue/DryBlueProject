@@ -89,6 +89,7 @@ public class OrdiniControllerTest {
         servizio = new Servizio("Lavaggio", "secco", "veloce", prezzo);
         final int x = 3;
         servizio.setId(servizio.getId());
+        servizio.setId(x);
 
         final int z = 6;
         sede = new Sede("Ariano Irpino, via Cardito, 52");
