@@ -27,7 +27,7 @@ public class AutenticazioneServiceImplTest {
     private Utente cliente, oper,user;
     private Cliente cliente1;
     private Operatore operatore;
-    private Ruolo ruolo, ruolo1,ruolo2;
+    private Ruolo ruolo, ruolo1, ruolo2;
 
     @Mock
     private UtenteDAO utenteDAO;

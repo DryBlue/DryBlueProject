@@ -117,6 +117,7 @@ public class OrdiniServiceImplTest {
 
     @Test
     public void propostaModificaVerifica(){
+
         when(sedeDAO.findByIndirizzo(sede1.getIndirizzo())).thenReturn(sede1);
         when(propostaModificaDAO.save(propostaModifica)).thenReturn(propostaModifica);
         ordiniService.propostaModifica(ordine1.getDataConsegnaDesiderata(), ordine1.getSede().getIndirizzo(), ordine1);
