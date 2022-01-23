@@ -107,4 +107,56 @@ public class AutenticazioneServiceImplTest {
         assertEquals(autenticazioneService.login(userUser, pwd), user);
     }
 
+
+    @Test
+    public void loginTestClienteNoPssw() {
+        //cliente no pssw
+        cliente1 = new Cliente("user2", "user22", "via Roma 12 Salerno", "Carla", "Ricci");
+        cliente1.setNumeroTelefono("395566777");
+        cliente.setCellulare("395566777");
+        cliente.setUsername(cliente1.getUsername());
+        cliente.setPassword(cliente1.getPassword());
+        String username_c="user2";
+        when(clienteDAO.findByUsername(username_c)).thenReturn(cliente1);
+        assertEquals(autenticazioneService.login(username_c, "fail"), null);
+    }
+
+    @Test
+    public void loginTestOperatoreNoPssw() {
+        //operatore no pssw
+        operatore = new Operatore("user32", "Fabio", "Ricci");
+        operatore.setUsername("user32");
+        operatore.setPassword("user32");
+        oper.setUsername(operatore.getUsername());
+        oper.setPassword(operatore.getPassword());
+        String userOperatore = "user32";
+        when(operatoreDAO.findByUsername(userOperatore)).thenReturn(operatore);
+        assertEquals(autenticazioneService.login(userOperatore, "fail"), null);
+    }
+
+    @Test
+    public void loginTestNull() {
+        Ruolo x = new Ruolo("x");
+        oper.setRuolo(x);
+
+        //cliente ok
+        cliente1 = new Cliente("user2", "user22", "via Roma 12 Salerno", "Carla", "Ricci");
+        cliente1.setNumeroTelefono("395566777");
+        cliente.setCellulare("395566777");
+        cliente.setUsername(cliente1.getUsername());
+        cliente.setPassword(cliente1.getPassword());
+
+        //operatore ok
+        operatore = new Operatore("user32", "Fabio", "Ricci");
+        operatore.setUsername("user32");
+        operatore.setPassword("user32");
+        oper.setUsername(operatore.getUsername());
+        oper.setPassword(operatore.getPassword());
+        String userOperatore = "user32";
+        String pwd = "user32";
+        when(operatoreDAO.findByUsername(userOperatore)).thenReturn(operatore);
+        when(clienteDAO.findByUsername(userOperatore)).thenReturn(cliente1);
+
+        assertEquals(autenticazioneService.login(userOperatore, pwd), oper);
+    }
 }

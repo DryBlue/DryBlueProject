@@ -132,14 +132,13 @@ public class OrdiniServiceImplTest {
         when(sedeDAO.findAll()).thenReturn(list);
         assertEquals(ordiniService.visualizzaSedi(), list);
     }
-/*
+
         @Test
         public void findById() {
             Integer ordine_id = ordine1.getId();
-            Ordine list = ordiniDAO.findById(ordine_id);
-            when(ordineDAO.findById(ordine_id)).thenReturn(Optional.empty());
-            assertEquals(ordiniService.findById(ordine_id), list);
-        }*/
+            when(ordineDAO.findById(ordine_id)).thenReturn(Optional.ofNullable(ordine1));
+            assertEquals(ordiniService.findById(ordine_id),ordine1);
+        }
 
     @Test
     public void creaRigaOrdineTest() {
