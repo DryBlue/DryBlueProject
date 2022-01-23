@@ -7,12 +7,15 @@ import it.unisa.DryBlue.autenticazione.domain.Ruolo;
 import it.unisa.DryBlue.autenticazione.domain.Utente;
 import it.unisa.DryBlue.gestioneCliente.dao.ClienteDAO;
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import java.util.List;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@SpringBootTest
 public class AutenticazioneServiceImplIT {
 
     private Utente cliente;
@@ -37,7 +40,7 @@ public class AutenticazioneServiceImplIT {
         autenticazioneService = new AutenticazioneServiceImpl(utenteDAO, clienteDAO, operatoreDAO);
 
         ruolo = new Ruolo("CLIENTE");
-        cliente = new Utente("user2", "user22");
+        cliente = new Utente("user11", "user11");
         cliente.setNome("Carla");
         cliente.setCognome("Ricci");
         cliente.setIndirizzo("via Roma 12 Salerno");
@@ -46,6 +49,7 @@ public class AutenticazioneServiceImplIT {
 
         cliente1 = new Cliente("user2", "user22", "via Roma 12 Salerno", "Carla", "Ricci");
         cliente1.setNumeroTelefono("395566777");
+        clienteDAO.save(cliente1);
 
 
         ruolo1 = new Ruolo("OPERATORE");
@@ -64,21 +68,16 @@ public class AutenticazioneServiceImplIT {
 
     }
 
-    /*@AfterEach
-    void afterEach(){
-        utenteDAO.deleteAll();
-    }*/
+    @AfterEach
+    void afterEach() {
+        //utenteDAO.deleteAll();
+    }
 
     @Test
     void loginClienteTest() {
         String clienteuser = "user2";
-        Utente utenteInserito = autenticazioneService.login(clienteuser, "user22");
-        List<Utente> utenti = (List<Utente>) utenteDAO.findAll();
-        assertTrue(utenti.contains(utenteInserito));
-
+        Utente c = utenteDAO.findByUsername("user2");
+        Utente utenteInserito = autenticazioneService.login(clienteuser, "user2");
+        assertEquals(c, utenteInserito);
     }
-
-
-
-
 }
