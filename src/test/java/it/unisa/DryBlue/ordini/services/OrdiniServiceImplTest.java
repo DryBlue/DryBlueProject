@@ -125,7 +125,7 @@ public class OrdiniServiceImplTest {
         }
 
     @Test
-    public void propostaModificaVerifica(){
+    public void propostaModificaVerifica() {
         when(propostaModificaDAO.save(propostaModifica)).thenReturn(propostaModifica);
         when(sedeDAO.findByIndirizzo(sede1.getIndirizzo())).thenReturn(sede1);
         ordiniService.propostaModifica(ordine1.getDataConsegnaDesiderata(), ordine1.getSede().getIndirizzo(), ordine1);
@@ -134,7 +134,7 @@ public class OrdiniServiceImplTest {
     }
 
     @Test
-    public void propostaModificaVerifica2(){
+    public void propostaModificaVerifica2() {
         final int y1 = 2022;
         final int m1 = 04;
         final int d1 = 02;
@@ -147,7 +147,7 @@ public class OrdiniServiceImplTest {
     }
 
     @Test
-    public void propostaModificaVerifica3(){
+    public void propostaModificaVerifica3() {
         final int y1 = 2022;
         final int m1 = 04;
         final int d1 = 02;
@@ -190,8 +190,11 @@ public class OrdiniServiceImplTest {
 
     @Test
     public void modificaOrdine() {
-        LocalDate data = LocalDate.of(2022, 11, 11);
-        Sede sede2 = new Sede("Ariano Irpino, AV, via Cardito, 52");
+        final int year = 2022;
+        final int month = 11;
+        final int day = 11;
+        LocalDate data = LocalDate.of(year, month, day);
+        Sede sede3 = new Sede("Ariano Irpino, AV, via Cardito, 52");
         String stato = "Imbustato";
         when(ordineDAO.findById(ordine1.getId())).thenReturn(Optional.ofNullable(ordine1));
         when(ordineDAO.save(ordine1)).thenReturn(ordine1);
@@ -199,7 +202,7 @@ public class OrdiniServiceImplTest {
 
         when(ordineDAO.findById(ordine1.getId())).thenReturn(Optional.ofNullable(ordine1));
         when(ordineDAO.save(ordine1)).thenReturn(ordine1);
-        assertEquals(ordiniService.modificaOrdine(null, sede2, null, ordine1.getId()), true);
+        assertEquals(ordiniService.modificaOrdine(null, sede3, null, ordine1.getId()), true);
 
         when(ordineDAO.findById(ordine1.getId())).thenReturn(Optional.ofNullable(ordine1));
         when(ordineDAO.save(ordine1)).thenReturn(ordine1);

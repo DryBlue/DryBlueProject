@@ -128,6 +128,7 @@ public class DryBlueApplication {
             servizio5.setPrezzo(prezzo3);
             servizioDAO.saveAll(Arrays.asList(servizio, servizio2, servizio3, servizio4, servizio5));
 
+            final int quantity = 3;
             RigaOrdine rigaOrdine = new RigaOrdine();
             rigaOrdine.setQuantita(1);
             rigaOrdine.setServizio(servizio);
@@ -137,7 +138,7 @@ public class DryBlueApplication {
             rigaOrdine.setServizio(servizio2);
 
             RigaOrdine rigaOrdine2 = new RigaOrdine();
-            rigaOrdine.setQuantita(3);
+            rigaOrdine.setQuantita(quantity);
             rigaOrdine.setServizio(servizio3);
 
             RigaOrdine rigaOrdine3 = new RigaOrdine();

@@ -50,7 +50,7 @@ public class ServiziController {
                                        final @RequestParam("manutentore") String manutentore,
                                        final @RequestParam("numeroMan") String telefonoManutenzione,
                                        final @RequestParam("indirizzoSede")String indirizzoSede) {
-        servizioService.aggiungiMacchinario(denominazione, matricola, costruttore, caratteristiche,
+        servizioService.aggiungiMacchinario(matricola, denominazione, caratteristiche, costruttore,
                                             manutentore, telefonoManutenzione, "In funzione", ordineService.findByIndirizzo(indirizzoSede));
         model.getAttribute("utente");
         return trovaMacchinari(model);

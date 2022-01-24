@@ -162,13 +162,10 @@ public class AutenticazioneController {
         Cliente cliente = clienteDAO.findByUsername(username);
         String password = cliente.getPassword();
         String ind_email = cliente.getEmail();
-        System.out.println("So bello 1");
         System.out.println(password + newPassword + oldPassword);
         if (cliente != null) {
-            System.out.println("So bello 2");
             if (password.equals(oldPassword)) {
                 cliente.setPassword(newPassword);
-                System.out.println("So bello 3");
                 if (ind_email == null) {
                     cliente.setEmail(email);
                 }
