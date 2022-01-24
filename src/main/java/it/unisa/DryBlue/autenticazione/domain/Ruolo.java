@@ -25,7 +25,7 @@ public class Ruolo implements Serializable {
     @NonNull
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "ruoli")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ruolo")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Utente> users = new HashSet<>();

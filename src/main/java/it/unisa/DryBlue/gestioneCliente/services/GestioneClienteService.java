@@ -2,11 +2,13 @@ package it.unisa.DryBlue.gestioneCliente.services;
 
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
 
+import java.util.List;
+
+
 public interface GestioneClienteService {
-    Cliente aggiungiCliente(String numTelefono, String indirizzo, String nome, String cognome);
 
-    Cliente reimpostaPassword(String password, Cliente cliente);
+    List<Cliente> findTuttiIClienti();
 
-    void rimuoviCliente(Cliente cliente);
+    Cliente findByTelefono(String telefono);
 
 }

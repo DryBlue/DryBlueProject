@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <script type="text/javascript" th:src="@{/loginCheck.js}"></script>
+    <!--
+    <script type="text/javascript">
+        function loginCheck(){
+            var username = document.getElementById('username');
+            var password = document.getElementById('password');
+
+            if(username.value === null){
+                alert("Inserire username");
+                username.value='';
+                username.focus();
+                return false;
+            }
+
+            if(password.value === null){
+                alert("Inserire password");
+                password.value='';
+                password.focus();
+                return false;
+            }
+
+            return true;
+        }
+    </script> -->
+
+    <style>
+        .divider:after,
+        .divider:before {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #eee;
+        }
+        .h-custom {
+            height: calc(100% - 73px);
+        }
+        @media (max-width: 450px) {
+            .h-custom {
+                height: 100%;
+            }
+    }</style>
+</head>
+<body>
+
+
+
+
+<div th:replace="navbarBase :: navbarBase"></div>
+</a>
+<div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href = "@{'/'}">Homepage</a>
+        </li>
+    </ul>
+</div>
+</div>
+</nav>
+
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid"
+                     alt="Sample image">
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+
+                <div id="error" class="text-danger">
+                </div>
+
+                <form th:action="@{/autenticazione/login}"  method="post" autocomplete="off" id="form">
+                    <!-- Username input -->
+                   <div class="form-outline mb-4">
+                        <input type="text" class="form-control form-control-lg"
+                               placeholder="Inserisci un username valido" name="username" id="username" />
+                        <label class="form-label" for="username">Username</label>
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-3">
+                        <input type="password" id="password" name="password" class="form-control form-control-lg"
+                               placeholder="Inserisci una password valida" />
+                        <label class="form-label" for="password">Password</label>
+                    </div>
+
+
+                    <!-- <div>
+                        <button onclick="loginCheck()">Prova alert</button>
+                    </div> -->
+
+
+                    <div class="text-center text-lg-start mt-4 pt-2">
+                        <button type="submit" name="Login" value="Login" class="btn btn-primary btn-lg"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;" onclick="loginCheck()" onsubmit="labelCheck()">Login</button>
+                        <p class="small fw-bold mt-2 pt-1 mb-0">
+                            <a th:href="@{/autenticazione/newPassword}"><button type="button" class="btn btn-primary btn-lg"
+                                                                                style="padding-left: 2.5rem; padding-right: 2.5rem;">Completa il profilo</button></a>
+                    </div>
+
+                </form>
+
+
+                <!-- <script type="text/javascript">
+                    function alertCheck(){
+                        alert("Funziono");
+                    }
+
+                </script> -->
+
+                <!-- Script funzionante -->
+                <script type="text/javascript">
+                    function loginCheck(){
+                        const username = document.getElementById('username');
+                        const password = document.getElementById('password');
+                        const form = document.getElementById('form');
+                        const errorElement = document.getElementById('error');
+
+                        form.addEventListener('submit', (e) =>{
+                            let messages = [];
+
+                            if (username.value === '' || username.value === null){
+                             messages.push('Inserisci username')
+                            }
+
+                            if(password.value === '' || username.value === null){
+                                messages.push('Inserisci password')
+                            }
+
+                            if (messages.length > 0){
+                                e.preventDefault()
+                                errorElement.innerText = messages.join(', ')
+
+                            }
+
+
+                        })
+                    }
+                </script>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!--
+<div class="container-sm">
+    <div class="row">
+        <div class="col-4">
+            <form th:action="@{/autenticazione/login}"  method="post" autocomplete="off">
+                <h2 class="text-center">Esegui l'accesso</h2>
+                <div class="form-group">
+                    <label>
+                        <input class="form-control" type="text" name="username" id="username" placeholder="Username:" >
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input class="form-control" type="password" name="password" id="password" placeholder="Password:" >
+                    </label>
+                </div>
+                <div class="form-group">
+                    <input class="form-control button" type="submit" name="Login" value="Login">
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+</div>
+</div>  -->
+
+<footer th:replace="footer :: footer"></footer>
+
+<!-- <script type="text/javascript" th:src="@{/loginCheck.js}"></script> -->
+
+
+</body>
+</html>

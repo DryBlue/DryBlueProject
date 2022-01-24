@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
 public class RigaOrdine implements Serializable {
 
@@ -16,6 +17,8 @@ public class RigaOrdine implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
+
+    @NonNull
     private Integer quantita;
 
     @ManyToOne

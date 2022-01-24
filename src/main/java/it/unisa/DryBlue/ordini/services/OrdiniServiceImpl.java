@@ -1,69 +1,92 @@
 package it.unisa.DryBlue.ordini.services;
 
+import it.unisa.DryBlue.gestioneCliente.dao.ClienteDAO;
 import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
-import it.unisa.DryBlue.ordini.dao.EtichettaDAO;
-import it.unisa.DryBlue.ordini.dao.OrdineDAO;
-import it.unisa.DryBlue.ordini.dao.PropostaModificaDAO;
+import it.unisa.DryBlue.ordini.dao.*;
 import it.unisa.DryBlue.ordini.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class OrdiniServiceImpl implements OrdiniService{
+public class OrdiniServiceImpl implements OrdiniService {
 
     private final OrdineDAO ordineDAO;
     private final PropostaModificaDAO propostaModificaDAO;
     private final EtichettaDAO etichettaDAO;
+    private final SedeDAO sedeDAO;
+    private final ClienteDAO clienteDAO;
+    private final RigaOrdineDAO rigaOrdineDAO;
 
     @Override
-    public Ordine creazioneOrdine(Set<RigaOrdine> rigaOrdine, Integer quantita, Cliente cliente, String tipologiaRitiro,
-                                  Sede sede, LocalDate dataConsegnaDesiderata, Integer sedeDesiderata, String note) {
+    public Ordine creazioneOrdine(final Set<RigaOrdine> rigaOrdine,
+                                  final String cliente,
+                                  final String tipologiaRitiro,
+                                  final String sede,
+                                  final LocalDate dataConsegnaDesiderata,
+                                  final String note) {
         Ordine ordine = new Ordine();
+        ordine.setRigheOrdine(rigaOrdine);
         ordine.setDataConsegnaDesiderata(dataConsegnaDesiderata);
         ordine.setTipologiaRitiro(tipologiaRitiro);
-        if(note != null){
+        if (note != null) {
             ordine.setNote(note);
         }
         ordine.setStato("Macchiato");
-        ordine.setCliente(cliente);
-        if(tipologiaRitiro.equals("In sede") && sede != null){
-            ordine.setSede(sede);
+        ordine.setCliente(clienteDAO.findByUsername(cliente));
+        if (tipologiaRitiro.equals("In sede") && sede != null) {
+            ordine.setSede(sedeDAO.findByIndirizzo(sede));
         }
         ordineDAO.save(ordine);
         return ordine;
     }
 
+
     @Override
-    public void propostaModifica(LocalDate data, Sede sede, Ordine ordine) {
+    public void propostaModifica(final LocalDate data,
+                                 final String sede,
+                                 final Ordine ordine) {
+        Cliente c = ordine.getCliente();
         PropostaModifica propostaModifica = new PropostaModifica();
+        propostaModifica.setCliente(c);
         propostaModifica.setOrdine(ordine);
-        if(data != null){
+        if (data.compareTo(ordine.getDataConsegnaDesiderata()) == 0) {
+            LocalDate d = ordine.getDataConsegnaDesiderata();
+            Sede s = sedeDAO.findByIndirizzo(sede);
+            propostaModifica.setSede(s);
+            propostaModifica.setDataProposta(d);
+        } else if (sede.equals(ordine.getSede().getIndirizzo())) {
+            Sede s = ordine.getSede();
             propostaModifica.setDataProposta(data);
-        }else if(sede != null){
-            propostaModifica.setSede(sede);
+            propostaModifica.setSede(s);
         }
+
         propostaModifica.setStato("In attesa");
         propostaModificaDAO.save(propostaModifica);
+        ordine.setPropostaModifica(propostaModifica);
 
     }
 
     @Override
-    public Boolean modificaOrdine(LocalDate data, Sede sede, String stato, Integer idOrdine) {
+    public Boolean modificaOrdine(final LocalDate data,
+                                  final Sede sede,
+                                  final String stato,
+                                  final Integer idOrdine) {
         Ordine ordine = ordineDAO.findById(idOrdine).get();
-        if(data != null){
+        if (data != null) {
             ordine.setDataConsegnaDesiderata(data);
             ordineDAO.save(ordine);
             return true;
-        }else if(sede != null){
+        } else if (sede != null) {
             ordine.setSede(sede);
             ordineDAO.save(ordine);
             return true;
-        }else if(stato != null){
+        } else if (stato != null) {
             ordine.setStato(stato);
             ordineDAO.save(ordine);
             return true;
@@ -72,42 +95,78 @@ public class OrdiniServiceImpl implements OrdiniService{
     }
 
     @Override
-    public List<Ordine> visualizzaOrdini(Object obj, Cliente cliente) {
-        String classe = String.valueOf(obj.getClass());
-        List<Ordine> ordini, ordiniReturn = null;
-        if(classe.equals("String")){
-             ordini = ordineDAO.findAllByStato((String) obj);
-             if(cliente != null){
-                 for(Ordine o: ordini){
-                     if(o.getCliente().equals(cliente)){
-                         ordiniReturn.add(o);
-                     }
-                 }
-                 return ordiniReturn;
-             }
-             return ordini;
-        }
-        else if(classe.equals("LocalDate")){
-            ordini = ordineDAO.findAllByDataConsegnaDesiderata((LocalDate) obj);
-            if(cliente != null){
-                for(Ordine o: ordini){
-                    if(o.getCliente().equals(cliente)){
-                        ordiniReturn.add(o);
-                    }
-                }
-                return ordiniReturn;
-            }
+    public List<Ordine> visualizzaOrdiniFiltroOperatore(final String filtro) {
+        if (filtro.equals("Consegnato")) {
+            return ordineDAO.findAllByStato(filtro);
+        } else {
+            List<Ordine> ordini = ordineDAO.findAllByStato("Macchiato");
+            ordini.addAll(ordineDAO.findAllByStato("Pronto"));
+            ordini.addAll(ordineDAO.findAllByStato("Imbustato"));
             return ordini;
         }
-        return null;
     }
 
     @Override
-    public Etichetta stampaEtichetta(Ordine ordine) {
+    public List<Ordine> visualizzaOrdiniFiltroUtente(final String filtro,
+                                                     final String telefono) {
+        List<Ordine> prova = new ArrayList<>();
+        if (filtro.equals("Consegnato")) {
+            List<Ordine> ordini = ordineDAO.findAllByStato(filtro);
+            for (Ordine x : ordini) {
+                if (x.getCliente().getNumeroTelefono().equals(telefono)) {
+                    prova.add(x);
+                }
+            }
+            return prova;
+        } else {
+            List<Ordine> ordini = ordineDAO.findAllByStato("Macchiato");
+            ordini.addAll(ordineDAO.findAllByStato("Pronto"));
+            ordini.addAll(ordineDAO.findAllByStato("Imbustato"));
+            for (Ordine x : ordini) {
+                if (x.getCliente().getNumeroTelefono().equals(telefono)) {
+                    prova.add(x);
+                }
+            }
+            return prova;
+        }
+    }
+
+    @Override
+    public List<Ordine> visualizzaOrdiniTotali() {
+        return (List<Ordine>) ordineDAO.findAll();
+    }
+
+    @Override
+    public Etichetta stampaEtichetta(final Ordine ordine) {
         Etichetta etichetta = new Etichetta();
         etichetta.setOrdine(ordine);
         etichetta.setSede(ordine.getSede());
         etichettaDAO.save(etichetta);
         return etichetta;
+    }
+
+    @Override
+    public List<Sede> visualizzaSedi() {
+        return (List<Sede>) sedeDAO.findAll();
+    }
+
+    @Override
+    public Ordine findById(final Integer idOrdine) {
+        return ordineDAO.findById(idOrdine).get();
+    }
+
+    @Override
+    public PropostaModifica findByIdProposta(final Integer idProposta) {
+        return propostaModificaDAO.findById(idProposta).get();
+    }
+
+    @Override
+    public void creaRigaOrdine(final RigaOrdine riga) {
+        rigaOrdineDAO.save(riga);
+    }
+
+    @Override
+    public Sede findByIndirizzo(final String indirizzo) {
+        return sedeDAO.findByIndirizzo(indirizzo);
     }
 }

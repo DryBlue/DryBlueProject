@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html xmlns:th="http://w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Nuovo Ordine</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            $("#ritiro").click(function(){
+                var status = $("#ritiro option:selected").attr("grouping");
+                if(status == "In sede"){
+                    $("#sedeScelta").show();
+                }else{
+                    $("#sedeScelta").hide();
+                }
+
+            });
+
+        });
+    </script>
+
+    <style>
+        .card-registration .select-input.form-control[readonly]:not([disabled]) {
+            font-size: 1rem;
+            line-height: 2.15;
+            padding-left: .75em;
+            padding-right: .75em;
+        }
+        .card-registration .select-arrow {
+            top: 13px;
+        }
+    </style>
+</head>
+<body>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+
+<div th:if="${utente.getRuolo().getName().equals('OPERATORE')}">
+    <div th:replace="navbarOperatore :: navbarOperatore"></div>
+</div>
+
+<div th:if="${utente.getRuolo().getName().equals('CLIENTE')}">
+    <div th:replace="navbarCliente :: navbarCliente"></div>
+</div>
+
+<section class="h-100 bg-dark">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+                <div class="card card-registration my-4">
+                    <div class="row g-0">
+                        <div class="col-xl-6 d-none d-xl-block">
+                            <img
+                                    src="https://banner2.cleanpng.com/20180325/edq/kisspng-clipboard-computer-icons-clip-art-paper-sheet-5ab7d8a430d7e9.4744950715219979882001.jpg"
+                                    alt="Sample photo"
+                                    class="img-fluid"
+                                    style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;"
+                            />
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="card-body p-md-5 text-black">
+                                <h3 class="mb-5 text-uppercase">Aggiungi un nuovo ordine</h3>
+
+                                <form method="post" th:action="@{/ordini/aggiuntaRiga}">
+                                    <select name="idServizio">
+                                        <div th:each="servizio : ${servizi}">
+                                            <option th:value="${servizio.id}" th:text="${servizio.nome}"></option>
+                                        </div>
+                                    </select>
+
+                                    <label for="quantity"></label>
+                                    <input type="number" id="quantity" name="quantity" value="1" min="1" max="255">
+
+                                    <button  type="submit" name="button" id="addButton" class="btn btn-primary">Aggiungi all'ordine</button>
+                                </form>
+
+
+                                <form method="post" id="form" th:action="@{/ordini/aggiuntaOrdine}" >
+
+                                    <div th:if="${utente.getRuolo().getName().equals('CLIENTE')}">
+                                        <input type="hidden" name="cliente" th:value="${utente.username}">
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <ul>
+                                            <div th:if="${righe != null}">
+                                                <div th:each="riga : ${righe}">
+                                                    <li th:text="${riga.getServizio().getNome() + ', ' + riga.getQuantita()}"></li>
+                                                </div>
+                                            </div>
+                                        </ul>
+
+
+                                        <br><br>
+                                        <select name="ritiro" id="ritiro">
+                                            <option value="In sede" grouping="In sede">Ritiro</option>
+                                            <option value="Consegna" grouping="Consegna">Consegna</option>
+                                        </select><br>
+
+                                        <div id="error" class="text-danger">
+                                        </div>
+                                        <h4>Data desiderata</h4>
+                                        <div class="it-datepicker-wrapper">
+                                            <input class="form-control it-date-datepicker" id="date" name="date" type="date" onchange="dateCheck()">
+                                            <label for="date" name="date"></label>
+                                        </div>
+
+                                        <div name="sedeScelta" id="sedeScelta">
+                                            <h4>Sede desiderata</h4>
+                                            <select name="sedeDesiderata" id="sedeDesiderata">
+                                                <div id="sede" th:each="sede : ${sedi}">
+
+                                                    <option th:text="${sede.indirizzo}"></option>
+                                                </div>
+                                            </select>
+                                        </div>
+
+                                        <br><br>
+
+                                        <div th:if="${utente.getRuolo().getName().equals('OPERATORE')}">
+                                            <h6>Cliente che effettua l'ordine:</h6>
+                                            <select name="cliente">
+                                                <div th:each="cliente : ${clienti}">
+                                                    <option th:text="${cliente.username}"></option>
+                                                </div>
+                                            </select>
+                                        </div>
+
+                                        <label for="note" class="form-label"></label>
+                                        <textarea class="form-control" id="note" name="note" rows="3"></textarea>
+
+                                        <div class="text-center text-lg-start mt-4 pt-2">
+                                        <button type="submit" class="btn btn-primary" onclick="dateNull()">Conferma</button><br>
+                                            <a href="/LoggedHomepage"><button type="button" class="btn btn-primary">Annulla</button></a><br>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+<!--
+
+<div class="container-sm">
+    <div class="row">
+        <div class="col-8">
+<h1 align="center">Aggiungi un nuovo ordine</h1>
+            <form method="post" th:action="@{/ordini/aggiuntaRiga}">
+                <select name="idServizio">
+                    <div th:each="servizio : ${servizi}">
+                        <option th:value="${servizio.id}" th:text="${servizio.nome}"></option>
+                    </div>
+                </select>
+
+                <label for="quantity"></label>
+                <input type="number" id="quantity" name="quantity" value="1" min="1" max="255">
+
+                <button  type="submit" name="button" id="addButton">Aggiungi all'ordine</button>
+            </form>
+
+<form method="post" id="form" th:action="@{/ordini/aggiuntaOrdine}" >
+
+    <div th:if="${utente.getRuolo().getName().equals('CLIENTE')}">
+    <input type="hidden" name="cliente" th:value="${utente.username}">
+    </div>
+
+    <div class="form-group">
+
+    <ul>
+        <div th:if="${righe != null}">
+            <div th:each="riga : ${righe}">
+                <li th:text="${riga.getServizio().getNome() + ', ' + riga.getQuantita()}"></li>
+            </div>
+        </div>
+    </ul>
+
+
+    <br><br>
+    <select name="ritiro" id="ritiro">
+        <option value="In sede" grouping="In sede">Ritiro</option>
+        <option value="Consegna" grouping="Consegna">Consegna</option>
+    </select><br>
+
+        <div id="error" class="text-danger">
+        </div>
+    <h4>Data desiderata</h4>
+    <div class="it-datepicker-wrapper">
+            <input class="form-control it-date-datepicker" id="date" name="date" type="date" onchange="dateCheck()">
+            <label for="date" name="date"></label>
+    </div>
+
+        <div name="sedeScelta" id="sedeScelta">
+    <h4>Sede desiderata</h4>
+    <select name="sedeDesiderata" id="sedeDesiderata">
+        <div id="sede" th:each="sede : ${sedi}">
+
+            <option th:text="${sede.indirizzo}"></option>
+        </div>
+    </select>
+    </div>
+
+        <br><br>
+
+    <div th:if="${utente.getRuolo().getName().equals('OPERATORE')}">
+        <h6>Cliente che effettua l'ordine:</h6>
+        <select name="cliente">
+            <div th:each="cliente : ${clienti}">
+                <option th:text="${cliente.username}"></option>
+            </div>
+        </select>
+    </div>
+
+    <label for="note" class="form-label"></label>
+    <textarea class="form-control" id="note" name="note" rows="3"></textarea>
+
+    <button type="submit" onclick="dateNull()">Conferma</button><br>
+    <button type="reset">Annulla</button><br>
+    </div>
+</form>
+</div>
+
+
+        </div>
+    </div>
+</div> -->
+
+<script type="text/javascript">
+    function dateCheck(){
+        const UserDate = document.getElementById("date").value;
+        const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000;
+        const timeDiffInMs = new Date(UserDate).getTime() - Date.now();
+
+            if (new Date(UserDate).getTime() <= Date.now()){
+                alert("Data non valida")
+            }
+
+            if(new Date(timeDiffInMs).getTime() >= new Date(thirtyDaysInMs).getTime()) {
+            alert('Data non valida')
+            }
+
+    }
+</script>
+
+
+    <script type="text/javascript">
+        function dateNull() {
+            const UserDate = document.getElementById("date").value;
+            const form = document.getElementById("form");
+            const errorElement = document.getElementById('error');
+
+            form.addEventListener('submit', (e) => {
+                let messages = [];
+
+                if (!new Date(UserDate).getTime()) {
+                    messages.push('Inserisci una data')
+                }
+
+                if (messages.length > 0) {
+                    e.preventDefault()
+                    errorElement.innerText = messages.join(', ')
+                }
+            })
+        }
+</script>
+
+<script type="text/javascript">
+    function refresh() {
+        window.location.reload();
+    }
+
+</script>
+</body>
+</html>

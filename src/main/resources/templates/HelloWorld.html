@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Hello</title>
 </head>
 <body>
-<h1>Hello world</h1>
+<p th:if="${utente==null}">Errore</p>
+<p th:if="${utente.getRuolo().getName().equals('OPERATORE')}">Hello operatore</p>
+<p th:if="${utente.getRuolo().getName().equals('CLIENTE')}">Hello Cliente</p>
 </body>
 </html>

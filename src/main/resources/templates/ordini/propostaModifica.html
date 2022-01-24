@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://w3.org/1999/xhtml">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <meta charset="UTF-8">
+    <title>Proposta Modifica</title>
+</head>
+<body>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+
+
+<div th:replace="navbarCliente :: navbarCliente"></div>
+
+<div class="container-sm">
+    <div class="row">
+        <div class="col-6">
+<h1 align="center">Proposta modifica</h1>
+
+<form method="post" id="form" th:action="@{/ordini/propostaModifica}">
+
+    <h2>Modifica sede</h2><br>
+    <!-- inserire due label con le sedi/indirizzi delle sedi -->
+    <label>Sede attuale:</label> <label th:text="${ordine.sede.getIndirizzo()}"></label><br>
+    <label>Sede alternativa:</label>
+    <select id="sedeNuova" name="sedeNuova">
+        <div th:each="sede : ${sedi}">
+            <option th:text="${sede.indirizzo}"></option>
+        </div>
+    </select>
+
+    <h2>Modifica data</h2><br>
+    <div id="error" class="text-danger"></div>
+    <label>Data attuale: </label><label id="dataAttuale" name="dataAttuale" th:text="${ordine.dataConsegnaDesiderata}"></label><br>
+    <label>Data desiderata: </label><input type="date" id="dataProposta" name="dataProposta" onchange="dateCheck()"><br>
+    <input type="hidden" id="Ordine" name="Ordine" th:value="${ordine.id}">
+    <button type="submit" class="btn btn-primary">Proponi Modifica</button>
+    <button type="reset" class="btn btn-primary">Annulla</button>
+
+</form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function dateCheck(){
+        const UserDate = document.getElementById("dataProposta").value;
+        const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000;
+        const timeDiffInMs = new Date(UserDate).getTime() - Date.now();
+
+        if (new Date(UserDate).getTime() <= Date.now()){
+            alert("Data non valida")
+        }
+
+        if(new Date(timeDiffInMs).getTime() >= new Date(thirtyDaysInMs).getTime()) {
+            alert('Data non valida')
+        }
+
+    }
+</script>
+
+
+
+</body>
+</html>
