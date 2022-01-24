@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrdiniServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DryBlue</a> &gt; <a href="index.source.html" class="el_package">it.unisa.DryBlue.ordini.services</a> &gt; <span class="el_source">OrdiniServiceImpl.java</span></div><h1>OrdiniServiceImpl.java</h1><pre class="source lang-java linenums">package it.unisa.DryBlue.ordini.services;
+
+import it.unisa.DryBlue.gestioneCliente.dao.ClienteDAO;
+import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
+import it.unisa.DryBlue.ordini.dao.*;
+import it.unisa.DryBlue.ordini.domain.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+@Service
+<span class="fc" id="L16">@RequiredArgsConstructor</span>
+public class OrdiniServiceImpl implements OrdiniService {
+
+    private final OrdineDAO ordineDAO;
+    private final PropostaModificaDAO propostaModificaDAO;
+    private final EtichettaDAO etichettaDAO;
+    private final SedeDAO sedeDAO;
+    private final ClienteDAO clienteDAO;
+    private final RigaOrdineDAO rigaOrdineDAO;
+
+    @Override
+    public Ordine creazioneOrdine(final Set&lt;RigaOrdine&gt; rigaOrdine,
+                                  final String cliente,
+                                  final String tipologiaRitiro,
+                                  final String sede,
+                                  final LocalDate dataConsegnaDesiderata,
+                                  final String note) {
+<span class="fc" id="L33">        Ordine ordine = new Ordine();</span>
+<span class="fc" id="L34">        ordine.setRigheOrdine(rigaOrdine);</span>
+<span class="fc" id="L35">        ordine.setDataConsegnaDesiderata(dataConsegnaDesiderata);</span>
+<span class="fc" id="L36">        ordine.setTipologiaRitiro(tipologiaRitiro);</span>
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        if (note != null) {</span>
+<span class="fc" id="L38">            ordine.setNote(note);</span>
+        }
+<span class="fc" id="L40">        ordine.setStato(&quot;Macchiato&quot;);</span>
+<span class="fc" id="L41">        ordine.setCliente(clienteDAO.findByUsername(cliente));</span>
+<span class="pc bpc" id="L42" title="2 of 4 branches missed.">        if (tipologiaRitiro.equals(&quot;In sede&quot;) &amp;&amp; sede != null) {</span>
+<span class="fc" id="L43">            ordine.setSede(sedeDAO.findByIndirizzo(sede));</span>
+        }
+<span class="fc" id="L45">        ordineDAO.save(ordine);</span>
+<span class="fc" id="L46">        return ordine;</span>
+    }
+
+
+    @Override
+    public void propostaModifica(final LocalDate data,
+                                 final String sede,
+                                 final Ordine ordine) {
+<span class="fc" id="L54">        Cliente c = ordine.getCliente();</span>
+<span class="fc" id="L55">        PropostaModifica propostaModifica = new PropostaModifica();</span>
+<span class="fc" id="L56">        propostaModifica.setCliente(c);</span>
+<span class="fc" id="L57">        propostaModifica.setOrdine(ordine);</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        if (data.compareTo(ordine.getDataConsegnaDesiderata()) == 0) {</span>
+<span class="fc" id="L59">            LocalDate d = ordine.getDataConsegnaDesiderata();</span>
+<span class="fc" id="L60">            Sede s = sedeDAO.findByIndirizzo(sede);</span>
+<span class="fc" id="L61">            propostaModifica.setSede(s);</span>
+<span class="fc" id="L62">            propostaModifica.setDataProposta(d);</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        } else if (sede.equals(ordine.getSede().getIndirizzo())) {</span>
+<span class="fc" id="L64">            Sede s = ordine.getSede();</span>
+<span class="fc" id="L65">            propostaModifica.setDataProposta(data);</span>
+<span class="fc" id="L66">            propostaModifica.setSede(s);</span>
+        }
+
+<span class="fc" id="L69">        propostaModifica.setStato(&quot;In attesa&quot;);</span>
+<span class="fc" id="L70">        propostaModificaDAO.save(propostaModifica);</span>
+<span class="fc" id="L71">        ordine.setPropostaModifica(propostaModifica);</span>
+
+<span class="fc" id="L73">    }</span>
+
+    @Override
+    public Boolean modificaOrdine(final LocalDate data,
+                                  final Sede sede,
+                                  final String stato,
+                                  final Integer idOrdine) {
+<span class="fc" id="L80">        Ordine ordine = ordineDAO.findById(idOrdine).get();</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        if (data != null) {</span>
+<span class="fc" id="L82">            ordine.setDataConsegnaDesiderata(data);</span>
+<span class="fc" id="L83">            ordineDAO.save(ordine);</span>
+<span class="fc" id="L84">            return true;</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        } else if (sede != null) {</span>
+<span class="fc" id="L86">            ordine.setSede(sede);</span>
+<span class="fc" id="L87">            ordineDAO.save(ordine);</span>
+<span class="fc" id="L88">            return true;</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        } else if (stato != null) {</span>
+<span class="fc" id="L90">            ordine.setStato(stato);</span>
+<span class="fc" id="L91">            ordineDAO.save(ordine);</span>
+<span class="fc" id="L92">            return true;</span>
+        }
+<span class="fc" id="L94">        return false;</span>
+    }
+
+    @Override
+    public List&lt;Ordine&gt; visualizzaOrdiniFiltroOperatore(final String filtro) {
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        if (filtro.equals(&quot;Consegnato&quot;)) {</span>
+<span class="fc" id="L100">            return ordineDAO.findAllByStato(filtro);</span>
+        } else {
+<span class="fc" id="L102">            List&lt;Ordine&gt; ordini = ordineDAO.findAllByStato(&quot;Macchiato&quot;);</span>
+<span class="fc" id="L103">            ordini.addAll(ordineDAO.findAllByStato(&quot;Pronto&quot;));</span>
+<span class="fc" id="L104">            ordini.addAll(ordineDAO.findAllByStato(&quot;Imbustato&quot;));</span>
+<span class="fc" id="L105">            return ordini;</span>
+        }
+    }
+
+    @Override
+    public List&lt;Ordine&gt; visualizzaOrdiniFiltroUtente(final String filtro,
+                                                     final String telefono) {
+<span class="fc" id="L112">        List&lt;Ordine&gt; prova = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        if (filtro.equals(&quot;Consegnato&quot;)) {</span>
+<span class="fc" id="L114">            List&lt;Ordine&gt; ordini = ordineDAO.findAllByStato(filtro);</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">            for (Ordine x : ordini) {</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">                if (x.getCliente().getNumeroTelefono().equals(telefono)) {</span>
+<span class="fc" id="L117">                    prova.add(x);</span>
+                }
+<span class="fc" id="L119">            }</span>
+<span class="fc" id="L120">            return prova;</span>
+        } else {
+<span class="fc" id="L122">            List&lt;Ordine&gt; ordini = ordineDAO.findAllByStato(&quot;Macchiato&quot;);</span>
+<span class="fc" id="L123">            ordini.addAll(ordineDAO.findAllByStato(&quot;Pronto&quot;));</span>
+<span class="fc" id="L124">            ordini.addAll(ordineDAO.findAllByStato(&quot;Imbustato&quot;));</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">            for (Ordine x : ordini) {</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">                if (x.getCliente().getNumeroTelefono().equals(telefono)) {</span>
+<span class="fc" id="L127">                    prova.add(x);</span>
+                }
+<span class="fc" id="L129">            }</span>
+<span class="fc" id="L130">            return prova;</span>
+        }
+    }
+
+    @Override
+    public List&lt;Ordine&gt; visualizzaOrdiniTotali() {
+<span class="nc" id="L136">        return (List&lt;Ordine&gt;) ordineDAO.findAll();</span>
+    }
+
+    @Override
+    public Etichetta stampaEtichetta(final Ordine ordine) {
+<span class="nc" id="L141">        Etichetta etichetta = new Etichetta();</span>
+<span class="nc" id="L142">        etichetta.setOrdine(ordine);</span>
+<span class="nc" id="L143">        etichetta.setSede(ordine.getSede());</span>
+<span class="nc" id="L144">        etichettaDAO.save(etichetta);</span>
+<span class="nc" id="L145">        return etichetta;</span>
+    }
+
+    @Override
+    public List&lt;Sede&gt; visualizzaSedi() {
+<span class="fc" id="L150">        return (List&lt;Sede&gt;) sedeDAO.findAll();</span>
+    }
+
+    @Override
+    public Ordine findById(final Integer idOrdine) {
+<span class="nc" id="L155">        return ordineDAO.findById(idOrdine).get();</span>
+    }
+
+    @Override
+    public PropostaModifica findByIdProposta(final Integer idProposta) {
+<span class="nc" id="L160">        return propostaModificaDAO.findById(idProposta).get();</span>
+    }
+
+    @Override
+    public void creaRigaOrdine(final RigaOrdine riga) {
+<span class="fc" id="L165">        rigaOrdineDAO.save(riga);</span>
+<span class="fc" id="L166">    }</span>
+
+    @Override
+    public Sede findByIndirizzo(final String indirizzo) {
+<span class="fc" id="L170">        return sedeDAO.findByIndirizzo(indirizzo);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

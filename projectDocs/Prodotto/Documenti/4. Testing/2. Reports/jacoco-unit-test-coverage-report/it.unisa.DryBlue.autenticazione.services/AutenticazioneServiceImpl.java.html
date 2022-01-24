@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AutenticazioneServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DryBlue</a> &gt; <a href="index.source.html" class="el_package">it.unisa.DryBlue.autenticazione.services</a> &gt; <span class="el_source">AutenticazioneServiceImpl.java</span></div><h1>AutenticazioneServiceImpl.java</h1><pre class="source lang-java linenums">package it.unisa.DryBlue.autenticazione.services;
+
+import it.unisa.DryBlue.autenticazione.dao.OperatoreDAO;
+import it.unisa.DryBlue.autenticazione.dao.UtenteDAO;
+import it.unisa.DryBlue.autenticazione.domain.Operatore;
+import it.unisa.DryBlue.autenticazione.domain.Ruolo;
+import it.unisa.DryBlue.autenticazione.domain.Utente;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import it.unisa.DryBlue.gestioneCliente.dao.ClienteDAO;
+import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
+//import it.unisa.DryBlue.servizi.domain.Servizio;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import static it.unisa.DryBlue.autenticazione.domain.Ruolo.CLIENTE_ROLE;
+import static it.unisa.DryBlue.autenticazione.domain.Ruolo.OPERATORE_ROLE;
+
+/**
+ *Implementa la classe che esplicita i metodi
+ * definiti nell'interfaccia service per il
+ * sottosistema Autenticazione.
+ */
+@Service
+<span class="fc" id="L27">@RequiredArgsConstructor</span>
+public class AutenticazioneServiceImpl implements AutenticazioneService {
+
+    /**
+     *Si occupa delle operazioni CRUD per un utente.
+     */
+
+    private final UtenteDAO utenteDAO;
+    private final ClienteDAO clienteDAO;
+    private final OperatoreDAO operatoreDAO;
+
+     /**
+     * Implementa la funzionalità di login
+     * per un Utente registrato.
+     * @param username dell'utente.
+     * @param password dell'utente.
+     * @return un utente registrato.
+     */
+    @Override
+    public Utente login(final String username, final String password) {
+        try {
+            MessageDigest md;
+<span class="fc" id="L49">            md = MessageDigest.getInstance(&quot;SHA-256&quot;);</span>
+<span class="fc" id="L50">            byte[] arr = md.digest(password.getBytes());</span>
+            Cliente c;
+            Operatore o;
+<span class="fc" id="L53">            Utente u = new Utente();</span>
+
+<span class="fc bfc" id="L55" title="All 2 branches covered.">            if ((clienteDAO.findByUsername(username)) != null) {</span>
+<span class="fc" id="L56">                c = clienteDAO.findByUsername(username);</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">                if (c.getPassword().equals(password)) {</span>
+<span class="fc" id="L58">                    u.setUsername(username);</span>
+<span class="fc" id="L59">                    u.setPassword(password);</span>
+<span class="fc" id="L60">                    u.setNome(c.getNome());</span>
+<span class="fc" id="L61">                    u.setCognome(c.getCognome());</span>
+<span class="fc" id="L62">                    u.setIndirizzo(c.getIndirizzo());</span>
+<span class="fc" id="L63">                    u.setCellulare(c.getNumeroTelefono());</span>
+<span class="fc" id="L64">                    u.setRuolo(new Ruolo(CLIENTE_ROLE));</span>
+<span class="fc" id="L65">                    return u;</span>
+                }
+            }
+
+<span class="fc bfc" id="L69" title="All 2 branches covered.">            if ((operatoreDAO.findByUsername(username)) != null) {</span>
+<span class="fc" id="L70">                o = operatoreDAO.findByUsername(username);</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">                if (o.getPassword().equals(password)) {</span>
+<span class="fc" id="L72">                    u.setUsername(username);</span>
+<span class="fc" id="L73">                    u.setPassword(password);</span>
+<span class="fc" id="L74">                    u.setNome(o.getNome());</span>
+<span class="fc" id="L75">                    u.setCognome(o.getCognome());</span>
+<span class="fc" id="L76">                    u.setRuolo(new Ruolo(OPERATORE_ROLE));</span>
+<span class="fc" id="L77">                    return u;</span>
+                }
+            }
+
+<span class="fc bfc" id="L81" title="All 4 branches covered.">            if ((clienteDAO.findByUsername(username)) == null &amp;&amp; (operatoreDAO.findByUsername(username)) == null) {</span>
+<span class="fc" id="L82">                u.setUsername(&quot;x&quot;);</span>
+<span class="fc" id="L83">                u.setPassword(&quot;x&quot;);</span>
+<span class="fc" id="L84">                Ruolo x = new Ruolo(&quot;x&quot;);</span>
+<span class="fc" id="L85">                u.setRuolo(x);</span>
+<span class="fc" id="L86">                return u;</span>
+            }
+
+
+
+<span class="nc" id="L91">        } catch (NoSuchAlgorithmException e) {</span>
+<span class="nc" id="L92">            e.printStackTrace();</span>
+<span class="fc" id="L93">        }</span>
+<span class="fc" id="L94">        return null;</span>
+    }
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

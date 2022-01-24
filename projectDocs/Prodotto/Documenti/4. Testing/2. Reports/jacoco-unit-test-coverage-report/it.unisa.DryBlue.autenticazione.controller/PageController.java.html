@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PageController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DryBlue</a> &gt; <a href="index.source.html" class="el_package">it.unisa.DryBlue.autenticazione.controller</a> &gt; <span class="el_source">PageController.java</span></div><h1>PageController.java</h1><pre class="source lang-java linenums">package it.unisa.DryBlue.autenticazione.controller;
+
+import it.unisa.DryBlue.ordini.services.OrdiniService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
+@Controller
+<span class="fc" id="L11">@RequiredArgsConstructor</span>
+@SessionAttributes(&quot;utente&quot;)
+public class PageController {
+
+    private final OrdiniService ordiniService;
+
+    @GetMapping(&quot;/&quot;)
+    public String getHomepage() {
+<span class="nc" id="L19">        return &quot;Homepage&quot;;</span>
+    }
+
+    @GetMapping(&quot;/LoggedHomepage&quot;)
+    public String getLoggedHompage() {
+<span class="nc" id="L24">        return &quot;LoggedHomepage&quot;;</span>
+    }
+
+    @GetMapping(&quot;/about&quot;)
+    public String getSedi(final Model model) {
+<span class="nc" id="L29">        model.addAttribute(&quot;sedi&quot;, ordiniService.visualizzaSedi());</span>
+<span class="nc" id="L30">        model.getAttribute(&quot;utente&quot;);</span>
+<span class="nc" id="L31">        return &quot;About&quot;;</span>
+    }
+
+    @GetMapping(&quot;/navbarCliente&quot;)
+    public String goNavBar(final Model model) {
+<span class="nc" id="L36">        model.getAttribute(&quot;utente&quot;);</span>
+<span class="nc" id="L37">        return &quot;navbarCliente&quot;;</span>
+    }
+
+    @GetMapping(&quot;/navbarOperatore&quot;)
+    public String goNavBarOperatore(final Model model) {
+<span class="nc" id="L42">        model.getAttribute(&quot;utente&quot;);</span>
+<span class="nc" id="L43">        return &quot;navbarOperatore&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrdiniController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DryBlue</a> &gt; <a href="index.source.html" class="el_package">it.unisa.DryBlue.ordini.controller</a> &gt; <span class="el_source">OrdiniController.java</span></div><h1>OrdiniController.java</h1><pre class="source lang-java linenums">package it.unisa.DryBlue.ordini.controller;
+
+import it.unisa.DryBlue.autenticazione.domain.Utente;
+import it.unisa.DryBlue.gestioneCliente.dao.ClienteDAO;
+import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
+import it.unisa.DryBlue.gestioneCliente.services.GestioneClienteService;
+import it.unisa.DryBlue.ordini.dao.OrdineDAO;
+import it.unisa.DryBlue.ordini.dao.PropostaModificaDAO;
+import it.unisa.DryBlue.ordini.dao.RigaOrdineDAO;
+import it.unisa.DryBlue.ordini.dao.SedeDAO;
+import it.unisa.DryBlue.ordini.domain.Ordine;
+import it.unisa.DryBlue.ordini.domain.PropostaModifica;
+import it.unisa.DryBlue.ordini.domain.RigaOrdine;
+import it.unisa.DryBlue.ordini.domain.Sede;
+import it.unisa.DryBlue.ordini.services.OrdiniService;
+import it.unisa.DryBlue.ordini.util.MailSingletonSender;
+import it.unisa.DryBlue.ordini.util.MailSingletonSenderProposta;
+import it.unisa.DryBlue.ordini.util.PDFExport;
+import it.unisa.DryBlue.servizi.domain.Servizio;
+import it.unisa.DryBlue.servizi.services.ServizioService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+@Controller
+<span class="fc" id="L36">@RequiredArgsConstructor</span>
+@SessionAttributes(&quot;utente&quot;)
+@RequestMapping(&quot;/ordini&quot;)
+public class OrdiniController {
+    private final OrdiniService ordiniService;
+    private final ServizioService servizioService;
+    private final GestioneClienteService gestioneClienteService;
+    @Autowired
+    private final MailSingletonSender sender;
+    @Autowired
+    private final MailSingletonSenderProposta senderProposta;
+    private final OrdineDAO ordineDAO;
+    private final SedeDAO sedeDAO;
+    private final RigaOrdineDAO rigaOrdineDAO;
+    private final PropostaModificaDAO propostaModificaDAO;
+    private final ClienteDAO clienteDAO;
+<span class="fc" id="L52">    private Set&lt;RigaOrdine&gt; righe = new HashSet&lt;&gt;();</span>
+
+
+    @GetMapping(&quot;/form&quot;)
+    private String form(final Model model) {
+<span class="nc" id="L57">        model.addAttribute(&quot;servizi&quot;, servizioService.findServizi());</span>
+<span class="nc" id="L58">        model.addAttribute(&quot;sedi&quot;, ordiniService.visualizzaSedi());</span>
+<span class="nc" id="L59">        model.addAttribute(&quot;clienti&quot;, gestioneClienteService.findTuttiIClienti());</span>
+<span class="nc" id="L60">        model.getAttribute(&quot;utente&quot;);</span>
+<span class="nc" id="L61">        model.getAttribute(&quot;righe&quot;);</span>
+<span class="nc" id="L62">        return &quot;ordini/aggiuntaOrdine&quot;;</span>
+    }
+
+    /**
+     * Implementa la funzionalità che permette
+     * di aggiungere una nuova riga all'ordine che
+     * si sta effettuando.
+     *
+     * @param model il Model
+     * @param idServizio l'identificativo del Servizio
+     * @param quantita la quantità di capi di abbigliamento dello stesso tipo
+     * @return la pagina dove è visualizzato
+     */
+    @PostMapping(&quot;/aggiuntaRiga&quot;)
+    private String aggiuntaRiga(final Model model,
+                                final @RequestParam(&quot;idServizio&quot;) Integer idServizio,
+                                final @RequestParam(&quot;quantity&quot;) Integer quantita) {
+<span class="fc" id="L79">        model.getAttribute(&quot;utente&quot;);</span>
+<span class="fc" id="L80">        Servizio servizio = servizioService.findServizioById(idServizio);</span>
+<span class="fc" id="L81">        System.out.println(servizio.toString());</span>
+<span class="fc" id="L82">        RigaOrdine riga = new RigaOrdine(quantita);</span>
+<span class="fc" id="L83">        riga.setServizio(servizio);</span>
+<span class="fc" id="L84">        riga.setOrdine(null);</span>
+<span class="fc" id="L85">        ordiniService.creaRigaOrdine(riga);</span>
+<span class="fc" id="L86">        righe.add(riga);</span>
+<span class="fc" id="L87">        model.addAttribute(&quot;righe&quot;, righe);</span>
+<span class="fc" id="L88">        model.addAttribute(&quot;servizi&quot;, servizioService.findServizi());</span>
+<span class="fc" id="L89">        model.addAttribute(&quot;sedi&quot;, ordiniService.visualizzaSedi());</span>
+<span class="fc" id="L90">        model.addAttribute(&quot;clienti&quot;, gestioneClienteService.findTuttiIClienti());</span>
+<span class="fc" id="L91">        model.getAttribute(&quot;utente&quot;);</span>
+<span class="fc" id="L92">        return &quot;ordini/aggiuntaOrdine&quot;;</span>
+    }
+
+    /**
+     * Implementa la funzionalità che permette
+     * di creare un nuovo ordine che si è compilato.
+     *
+     * @param model il Model
+     * @param cliente il cliente
+     * @param tipologiaRitiro la tipologia di ritiro
+     * @param sede la sede di ritiro
+     * @param dataConsegnaDesiderata la data di consegna desiderata per l'ordine
+     * @param note eventuali note aggiuntive all'ordine
+     * @return la pagina di homepage
+     */
+    @PostMapping(&quot;/aggiuntaOrdine&quot;)
+    private String aggiuntaOrdine(final Model model,
+                                  final @RequestParam(&quot;cliente&quot;) String cliente,
+                                  final @RequestParam(&quot;ritiro&quot;) String tipologiaRitiro,
+                                  final @RequestParam(&quot;sedeDesiderata&quot;) String sede,
+                                  final @RequestParam(&quot;date&quot;) String dataConsegnaDesiderata,
+                                  final @RequestParam(&quot;note&quot;) String note) {
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        if (righe.size() &gt; 0) {</span>
+<span class="fc" id="L115">            LocalDate date = LocalDate.parse(dataConsegnaDesiderata);</span>
+<span class="fc" id="L116">            ordiniService.creazioneOrdine(righe, cliente, tipologiaRitiro, sede, date, note);</span>
+<span class="fc" id="L117">            model.getAttribute(&quot;utente&quot;);</span>
+<span class="fc" id="L118">            righe.clear();</span>
+<span class="fc" id="L119">            return &quot;/LoggedHomepage&quot;;</span>
+        } else {
+<span class="fc" id="L121">            model.addAttribute(&quot;error&quot;, &quot;ordinevuoto&quot;);</span>
+<span class="fc" id="L122">            return &quot;error/500&quot;;</span>
+        }
+
+    }
+
+    /**
+     * Implementa la funzionalità che permette
+     * di visualizzare la lista ordini controllando se
+     * si è un operatore o un cliente
+     * ed implementando di conseguenza i diversi filtri di ricerca.
+     *
+     * @param model il Model
+     * @param filter il filtro di ricerca che si è selezionato
+     * @return la pagina della lista ordini
+     */
+    @GetMapping(&quot;/ListaOrdini&quot;)
+    private String listaOrdini(final @RequestParam(value = &quot;filter&quot;, defaultValue = &quot;Attivi&quot;) String filter,
+                               final Model model) {
+<span class="fc" id="L140">        Utente u = (Utente) model.getAttribute(&quot;utente&quot;);</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        if (u.getRuolo().getName().equals(&quot;OPERATORE&quot;)) {</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">            if (filter.equals(&quot;Totali&quot;)) {</span>
+<span class="fc" id="L143">                model.addAttribute(&quot;ordini&quot;, ordiniService.visualizzaOrdiniTotali());</span>
+<span class="fc" id="L144">                return &quot;ordini/ListaOrdini&quot;;</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">            } else if (filter.equals(&quot;Attivi&quot;)) {</span>
+<span class="fc" id="L146">                model.addAttribute(&quot;ordini&quot;, ordiniService.visualizzaOrdiniFiltroOperatore(filter));</span>
+<span class="fc" id="L147">                return &quot;ordini/ListaOrdini&quot;;</span>
+            } else {
+<span class="fc" id="L149">                model.addAttribute(&quot;ordini&quot;, ordiniService.visualizzaOrdiniFiltroOperatore(filter));</span>
+<span class="fc" id="L150">                return &quot;ordini/ListaOrdini&quot;;</span>
+            }
+        } else {
+<span class="fc bfc" id="L153" title="All 2 branches covered.">            if (filter.equals(&quot;Attivi&quot;)) {</span>
+<span class="fc" id="L154">                model.addAttribute(&quot;ordini&quot;, ordiniService.visualizzaOrdiniFiltroUtente(filter, u.getCellulare()));</span>
+<span class="fc" id="L155">                return &quot;ordini/ListaOrdini&quot;;</span>
+            } else {
+<span class="fc" id="L157">                model.addAttribute(&quot;ordini&quot;, ordiniService.visualizzaOrdiniFiltroUtente(filter, u.getCellulare()));</span>
+<span class="fc" id="L158">                return &quot;ordini/ListaOrdini&quot;;</span>
+            }
+        }
+    }
+
+    /**
+     * Implementa la funzionalità che permette
+     * di visualizzare la pagina di dettaglio di un ordine.
+     *
+     * @param model il Model
+     * @param idOrdine l'identificativo dell'ordine
+     * @return la pagina di dettaglio dell'ordine
+     */
+    @PostMapping(&quot;/dettaglioOrdine&quot;)
+    private String dettaglioOrdine(final @RequestParam(&quot;codiceOrdine&quot;) int idOrdine,
+                                   final Model model) {
+<span class="nc" id="L174">        model.getAttribute(&quot;utente&quot;);</span>
+<span class="nc" id="L175">        model.addAttribute(&quot;dOrdine&quot;, ordiniService.findById(idOrdine));</span>
+<span class="nc" id="L176">        return &quot;ordini/DettaglioOrdine&quot;;</span>
+    }
+
+    /**
+     * Implementa la funzionalità che permette
+     * di modificare un ordine da parte dell'operatore.
+     *
+     * @param model il Model
+     * @param id_ordine l'identificativo dell'ordine
+     * @return la pagina di modifica da parte dell'operatore di un ordine
+     */
+    @PostMapping(&quot;/ModificaOrdineOperatore&quot;)
+    public String Modifica(final Model model,
+                           final @RequestParam(&quot;codiceOrdine3&quot;) String id_ordine) {
+
+<span class="nc" id="L191">        model.addAttribute(&quot;id&quot;, id_ordine);</span>
+<span class="nc" id="L192">        model.addAttribute(&quot;ordine&quot;, ordineDAO.findById(Integer.valueOf(id_ordine)).get());</span>
+<span class="nc" id="L193">        model.getAttribute(&quot;utente&quot;);</span>
+<span class="nc" id="L194">        return &quot;/ordini/ModificaOrdineOperatore&quot;;</span>
+
+    }
+
+    /**
+     * Implementa la modifica dell'ordine effettuata dall'operatore.
+     *
+     * @param model il Model
+     * @param id_ordine l'identificativo dell'ordine
+     * @param stato lo stato in cui si trova l'ordine (&quot;Macchiato&quot;, &quot;Pronto&quot;, &quot;Imbustato&quot;)
+     * @return il metodo che reindirizza alla pagina della lista ordini
+     */
+    @PostMapping(&quot;/ListaOrdini/ModificaOrdine&quot;)
+    public String ModificaStato(final Model model,
+                                 final @RequestParam(&quot;stato&quot;) String stato,
+                                 final @RequestParam(&quot;idOrdine&quot;) Integer id_ordine) {
+
+<span class="fc" id="L211">        ordiniService.modificaOrdine(null, null, stato, id_ordine);</span>
+<span class="fc" id="L212">        model.getAttribute(&quot;utente&quot;);</span>
+<span class="fc" id="L213">        Ordine ordine = ordiniService.findById(id_ordine);</span>
+<span class="fc" id="L214">        System.out.println(&quot;ordine &quot; + ordine);</span>
+<span class="fc" id="L215">        String email = ordine.getCliente().getEmail();</span>
+
+<span class="fc bfc" id="L217" title="All 2 branches covered.">        if (email != null) {</span>
+<span class="fc" id="L218">            sender.sendEmail(ordine, email);</span>
+        }
+<span class="fc" id="L220">        return listaOrdini(&quot;Attivi&quot;, model);</span>
+    }
+
+    /**
+     * Implementa la funzionalità che permette
+     * di modificare la data di consegna di un ordine.
+     *
+     * @param model il Model
+     * @param data la nuova data di consegna
+     * @param id_ordine l'identificativo dell'ordine
+     * @return la pagina di visualizzazione della lista ordini
+     */
+    @PostMapping(&quot;/ListaOrdini/ModificaData&quot;)
+    public String ModificaData(final Model model,
+                               final @RequestParam(&quot;data&quot;) String data,
+                               final @RequestParam(&quot;idOrdine&quot;) Integer id_ordine) {
+<span class="nc" id="L236">        Ordine ordine = ordineDAO.findById(id_ordine).get();</span>
+<span class="nc" id="L237">        LocalDate date = LocalDate.parse(data);</span>
+<span class="nc" id="L238">        ordine.setDataConsegnaDesiderata(date);</span>
+<span class="nc" id="L239">        ordineDAO.save(ordine);</span>
+<span class="nc" id="L240">        return listaOrdini(&quot;Attivi&quot;, model);</span>
+    }
+
+    /**
+     * Implementa la funzionalità che permette
+     * di modificare la sede di consegna di un ordine.
+     *
+     * @param model il Model
+     * @param id_ordine l'identificativo dell'ordine
+     * @return la pagina di visualizzazione della lista ordini
+     */
+    @PostMapping(&quot;/ListaOrdini/ModificaSede&quot;)
+    public String ModificaOrdine(final Model model,
+                                 final @RequestParam(&quot;idOrdine&quot;) Integer id_ordine) {
+<span class="nc" id="L254">        Ordine ordine = ordiniService.findById(id_ordine);</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">        if (ordine.getSede().getIndirizzo().equals(&quot;Ariano Irpino, via Cardito, 52&quot;)) {</span>
+<span class="nc" id="L256">            ordine.setSede(ordiniService.findByIndirizzo(&quot;Ariano Irpino, corso Vittorio Emanuele, 250&quot;));</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">        } else if (ordine.getSede().getIndirizzo().equals(&quot;Ariano Irpino, corso Vittorio Emanuele, 250&quot;)) {</span>
+<span class="nc" id="L258">            ordine.setSede(ordiniService.findByIndirizzo(&quot;Ariano Irpino, via Cardito, 52&quot;));</span>
+        }
+<span class="nc" id="L260">        ordineDAO.save(ordine);</span>
+<span class="nc" id="L261">        return listaOrdini(&quot;Attivi&quot;, model);</span>
+    }
+
+    /**
+     * Implementa la funzionalità che permette
+     * di stampare l'etichetta di un determinato ordine.
+     *
+     * @param model il Model
+     * @param response parametro utilizzato per spedire una risposta
+     * @param id_ordine l'identificativo dell'ordine
+     * @return la pagina di visualizzazione della lista ordini
+     */
+    @PostMapping(&quot;/StampaEtichetta&quot;)
+    public void exportToPDF(final HttpServletResponse response,
+                            final Model model,
+                            final @RequestParam(&quot;codiceOrdine1&quot;) Integer id_ordine) throws Exception {
+<span class="nc" id="L277">        response.setContentType(&quot;application/pdf&quot;);</span>
+<span class="nc" id="L278">        DateFormat dateFormatter = new SimpleDateFormat(&quot;yyyy-MM-dd_HH:mm:ss&quot;);</span>
+<span class="nc" id="L279">        String currentDateTime = dateFormatter.format(new Date());</span>
+
+<span class="nc" id="L281">        String headerKey = &quot;Content-Disposition&quot;;</span>
+<span class="nc" id="L282">        String headerValue = &quot;attachment; filename=Etichetta_&quot; + currentDateTime + &quot;.pdf&quot;;</span>
+<span class="nc" id="L283">        response.setHeader(headerKey, headerValue);</span>
+
+<span class="nc" id="L285">        model.addAttribute(&quot;id&quot;, id_ordine);</span>
+<span class="nc" id="L286">        Ordine ordine = ordineDAO.findById(id_ordine).get();</span>
+<span class="nc" id="L287">        String nome = ordine.getCliente().getNome();</span>
+<span class="nc" id="L288">        String cognome = ordine.getCliente().getCognome();</span>
+<span class="nc" id="L289">        String indirizzo = ordine.getCliente().getIndirizzo();</span>
+<span class="nc" id="L290">        ordiniService.stampaEtichetta(ordine);</span>
+
+<span class="nc" id="L292">        PDFExport e = new PDFExport();</span>
+<span class="nc" id="L293">        e.export(response, nome, cognome, indirizzo, id_ordine);</span>
+<span class="nc" id="L294">    }</span>
+
+    /**
+     * Implementa la funzionalità che permette al cliente
+     * di proporre una modifica di un ordine all'operatore .
+     *
+     * @param model il Model
+     * @param data la nuova data di consegna
+     * @param id l'identificativo dell'ordine
+     * @return la pagina di visualizzazione della lista ordini
+     */
+    @PostMapping(&quot;/propostaModifica&quot;)
+    public String propostaModifica(final Model model,
+                                   final @RequestParam(&quot;sedeNuova&quot;) String sede,
+                                   final @RequestParam(&quot;dataProposta&quot;) String data,
+                                   final @RequestParam(&quot;Ordine&quot;) Integer id) {
+<span class="nc" id="L310">        LocalDate date = LocalDate.parse(data);</span>
+<span class="nc" id="L311">        Ordine ordine = ordiniService.findById(id);</span>
+<span class="nc" id="L312">        ordiniService.propostaModifica(date, sede, ordine);</span>
+<span class="nc" id="L313">        Sede s = ordiniService.findByIndirizzo(sede);</span>
+
+<span class="nc" id="L315">        PropostaModifica proposta = ordine.getPropostaModifica();</span>
+<span class="nc" id="L316">        proposta.setDataProposta(date);</span>
+<span class="nc" id="L317">        proposta.setSede(s);</span>
+<span class="nc" id="L318">        propostaModificaDAO.save(proposta);</span>
+<span class="nc" id="L319">        return listaOrdini(&quot;Attivi&quot;, model);</span>
+    }
+
+    /**
+     * Implementa la funzionalità che reindirizza il cliente
+     * alla pagina di proposta modifica di un ordine.
+     *
+     * @param model il Model
+     * @param id l'identificativo dell'ordine
+     * @return la pagina di proposta modifica dell'ordine
+     */
+    @GetMapping(&quot;/propostaModifica&quot;)
+    public String propostaPage(final Model model,
+                               final @RequestParam(&quot;codiceOrdine4&quot;) Integer id) {
+<span class="nc" id="L333">        model.addAttribute(&quot;ordine&quot;, ordiniService.findById(id));</span>
+<span class="nc" id="L334">        model.addAttribute(&quot;sedi&quot;, ordiniService.visualizzaSedi());</span>
+<span class="nc" id="L335">        return &quot;/ordini/propostaModifica&quot;;</span>
+    }
+
+    /**
+     * Implementa la funzionalità che reindirizza l'operatore
+     * alla pagina di valutazione della proposta di modifica di un ordine
+     * da parte del cliente.
+     *
+     * @param model il Model
+     * @param id_ordine l'identificativo dell'ordine
+     * @return la pagina di valutazione della proposta di modifica
+     */
+    @PostMapping(&quot;/ValutazioneProposta&quot;)
+    public String ValutazioneProposta(final Model model,
+                                      final @RequestParam(&quot;codiceOrdine2&quot;) Integer id_ordine) {
+<span class="nc" id="L350">        model.getAttribute(&quot;utente&quot;);</span>
+<span class="nc" id="L351">        Ordine ordine = ordineDAO.findById(id_ordine).get();</span>
+<span class="nc" id="L352">        Integer idProp = ordine.getPropostaModifica().getId();</span>
+<span class="nc" id="L353">        PropostaModifica pr = propostaModificaDAO.findById(idProp).get();</span>
+<span class="nc" id="L354">        String data = pr.getDataProposta().toString();</span>
+<span class="nc" id="L355">        String telefono = ordine.getCliente().getNumeroTelefono();</span>
+<span class="nc" id="L356">        Cliente cliente = clienteDAO.findByNumeroTelefono(telefono);</span>
+
+<span class="nc" id="L358">        model.addAttribute(&quot;ordin&quot;, ordine);</span>
+<span class="nc" id="L359">        model.addAttribute(&quot;cliente&quot;, cliente);</span>
+<span class="nc" id="L360">        model.addAttribute(&quot;dataP&quot;, pr);</span>
+<span class="nc" id="L361">        return &quot;/ordini/ValutazionePropostaOperatore&quot;;</span>
+
+    }
+
+    /**
+     * Implementa la funzionalità che permette all'operatore
+     * di accettare la proposta di modifica di un ordine
+     * da parte di un cliente.
+     *
+     * @param model il Model
+     * @param accetta l'identificativo dell'ordine
+     * @return la pagina di visualizzazione della lista ordini
+     */
+    @PostMapping(&quot;/ValutazioneAccetta&quot;)
+    public String ValutazioneAccetta(final Model model,
+                                     final @RequestParam(&quot;accetta&quot;) Integer accetta) {
+<span class="nc" id="L377">        model.getAttribute(&quot;utente&quot;);</span>
+<span class="nc" id="L378">        Ordine ordine = ordiniService.findById(accetta);</span>
+<span class="nc" id="L379">        String email = ordine.getCliente().getEmail();</span>
+
+<span class="nc" id="L381">        Integer idProp = ordine.getPropostaModifica().getId();</span>
+<span class="nc" id="L382">        PropostaModifica pr = ordiniService.findByIdProposta(idProp);</span>
+<span class="nc" id="L383">        LocalDate data = pr.getDataProposta();</span>
+<span class="nc" id="L384">        Sede sede = pr.getSede();</span>
+<span class="nc" id="L385">        System.out.println(&quot;data &quot; + data);</span>
+
+<span class="nc" id="L387">        ordine.setDataConsegnaDesiderata(data);</span>
+<span class="nc" id="L388">        ordine.setSede(sede);</span>
+<span class="nc" id="L389">        pr.setStato(&quot;Conclusa&quot;);</span>
+
+<span class="nc" id="L391">        String scelta = &quot;ACCETTATA&quot;;</span>
+<span class="nc bnc" id="L392" title="All 2 branches missed.">        if (email != null) {</span>
+<span class="nc" id="L393">            senderProposta.sendEmail(email, scelta);</span>
+        }
+<span class="nc" id="L395">        propostaModificaDAO.save(pr);</span>
+<span class="nc" id="L396">        ordineDAO.save(ordine);</span>
+<span class="nc" id="L397">        return listaOrdini(&quot;Attivi&quot;, model);</span>
+    }
+
+    /**
+     * Implementa la funzionalità che permette all'operatore
+     * di rifiutare la proposta di modifica di un ordine
+     * da parte di un cliente.
+     *
+     * @param model il Model
+     * @param rifiuta l'identificativo dell'ordine
+     * @return la pagina di visualizzazione della lista ordini
+     */
+    @PostMapping(&quot;/ValutazioneRifiuta&quot;)
+    public String ValutazioneRifiuta(final Model model,
+                                     final @RequestParam(&quot;rifiuta&quot;) Integer rifiuta) {
+<span class="nc" id="L412">        model.getAttribute(&quot;utente&quot;);</span>
+<span class="nc" id="L413">        Ordine ordine = ordineDAO.findById(rifiuta).get();</span>
+<span class="nc" id="L414">        String email = ordine.getCliente().getEmail();</span>
+
+<span class="nc" id="L416">        Integer idProp = ordine.getPropostaModifica().getId();</span>
+<span class="nc" id="L417">        PropostaModifica pr = propostaModificaDAO.findById(idProp).get();</span>
+
+<span class="nc" id="L419">        pr.setStato(&quot;Conclusa&quot;);</span>
+
+<span class="nc" id="L421">        String scelta = &quot;RIFIUTATA&quot;;</span>
+<span class="nc bnc" id="L422" title="All 2 branches missed.">        if (email != null) {</span>
+<span class="nc" id="L423">            senderProposta.sendEmail(email, scelta);</span>
+        }
+<span class="nc" id="L425">        propostaModificaDAO.save(pr);</span>
+<span class="nc" id="L426">        return listaOrdini(&quot;Attivi&quot;, model);</span>
+
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

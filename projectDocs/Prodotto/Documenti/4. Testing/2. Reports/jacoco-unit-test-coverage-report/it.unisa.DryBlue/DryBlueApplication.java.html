@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DryBlueApplication.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DryBlue</a> &gt; <a href="index.source.html" class="el_package">it.unisa.DryBlue</a> &gt; <span class="el_source">DryBlueApplication.java</span></div><h1>DryBlueApplication.java</h1><pre class="source lang-java linenums">
+package it.unisa.DryBlue;
+
+import it.unisa.DryBlue.autenticazione.dao.OperatoreDAO;
+import it.unisa.DryBlue.autenticazione.domain.Operatore;
+import it.unisa.DryBlue.gestioneCliente.dao.ClienteDAO;
+import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
+import it.unisa.DryBlue.ordini.dao.*;
+import it.unisa.DryBlue.ordini.domain.*;
+import it.unisa.DryBlue.servizi.dao.MacchinarioDAO;
+import it.unisa.DryBlue.servizi.dao.ServizioDAO;
+import it.unisa.DryBlue.servizi.domain.Macchinario;
+import it.unisa.DryBlue.servizi.domain.Servizio;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+@SpringBootApplication
+<span class="fc" id="L24">public class DryBlueApplication {</span>
+    public static void main(final String[] args) {
+<span class="nc" id="L26">        SpringApplication.run(DryBlueApplication.class, args);</span>
+<span class="nc" id="L27">    }</span>
+
+    @Bean
+    public CommandLineRunner demo(final SedeDAO sedeDAO,
+                                  final ClienteDAO clienteDAO,
+                                  final OrdineDAO ordineDAO,
+                                  final MacchinarioDAO macchinarioDAO,
+                                  final ServizioDAO servizioDAO,
+                                  final OperatoreDAO operatoreDAO,
+                                  final RigaOrdineDAO rigaOrdineDAO,
+                                  final EtichettaDAO etichettaDAO
+    ) {
+<span class="fc" id="L39">        return args -&gt; {</span>
+<span class="fc" id="L40">            Sede sede1 = new Sede(&quot;Ariano Irpino, via Cardito, 52&quot;);</span>
+<span class="fc" id="L41">            Sede sede2 = new Sede(&quot;Ariano Irpino, corso Vittorio Emanuele, 250&quot;);</span>
+<span class="fc" id="L42">            sedeDAO.saveAll(Arrays.asList(sede1, sede2));</span>
+
+<span class="fc" id="L44">            Cliente cliente1 = new Cliente();</span>
+<span class="fc" id="L45">            cliente1.setNumeroTelefono(&quot;3456327821&quot;);</span>
+<span class="fc" id="L46">            cliente1.setUsername(cliente1.generateString());</span>
+<span class="fc" id="L47">            cliente1.setPassword(cliente1.generateString());</span>
+<span class="fc" id="L48">            cliente1.setNome(&quot;Mario&quot;);</span>
+<span class="fc" id="L49">            cliente1.setCognome(&quot;Rossi&quot;);</span>
+<span class="fc" id="L50">            cliente1.setIndirizzo(&quot;Salerno, SA, Via Roma, 15&quot;);</span>
+
+<span class="fc" id="L52">            Cliente cliente2 = new Cliente();</span>
+<span class="fc" id="L53">            cliente2.setNumeroTelefono(&quot;34563275671&quot;);</span>
+<span class="fc" id="L54">            cliente2.setUsername(cliente2.generateString());</span>
+<span class="fc" id="L55">            cliente2.setPassword(cliente2.generateString());</span>
+<span class="fc" id="L56">            cliente2.setNome(&quot;Felice&quot;);</span>
+<span class="fc" id="L57">            cliente2.setCognome(&quot;Russo&quot;);</span>
+<span class="fc" id="L58">            cliente2.setIndirizzo(&quot;Nola, NA, P.zza Duomo, 13&quot;);</span>
+
+<span class="fc" id="L60">            Cliente cliente3 = new Cliente();</span>
+<span class="fc" id="L61">            cliente3.setNumeroTelefono(&quot;34733275671&quot;);</span>
+<span class="fc" id="L62">            cliente3.setUsername(&quot;user&quot;);</span>
+<span class="fc" id="L63">            cliente3.setPassword(&quot;user&quot;);</span>
+<span class="fc" id="L64">            cliente3.setNome(&quot;Maria&quot;);</span>
+<span class="fc" id="L65">            cliente3.setCognome(&quot;Ruocco&quot;);</span>
+<span class="fc" id="L66">            cliente3.setIndirizzo(&quot;Ariano Irpino, AV, Via Cardito, 10&quot;);</span>
+
+<span class="fc" id="L68">            Cliente cliente4 = new Cliente();</span>
+<span class="fc" id="L69">            cliente4.setNumeroTelefono(&quot;3332994445&quot;);</span>
+<span class="fc" id="L70">            cliente4.setUsername(&quot;user1&quot;);</span>
+<span class="fc" id="L71">            cliente4.setPassword(&quot;user1&quot;);</span>
+<span class="fc" id="L72">            cliente4.setNome(&quot;Camilla&quot;);</span>
+<span class="fc" id="L73">            cliente4.setCognome(&quot;Bonomelli&quot;);</span>
+<span class="fc" id="L74">            cliente4.setIndirizzo(&quot;Fisciano, SA, Via Giovanni Paolo II, 21&quot;);</span>
+<span class="fc" id="L75">            cliente4.setEmail(&quot;m.ferrara115@studenti.unisa.it&quot;);</span>
+<span class="fc" id="L76">            clienteDAO.saveAll(Arrays.asList(cliente1, cliente2, cliente3, cliente4));</span>
+
+            /*Cliente cliente1 = new Cliente();
+            cliente1.setNumeroTelefono(&quot;11122334444&quot;);
+            cliente1.setUsername(&quot;user&quot;);
+            cliente1.setPassword(&quot;user&quot;);
+            cliente1.setIndirizzo(&quot;Roccarainola, via Roma, 3&quot;);
+            cliente1.setNome(&quot;Mario&quot;);
+            cliente1.setCognome(&quot;Rossi&quot;);
+
+            Cliente cliente3 = new Cliente();
+            cliente3.setNumeroTelefono(&quot;3332233222&quot;);
+            cliente3.setUsername(&quot;user2&quot;);
+            cliente3.setPassword(&quot;user2&quot;);
+            cliente3.setIndirizzo(&quot;Nola, P.zza Duomo, 3&quot;);
+            cliente3.setNome(&quot;Felice&quot;);
+            cliente3.setCognome(&quot;Russo&quot;);
+            clienteDAO.saveAll(Arrays.asList(cliente1, cliente3)); */
+
+<span class="fc" id="L95">            final double prezzo1 = 2.20;</span>
+<span class="fc" id="L96">            Servizio servizio = new Servizio();</span>
+<span class="fc" id="L97">            servizio.setNome(&quot;Lavaggio maglietta&quot;);</span>
+<span class="fc" id="L98">            servizio.setTipologia(&quot;Lavaggio&quot;);</span>
+<span class="fc" id="L99">            servizio.setCaratteristiche(&quot;Maglietta di cotone&quot;);</span>
+<span class="fc" id="L100">            servizio.setPrezzo(prezzo1);</span>
+
+<span class="fc" id="L102">            final double prezzo2 = 3.20;</span>
+<span class="fc" id="L103">            Servizio servizio2 = new Servizio();</span>
+<span class="fc" id="L104">            servizio2.setNome(&quot;Stiratura maglietta&quot;);</span>
+<span class="fc" id="L105">            servizio2.setTipologia(&quot;Stiratura&quot;);</span>
+<span class="fc" id="L106">            servizio2.setCaratteristiche(&quot;Maglietta di cotone&quot;);</span>
+<span class="fc" id="L107">            servizio2.setPrezzo(prezzo2);</span>
+
+<span class="fc" id="L109">            final double prezzo3 = 4.20;</span>
+<span class="fc" id="L110">            Servizio servizio3 = new Servizio();</span>
+<span class="fc" id="L111">            servizio3.setNome(&quot;Lavaggio jeans&quot;);</span>
+<span class="fc" id="L112">            servizio3.setTipologia(&quot;Lavaggio&quot;);</span>
+<span class="fc" id="L113">            servizio3.setCaratteristiche(&quot;Jeans&quot;);</span>
+<span class="fc" id="L114">            servizio3.setPrezzo(prezzo3);</span>
+
+<span class="fc" id="L116">            final double prezzo4 = 12.00;</span>
+<span class="fc" id="L117">            Servizio servizio4 = new Servizio();</span>
+<span class="fc" id="L118">            servizio4.setNome(&quot;Lavaggio Piumone&quot;);</span>
+<span class="fc" id="L119">            servizio4.setTipologia(&quot;Lavaggio&quot;);</span>
+<span class="fc" id="L120">            servizio4.setCaratteristiche(&quot;Piumone&quot;);</span>
+<span class="fc" id="L121">            servizio4.setPrezzo(prezzo3);</span>
+
+<span class="fc" id="L123">            final double prezzo5 = 5.40;</span>
+<span class="fc" id="L124">            Servizio servizio5 = new Servizio();</span>
+<span class="fc" id="L125">            servizio5.setNome(&quot;Stiratura Maglione&quot;);</span>
+<span class="fc" id="L126">            servizio5.setTipologia(&quot;Stiratura&quot;);</span>
+<span class="fc" id="L127">            servizio5.setCaratteristiche(&quot;Maglione&quot;);</span>
+<span class="fc" id="L128">            servizio5.setPrezzo(prezzo3);</span>
+<span class="fc" id="L129">            servizioDAO.saveAll(Arrays.asList(servizio, servizio2, servizio3, servizio4, servizio5));</span>
+
+<span class="fc" id="L131">            final int quantity = 3;</span>
+<span class="fc" id="L132">            RigaOrdine rigaOrdine = new RigaOrdine();</span>
+<span class="fc" id="L133">            rigaOrdine.setQuantita(1);</span>
+<span class="fc" id="L134">            rigaOrdine.setServizio(servizio);</span>
+
+<span class="fc" id="L136">            RigaOrdine rigaOrdine1 = new RigaOrdine();</span>
+<span class="fc" id="L137">            rigaOrdine.setQuantita(1);</span>
+<span class="fc" id="L138">            rigaOrdine.setServizio(servizio2);</span>
+
+<span class="fc" id="L140">            RigaOrdine rigaOrdine2 = new RigaOrdine();</span>
+<span class="fc" id="L141">            rigaOrdine.setQuantita(quantity);</span>
+<span class="fc" id="L142">            rigaOrdine.setServizio(servizio3);</span>
+
+<span class="fc" id="L144">            RigaOrdine rigaOrdine3 = new RigaOrdine();</span>
+<span class="fc" id="L145">            rigaOrdine.setQuantita(2);</span>
+<span class="fc" id="L146">            rigaOrdine.setServizio(servizio5);</span>
+
+<span class="fc" id="L148">            RigaOrdine rigaOrdine4 = new RigaOrdine();</span>
+<span class="fc" id="L149">            rigaOrdine1.setQuantita(1);</span>
+<span class="fc" id="L150">            rigaOrdine1.setServizio(servizio2);</span>
+
+<span class="fc" id="L152">            final int year = 2022;</span>
+<span class="fc" id="L153">            final int month1 = 2;</span>
+<span class="fc" id="L154">            final int month2 = 1;</span>
+<span class="fc" id="L155">            final int day1 = 3;</span>
+<span class="fc" id="L156">            final int day2 = 20;</span>
+<span class="fc" id="L157">            final int day3 = 21;</span>
+<span class="fc" id="L158">            final int day4 = 11;</span>
+<span class="fc" id="L159">            LocalDate tmpdate = LocalDate.of(year, month1, day1);</span>
+<span class="fc" id="L160">            Ordine ordine1 = new Ordine(tmpdate, &quot;In sede&quot;, &quot;Macchiato&quot;);</span>
+<span class="fc" id="L161">            ordine1.setCliente(cliente3);</span>
+<span class="fc" id="L162">            ordine1.setSede(sede2);</span>
+
+<span class="fc" id="L164">            LocalDate tmpdate1 = LocalDate.of(year, month2, day2);</span>
+<span class="fc" id="L165">            Ordine ordine2 = new Ordine(tmpdate1, &quot;Consegna&quot;, &quot;Consegnato&quot;);</span>
+<span class="fc" id="L166">            ordine2.setCliente(cliente3);</span>
+
+<span class="fc" id="L168">            LocalDate tmpdate2 = LocalDate.of(year, month2, day3);</span>
+<span class="fc" id="L169">            Ordine ordine3 = new Ordine(tmpdate1, &quot;Consegna&quot;, &quot;Imbustato&quot;);</span>
+<span class="fc" id="L170">            ordine3.setCliente(cliente1);</span>
+
+<span class="fc" id="L172">            LocalDate tmpdate3 = LocalDate.of(year, month2, day4);</span>
+<span class="fc" id="L173">            Ordine ordine4 = new Ordine(tmpdate1, &quot;In sede&quot;, &quot;Imbustato&quot;);</span>
+<span class="fc" id="L174">            ordine4.setCliente(cliente4);</span>
+<span class="fc" id="L175">            ordine4.setSede(sede1);</span>
+
+
+<span class="fc" id="L178">            rigaOrdine.setOrdine(ordine1);</span>
+<span class="fc" id="L179">            rigaOrdine1.setOrdine(ordine1);</span>
+<span class="fc" id="L180">            rigaOrdine2.setOrdine(ordine2);</span>
+<span class="fc" id="L181">            rigaOrdine3.setOrdine(ordine3);</span>
+<span class="fc" id="L182">            rigaOrdine4.setOrdine(ordine4);</span>
+
+<span class="fc" id="L184">            ordineDAO.saveAll(Arrays.asList(ordine1, ordine2, ordine3, ordine4));</span>
+<span class="fc" id="L185">            rigaOrdineDAO.saveAll(Arrays.asList(rigaOrdine, rigaOrdine1, rigaOrdine2, rigaOrdine3, rigaOrdine4));</span>
+
+<span class="fc" id="L187">            ArrayList&lt;RigaOrdine&gt; righe = (ArrayList&lt;RigaOrdine&gt;) rigaOrdineDAO.findAllByOrdine(ordine1);</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">            for (RigaOrdine r : righe) {</span>
+<span class="fc" id="L189">                ordine1.getRigheOrdine().add(r);</span>
+<span class="fc" id="L190">            }</span>
+<span class="fc" id="L191">            ordineDAO.save(ordine1);</span>
+
+<span class="fc" id="L193">            righe = (ArrayList&lt;RigaOrdine&gt;) rigaOrdineDAO.findAllByOrdine(ordine2);</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">            for (RigaOrdine r : righe) {</span>
+<span class="fc" id="L195">                ordine1.getRigheOrdine().add(r);</span>
+<span class="fc" id="L196">            }</span>
+<span class="fc" id="L197">            ordineDAO.save(ordine2);</span>
+
+<span class="fc" id="L199">            righe = (ArrayList&lt;RigaOrdine&gt;) rigaOrdineDAO.findAllByOrdine(ordine3);</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">            for (RigaOrdine r : righe) {</span>
+<span class="fc" id="L201">                ordine1.getRigheOrdine().add(r);</span>
+<span class="fc" id="L202">            }</span>
+<span class="fc" id="L203">            ordineDAO.save(ordine3);</span>
+
+<span class="fc" id="L205">            righe = (ArrayList&lt;RigaOrdine&gt;) rigaOrdineDAO.findAllByOrdine(ordine4);</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">            for (RigaOrdine r : righe) {</span>
+<span class="fc" id="L207">                ordine1.getRigheOrdine().add(r);</span>
+<span class="fc" id="L208">            }</span>
+<span class="fc" id="L209">            ordineDAO.save(ordine4);</span>
+
+<span class="fc" id="L211">            Macchinario macchinario = new Macchinario();</span>
+<span class="fc" id="L212">            macchinario.setMatricola(&quot;AB1234&quot;);</span>
+<span class="fc" id="L213">            macchinario.setDenominazione(&quot;MacchinaX&quot;);</span>
+<span class="fc" id="L214">            macchinario.setCaratteristiche(&quot;Bella&quot;);</span>
+<span class="fc" id="L215">            macchinario.setCostruttore(&quot;Whirlpool&quot;);</span>
+<span class="fc" id="L216">            macchinario.setManutentore(&quot;X&quot;);</span>
+<span class="fc" id="L217">            macchinario.setTelefonoManutenzione(&quot;3387610971&quot;);</span>
+<span class="fc" id="L218">            macchinario.setStato(&quot;In funzione&quot;);</span>
+<span class="fc" id="L219">            macchinario.setSede(sede1);</span>
+
+<span class="fc" id="L221">            Macchinario macchinario2 = new Macchinario();</span>
+<span class="fc" id="L222">            macchinario2.setMatricola(&quot;CD3456&quot;);</span>
+<span class="fc" id="L223">            macchinario2.setDenominazione(&quot;MacchinaY&quot;);</span>
+<span class="fc" id="L224">            macchinario2.setCaratteristiche(&quot;Bella&quot;);</span>
+<span class="fc" id="L225">            macchinario2.setCostruttore(&quot;Whirlpool&quot;);</span>
+<span class="fc" id="L226">            macchinario2.setManutentore(&quot;X&quot;);</span>
+<span class="fc" id="L227">            macchinario2.setTelefonoManutenzione(&quot;3387610971&quot;);</span>
+<span class="fc" id="L228">            macchinario2.setStato(&quot;Inattivo&quot;);</span>
+<span class="fc" id="L229">            macchinario2.setSede(sede2);</span>
+
+
+<span class="fc" id="L232">            Operatore operatore = new Operatore();</span>
+<span class="fc" id="L233">            operatore.setNome(&quot;Luigi&quot;);</span>
+<span class="fc" id="L234">            operatore.setCognome(&quot;Di maio&quot;);</span>
+<span class="fc" id="L235">            operatore.setUsername(operatore.generateString());</span>
+<span class="fc" id="L236">            operatore.setPassword(operatore.generateString());</span>
+
+<span class="fc" id="L238">            Operatore operatore2 = new Operatore();</span>
+<span class="fc" id="L239">            operatore2.setNome(&quot;Matteo&quot;);</span>
+<span class="fc" id="L240">            operatore2.setCognome(&quot;Renzi&quot;);</span>
+<span class="fc" id="L241">            operatore2.setUsername(&quot;admin&quot;);</span>
+<span class="fc" id="L242">            operatore2.setPassword(&quot;admin&quot;);</span>
+
+
+<span class="fc" id="L245">            Etichetta etichetta = new Etichetta();</span>
+<span class="fc" id="L246">            etichetta.setOrdine(ordine1);</span>
+<span class="fc" id="L247">            etichetta.setSede(sede1);</span>
+
+
+<span class="fc" id="L250">            macchinarioDAO.saveAll(Arrays.asList(macchinario, macchinario2));</span>
+
+<span class="fc" id="L252">            operatoreDAO.saveAll(Arrays.asList(operatore, operatore2));</span>
+<span class="fc" id="L253">            etichettaDAO.save(etichetta);</span>
+
+<span class="fc" id="L255">            System.out.println(clienteDAO.findAll());</span>
+<span class="fc" id="L256">            System.out.println(operatoreDAO.findAll());</span>
+<span class="fc" id="L257">            System.out.println(ordineDAO.findAll());</span>
+<span class="fc" id="L258">            System.out.println(rigaOrdineDAO.findAll());</span>
+
+<span class="fc" id="L260">        };</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

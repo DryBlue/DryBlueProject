@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AutenticazioneController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DryBlue</a> &gt; <a href="index.source.html" class="el_package">it.unisa.DryBlue.autenticazione.controller</a> &gt; <span class="el_source">AutenticazioneController.java</span></div><h1>AutenticazioneController.java</h1><pre class="source lang-java linenums">package it.unisa.DryBlue.autenticazione.controller;
+
+import it.unisa.DryBlue.autenticazione.dao.OperatoreDAO;
+import it.unisa.DryBlue.autenticazione.dao.UtenteDAO;
+import it.unisa.DryBlue.gestioneCliente.dao.ClienteDAO;
+import it.unisa.DryBlue.autenticazione.domain.Utente;
+import it.unisa.DryBlue.autenticazione.services.AutenticazioneService;
+import it.unisa.DryBlue.gestioneCliente.domain.Cliente;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
+
+
+@Controller
+<span class="fc" id="L23">@RequiredArgsConstructor</span>
+@SessionAttributes(&quot;utente&quot;)
+@RequestMapping(&quot;/autenticazione&quot;)
+public class AutenticazioneController {
+
+    @Autowired
+    private UtenteDAO personaDAO;
+    @Autowired
+    private ClienteDAO clienteDAO;
+    @Autowired
+    private OperatoreDAO operatoreDAO;
+
+    private Utente persona;
+
+    @PostMapping(&quot;/HelloWorld&quot;)
+    @Transactional
+    public String getDashboard() {
+<span class="nc" id="L40">        Authentication auth = SecurityContextHolder.getContext().getAuthentication();</span>
+<span class="nc" id="L41">        persona = personaDAO.findByUsername(auth.getName());</span>
+<span class="nc" id="L42">        return &quot;HelloWorld&quot;;</span>
+    }
+
+    /**
+     * Il service per effettuare le operazioni di persistenza.
+     */
+    private final AutenticazioneService autenticazioneService;
+
+    /**
+     * Implementa la funzionalità che permette
+     * di visualizzare la view del login.
+     *
+     * @param model il Model
+     * @return la pagina dove è visualizzato
+     */
+    @RequestMapping(value = &quot;/login&quot;, method = RequestMethod.GET)
+    public String visualizzaLogin(final Model model) {
+<span class="nc" id="L59">        model.addAttribute(&quot;utente&quot;, null);</span>
+<span class="nc" id="L60">        return &quot;/autenticazione/Login&quot;;</span>
+    }
+
+    /**
+     * Implementa la funzionalità di login come utente.
+     *
+     * @param username dell'utente.
+     * @param password password dell'utente.
+     * @param model    la sessione in cui salvare l'utente.
+     * @return rimanda alla pagina di home.
+     */
+    @RequestMapping(value = &quot;/login&quot;, method = RequestMethod.POST)
+    public String login(@RequestParam(&quot;username&quot;) final String username,
+                        @RequestParam(&quot;password&quot;) final String password,
+                        final Model model) {
+<span class="fc" id="L75">        Utente utente = autenticazioneService.login(username, password);</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        if (utente.getRuolo().getName().equals(&quot;OPERATORE&quot;)) {</span>
+<span class="fc" id="L77">            model.addAttribute(&quot;utente&quot;, utente);</span>
+<span class="fc" id="L78">            return &quot;redirect:/LoggedHomepage&quot;;</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        } else if (utente.getRuolo().getName().equals(&quot;CLIENTE&quot;)) {</span>
+<span class="fc" id="L80">            model.addAttribute(&quot;utente&quot;, utente);</span>
+<span class="fc" id="L81">            return &quot;redirect:/LoggedHomepage&quot;;</span>
+        }
+<span class="fc" id="L83">        model.addAttribute(&quot;error&quot;, &quot;login&quot;);</span>
+<span class="fc" id="L84">        return &quot;error/500&quot;;</span>
+    }
+
+    /**
+     * Implementa la funzionalità che permette
+     * di visualizzare la view della registrazione.
+     *
+     * @param model Model
+     * @return la pagina registrazione.html
+     * &lt;p&gt;
+     * Autori: Miriam Ferrara e Sabrina Ceccarelli
+     */
+    @GetMapping(&quot;/registrazione&quot;)
+    public String Registrazione(final Model model) {
+<span class="nc" id="L98">        model.addAttribute(&quot;regUtente&quot;, new Utente());</span>
+<span class="nc" id="L99">        return &quot;/autenticazione/registrazione&quot;;</span>
+    }
+
+
+    /**
+     * Implementa la funzionalità della registrazione del nuovo utente.
+     *
+     * @param m         la sessione in cui salvare l'utente
+     * @param nome      del nuovo utente
+     * @param cognome   del nuovo utente
+     * @param indirizzo del nuovo utente
+     * @param cellulare del nuovo utente
+     * @return la pagina registrazioneSuccesso.html
+     * &lt;p&gt;
+     * Autori: Miriam Ferrara e Sabrina Ceccarelli
+     */
+    @PostMapping(&quot;/registrazione/registrazioneSuccesso&quot;)
+    public String RegistrazioneProcesso(final Model m, final @RequestParam(&quot;nome&quot;) String nome,
+                                        final @RequestParam(&quot;cognome&quot;) String cognome,
+                                        final @RequestParam(&quot;indirizzo&quot;) String indirizzo,
+                                        final @RequestParam(&quot;cellulare&quot;) String cellulare) {
+
+<span class="nc" id="L121">        Cliente cliente = new Cliente();</span>
+<span class="nc" id="L122">        cliente.setNome(nome);</span>
+<span class="nc" id="L123">        cliente.setCognome(cognome);</span>
+<span class="nc" id="L124">        cliente.setIndirizzo(indirizzo);</span>
+<span class="nc" id="L125">        cliente.setNumeroTelefono(cellulare);</span>
+<span class="nc" id="L126">        cliente.setUsername(cliente.generateString());</span>
+<span class="nc" id="L127">        cliente.setPassword(cliente.generateString());</span>
+
+<span class="nc" id="L129">        clienteDAO.save(cliente);</span>
+<span class="nc" id="L130">        m.addAttribute(&quot;visualizza&quot;, cliente);</span>
+
+<span class="nc" id="L132">        System.out.println(clienteDAO.findByNome(cliente.getNome()));</span>
+<span class="nc" id="L133">        return &quot;/autenticazione/registrazioneSuccesso&quot;;</span>
+    }
+
+    @ModelAttribute(&quot;utente&quot;)
+    public Utente utente() {
+<span class="fc" id="L138">        return new Utente();</span>
+    }
+
+
+        @GetMapping(value = &quot;/logout&quot;)
+        public String logout(final HttpServletRequest request) {
+<span class="nc" id="L144">            HttpSession httpSession = request.getSession();</span>
+<span class="nc" id="L145">            httpSession.invalidate();</span>
+<span class="nc" id="L146">            return &quot;redirect:/&quot;;</span>
+        }
+
+    @GetMapping(value = &quot;/newPassword&quot;)
+    public String reimpostaPassword(final Model model) {
+<span class="nc" id="L151">        model.getAttribute(&quot;utente&quot;);</span>
+<span class="nc" id="L152">        return &quot;autenticazione/newPassword&quot;;</span>
+    }
+
+    @PostMapping(value = &quot;/newPassword&quot;)
+    public String updatePassword(final Model model,
+                                 final @RequestParam(&quot;username&quot;) String username,
+                                 final @RequestParam(&quot;newPassword&quot;) String newPassword,
+                                 final @RequestParam(&quot;oldPassword&quot;) String oldPassword,
+                                 final @RequestParam(&quot;email&quot;) String email) {
+
+<span class="nc" id="L162">        Cliente cliente = clienteDAO.findByUsername(username);</span>
+<span class="nc" id="L163">        String password = cliente.getPassword();</span>
+<span class="nc" id="L164">        String ind_email = cliente.getEmail();</span>
+<span class="nc" id="L165">        System.out.println(password + newPassword + oldPassword);</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">        if (cliente != null) {</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">            if (password.equals(oldPassword)) {</span>
+<span class="nc" id="L168">                cliente.setPassword(newPassword);</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">                if (ind_email == null) {</span>
+<span class="nc" id="L170">                    cliente.setEmail(email);</span>
+                }
+
+<span class="nc" id="L173">                clienteDAO.save(cliente);</span>
+<span class="nc" id="L174">                return &quot;redirect:/&quot;;</span>
+            }
+
+        }
+<span class="nc" id="L178">        model.addAttribute(&quot;error&quot;, &quot;errPassword&quot;);</span>
+<span class="nc" id="L179">                return &quot;error/500&quot;;</span>
+    }
+
+
+
+    @GetMapping(value = &quot;/paginaReset&quot;)
+    public String paginaReset(final Model model) {
+<span class="nc" id="L186">        model.getAttribute(&quot;utente&quot;);</span>
+<span class="nc" id="L187">        return &quot;autenticazione/newPassword&quot;;</span>
+    }
+
+    @GetMapping(value = &quot;/Homepage&quot;)
+    public String tornaHome(final Model model) {
+<span class="nc" id="L192">        model.getAttribute(&quot;utente&quot;);</span>
+<span class="nc" id="L193">        return &quot;redirect:/&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

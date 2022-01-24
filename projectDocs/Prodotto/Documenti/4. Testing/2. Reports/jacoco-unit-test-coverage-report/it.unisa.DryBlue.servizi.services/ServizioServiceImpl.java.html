@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServizioServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">DryBlue</a> &gt; <a href="index.source.html" class="el_package">it.unisa.DryBlue.servizi.services</a> &gt; <span class="el_source">ServizioServiceImpl.java</span></div><h1>ServizioServiceImpl.java</h1><pre class="source lang-java linenums">package it.unisa.DryBlue.servizi.services;
+
+import it.unisa.DryBlue.ordini.domain.Sede;
+import it.unisa.DryBlue.servizi.dao.MacchinarioDAO;
+import it.unisa.DryBlue.servizi.dao.ServizioDAO;
+import it.unisa.DryBlue.servizi.domain.Macchinario;
+import it.unisa.DryBlue.servizi.domain.Servizio;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+<span class="fc" id="L14">@RequiredArgsConstructor</span>
+public class ServizioServiceImpl implements ServizioService {
+
+    private final ServizioDAO servizioDAO;
+    private final MacchinarioDAO macchinarioDAO;
+
+    @Override
+    public Macchinario aggiungiMacchinario(final String matricola, final String denominazione,
+                                           final String caratteristiche, final String costruttore,
+                                           final String manutentore, final String telefonoManutenzione,
+                                           final String stato, final Sede sede) {
+<span class="fc" id="L25">        Macchinario macchinario = new Macchinario();</span>
+<span class="fc" id="L26">        macchinario.setMatricola(matricola);</span>
+<span class="fc" id="L27">        macchinario.setDenominazione(denominazione);</span>
+<span class="fc" id="L28">        macchinario.setCaratteristiche(caratteristiche);</span>
+<span class="fc" id="L29">        macchinario.setCostruttore(costruttore);</span>
+<span class="fc" id="L30">        macchinario.setManutentore(manutentore);</span>
+<span class="fc" id="L31">        macchinario.setTelefonoManutenzione(telefonoManutenzione);</span>
+<span class="fc" id="L32">        macchinario.setStato(stato);</span>
+<span class="fc" id="L33">        macchinario.setSede(sede);</span>
+<span class="fc" id="L34">        macchinarioDAO.save(macchinario);</span>
+<span class="fc" id="L35">        return macchinario;</span>
+    }
+
+
+    @Override
+    public Boolean aggiornaStatoMacchinario(final String matricola, final String stato) {
+        Macchinario macchinario;
+<span class="fc" id="L42">        macchinario = macchinarioDAO.findById(matricola).orElse(null);</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (macchinario != null) {</span>
+<span class="fc" id="L44">            macchinario.setStato(stato);</span>
+<span class="fc" id="L45">            macchinarioDAO.save(macchinario);</span>
+<span class="fc" id="L46">            return true;</span>
+        }
+<span class="fc" id="L48">        return false;</span>
+    }
+
+    @Override
+    public Servizio aggiungiServizio(final String nome, final String tipologia, final String caratteristiche,
+                                     final double prezzo) {
+<span class="fc" id="L54">        Servizio servizio = new Servizio();</span>
+<span class="fc" id="L55">        servizio.setNome(nome);</span>
+<span class="fc" id="L56">        servizio.setTipologia(tipologia);</span>
+<span class="fc" id="L57">        servizio.setCaratteristiche(caratteristiche);</span>
+<span class="fc" id="L58">        servizio.setPrezzo(prezzo);</span>
+<span class="fc" id="L59">        servizioDAO.save(servizio);</span>
+<span class="fc" id="L60">        return servizio;</span>
+    }
+
+    @Override
+    public List&lt;Servizio&gt; findServizi() {
+<span class="fc" id="L65">        return (List&lt;Servizio&gt;) servizioDAO.findAll();</span>
+    }
+
+    @Override
+    public List&lt;Macchinario&gt; findMacchinari() {
+<span class="fc" id="L70">        return (List&lt;Macchinario&gt;) macchinarioDAO.findAll();</span>
+    }
+
+    @Override
+    public Servizio findServizioById(final int id) {
+<span class="nc" id="L75">        return servizioDAO.findById(id).get();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
